@@ -1,0 +1,62 @@
+.nav_bottom_line {
+    border-bottom: 2px solid #BDBDBD !important;
+  }
+.table-head {
+    border-right: 2px solid black !important;
+    width: 20vw;
+}
+.h-10r {
+    height: 10rem;
+}
+.align-center {
+    text-align: center;
+    vertical-align: middle;
+}
+.f-end {
+    float: right;
+}
+.fs-mobile {
+    font-size: calc(2.6rem + 2.3vw) !important;
+}
+.fs-mobile-2 {
+    font-size: calc(1.8rem + 1.4vw) !important;
+}
+.fs-mobile-1 {
+    font-size: calc(2.0rem + 1.6vw) !important;
+}
+.my-mobile {
+    margin-top: 6rem !important;
+    margin-bottom: 6rem !important;
+}
+.container-mobile {
+    width: 100%;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+}
+@media (min-width: 873px) {
+    .container-mobile {
+      max-width: 850px;
+    }
+}
+.btn-mobile, .btn-group-mobile > .btn {
+    padding: 0.6rem 1.1rem;
+    font-size: 2rem;
+    border-radius: 0.4rem;
+}
+.btn-mobile-1, .btn-group-mobile > .btn {
+    padding: 1.2rem 2.6rem;
+    font-size: 3rem;
+    border-radius: 0.6rem;
+}
+.btn-second {
+    margin-left: 2rem;
+}
+.mt-6 {
+    margin-top: 7rem !important;
+}
+.grid_item {
+    height: 16rem;
+    font-size: 6rem;
+}
