@@ -3,65 +3,57 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style/mobile.css">
+    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css?after">
+    <link rel="stylesheet" type="text/css" href="style/mobile.css?after">
   </head>
 
   <style>
+    
   </style>
   
   <body>
     <?php include "./header.php"; ?>
-    <div class="container-md">
+    <div class="container-md mt-6">
         <form class="needs-validation" novalidate>
-            <div class="row g-3">
-                <div class="col-sm-6">
-                <label for="Name" class="form-label fs-mobile-2">이름</label>
-                <input type="text" class="form-control h-10r" id="Name" name="Name" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    Valid first name is required.
+            <div class="mb-3 row my-5">
+                <div class="col-5 fs-mobile-3">이름</div>
+                <div class="col-7 fs-mobile-3">홍길동</div>
+            </div>
+            <div class="mb-3 row my-5">
+                <div class="col-5 fs-mobile-3">아이디</div>
+                <div class="col-7 fs-mobile-3">abcde123</div>
+            </div>
+            <div class="mb-3 row my-5">
+                <label for="inputPassword" class="col-5 col-form-label fs-mobile-3 ">기존 비밀번호</label>
+                <div class="col-7">
+                    <input type="password" class="form-control fs-mobile-3" id="prePassword" name="pre-pwd">
                 </div>
             </div>
-
-            <div class="col-sm-6">
-            <label for="ID" class="form-label fs-mobile-2">아이디</label>
-                <input type="text" class="form-control" id="ID" name="ID" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    Valid last name is required.
+            <div class="mb-3 row my-5">
+                <label for="inputPassword" class="col-5 col-form-label fs-mobile-3">새 비밀번호</label>
+                <div class="col-7">
+                    <input type="password" class="form-control fs-mobile-3" id="newPassword" name="new-pwd">
                 </div>
             </div>
-
-            <div class="col-12">
-                <label for="username" class="form-label">Username</label>
-                <div class="input-group has-validation">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" id="username" placeholder="Username" required>
-                    <div class="invalid-feedback">
-                        Your username is required.
-                    </div>
+            <div class="mb-3 row my-5">
+                <label for="inputPassword" class="col-5 col-form-label fs-mobile-3">새 비밀번호 확인</label>
+                <div class="col-7">
+                    <input type="password" class="form-control fs-mobile-3" id="newconPassword" name="new-pwd-con">
                 </div>
             </div>
-
-            <div class="col-12">
-                <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com">
-                <div class="invalid-feedback">
-                    Please enter a valid email address for shipping updates.
+            <div class="mb-3 row my-5">
+                <label for="inputPassword" class="col-5 col-form-label fs-mobile-3">연락처</label>
+                <div class="col-7">
+                    <input type="text" class="form-control fs-mobile-3" id="phoneNumber" name="phone-num">
                 </div>
             </div>
-
-            <div class="col-12">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                <div class="invalid-feedback">
-                    Please enter your shipping address.
+            <div class="mb-3 row my-5">
+                <label for="inputPassword" class="col-5 col-form-label fs-mobile-3">이메일</label>
+                <div class="col-7">
+                    <input type="text" class="form-control fs-mobile-3" id="Email" name="email">
                 </div>
             </div>
-
-            <div class="col-12">
-                <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-            </div>
+            <button class="btn btn-primary d-grid col-4 mx-auto mt-6 fs-mobile" type="button">저장</button>
         </form>
 
     </div>

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style/mobile.css">
+    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css?after">
+    <link rel="stylesheet" type="text/css" href="style/mobile.css?after">
   </head>
 
   <style>
@@ -40,7 +40,7 @@
               </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-outline-primary me-2 mt-5 btn-mobile-1 f-end">수정</button>
+        <button type="button" class="btn btn-outline-primary me-2 mt-5 btn-mobile-1 f-end" onclick="location.replace('/edit-info.php') ">수정</button>
     </div>
   </body>
 </html>
