@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css?after">
-    <link rel="stylesheet" type="text/css" href="style/mobile.css?after">
+    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css?a">
+    <link rel="stylesheet" type="text/css" href="style/mobile.css?<?php echo time(); ?>">
+    <script type="text/javascript" src="script/bootstrap.bundle.min.js"></script>
   </head>
 
   <style>
@@ -14,33 +16,27 @@
   <?php include "./header.php"; ?>
 
     <div class="container-sm">
-        <div class="fs-mobile-2 my-mobile" >마이페이지</div>
-
-        <table class="table fs-mobile-1 align-center">
-            <tbody>
-              <tr class="h-10r">
-                <th class="table-head">이름</th>
-                <td>홍길동</th>
-              </tr>
-              <tr class="h-10r">
-                <th class="table-head">아이디</th>
-                <td>abcde123</th>
-              </tr>
-              <tr class="h-10r">
-                <th class="table-head">비밀번호</th>
-                <td>*******</th>
-              </tr>
-              <tr class="h-10r">
-                <th class="table-head">연락처</th>
-                <td>010-0000-1111</th>
-              </tr>
-              <tr class="h-10r">
-                <th class="table-head">이메일</th>
-                <td>abcde@itabus.com</th>
-              </tr>
-            </tbody>
+        <div class="fs-mobile-2" >마이페이지</div>
+        <table class="table install-table table-border fs-4 align-middle">
+          <tr>
+            <td class="col-3">이름</td>
+            <td class="col-5 border-bl text-center h-info_form">이름</td>
+          </tr>
+          
+          <tr>
+            <td class="col-3">비밀번호</td>
+            <td class="col-5 border-bl text-center h-info_form">*******</td>
+          </tr>
+          <tr>
+            <td class="col-3">연락처</td>
+            <td class="col-5 border-bl text-center h-info_form">01099998888</td>
+          </tr>
+          <tr>
+            <td class="col-3">이메일</td>
+            <td class="col-5 border-bl text-center h-info_form">abcdefghijk@asssdass</td>
+          </tr>
         </table>
-        <button type="button" class="btn btn-outline-primary me-2 mt-5 btn-mobile-1 f-end" onclick="location.replace('/edit-info.php') ">수정</button>
+        <button type="button" class="btn btn-outline-primary me-2 mt-5 btn-mobile-1 f-end" onclick="location.replace('/edit-my.php') ">수정</button>
     </div>
   </body>
 </html>

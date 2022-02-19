@@ -17,8 +17,11 @@
 .h-6r {
     height: 6rem;
 }
+.h-info_form {
+    height: 3.5rem;
+}
 .w-dropdown {
-    width: 18vw;
+    width: 26vw;
 }
 .align-center {
     text-align: center;
@@ -26,6 +29,15 @@
 }
 .f-end {
     float: right;
+}
+.fs-sm-1 {
+    font-size: calc(0.6rem + 0.3vw) !important;
+}
+.fs-sm-2 {
+    font-size: calc(0.8rem + 0.5vw) !important;
+}
+.fs-7 {
+    font-size: calc(1.03rem + 0.6vw) !important;
 }
 .fs-mobile {
     font-size: calc(2.6rem + 2.3vw) !important;
@@ -44,7 +56,7 @@
     margin-bottom: 6rem !important;
 }
 .container-mobile {
-    width: 100%;
+    width: 87%;
     padding-right: var(--bs-gutter-x, 0.75rem);
     padding-left: var(--bs-gutter-x, 0.75rem);
     margin-right: auto;
@@ -90,4 +102,107 @@
 }
 .w-btn {
     width: 12vw;
+}
+.border-bl {
+    border: 1px solid black !important;
+    border-radius: 0.35rem;
+}
+.border-gr {
+    border: 1px solid gray !important;
+}
+.border-bottom-bl {
+    border-bottom: 2px solid black !important;
+}
+.border-bottom-gr {
+    border-bottom: 1px solid grey !important;
+}
+.install-table tr td{
+    border: 0;   
+}
+.table-border {
+    border-collapse: separate;
+    border-spacing: 0 1.5rem;
+}
+.table-border-2 {
+    border-collapse: separate;
+    border-spacing: 0.1rem;
+}
+.dropdown-scroll {
+    width: 12vw;
+    height:20vh;
+    overflow-y:auto;
+}
+.dropdown-header {
+    width: 12vw;
+    height: 20vh;
+}
+.table-scroll {
+    overflow: auto;
+}
+.fa-1x {
+    font-size: 1.5rem;
+}
+.navbar-toggler.toggler-example {
+    cursor: pointer;
+}
+.toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    transition: box-shadow 0.15s ease-in-out;
+    color: rgba(0, 0, 0, 0.55);
+    border: 0;
+    border-radius: 0.6rem;
+    height: 5rem;
+    width: 5rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .navbar-toggler {
+      transition: none;
+    }
+}
+.toggler:hover {
+    text-decoration: none;
+}
+.toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem;
+}
+.toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+.table-bottom-bl {
+    border-bottom: 1px solid black !important;
+}
+.table-right-bl {
+    border-right: 1px solid black ;
+}
+.filebox input[type="file"] 
+{ /* 파일 필드 숨기기 */ 
+    position: absolute; 
+    width: 1px; 
+    height: 1px; 
+    padding: 0; 
+    margin: -1px; 
+    overflow: hidden;
+}
+.image-box-1 {
+    width: 56vw;
+    height: 43vh;
+}
+.image-box-2 {
+    height: 35vh;
+}
+#calendar_text {
+    background-color: white;
 }
