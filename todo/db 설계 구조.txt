@@ -1,0 +1,67 @@
+mysql 비번 1234
+
+user
+	index	(id)
+	name
+	user_id
+	user_pwd
+	phone
+	email
+	position
+
+post
+	install_spot.index
+	menu_setting.index
+	check_list.index
+	photo_list.index
+	comment.index
+	post.index	(유지보수)
+	user.index	(작성자)
+
+install_spot
+	index
+	code
+	date
+	address
+	office_edu
+	location
+	maneger_name
+	maneger_phone
+	maneger_email
+
+comment
+	index
+	date
+	user.name
+	purpose
+	contents
+	significant
+	photo
+
+menu_list
+	index
+	network_ip
+	network_subnet
+	network_gateway
+	network_dns
+	server_ip
+	server_port
+	server_id
+	server_pwd
+	brodcast.id
+	brodcast.id
+	brodcast.id
+	brodcast.id
+	latitude
+	longitude
+
+brodcast
+	index
+	scale1
+	scale2
+	distance
+
+photo_list
+	index
+	photo1~25까지 노가다
+	
