@@ -1,18 +1,19 @@
 <div class="container-md install " style="display:none">
-    <form id="form_4" action="" method=" post">
+    <form id="form_4" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
+        <input type="hidden" name="iden" value="4">
         <div class="row mt-5 mb-4">
             <div class="col"></div>
             <div class="col-11 fs-3 text-center">설치완료 증명서류</div>
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="studio_image_1">
+                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="studio_image_doc_1">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="studio_image_1" accept="image/*" onchange="setThumbnail(event, 0);" />
+                <input type="file" id="studio_image_doc_1" accept="image/*" onchange="setThumbnail(event, 0);" />
             </div>
         </div>
         <div class="border-bottom-bl my-5"></div>
@@ -23,7 +24,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="studio_image_1">
@@ -38,7 +39,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="studio_image_2">
@@ -53,7 +54,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="install_image_1">
@@ -68,7 +69,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="install_image_2">
@@ -83,7 +84,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_1">
@@ -98,7 +99,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_2">
@@ -113,7 +114,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_3">
@@ -128,7 +129,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_4">
@@ -143,7 +144,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_5">
@@ -158,7 +159,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_6">
@@ -173,7 +174,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_7">
@@ -188,7 +189,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="device_image_8">
@@ -197,16 +198,18 @@
                 <input type="file" id="device_image_8" accept="image/*" onchange="setThumbnail(event, 12);" />
             </div>
         </div>
+        <div class="text-end mt-3">
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(4)">저장</button>
+        </div>
 
         <script>
             function setThumbnail(event, index) {
-                console.log("index : " + index);
                 var v = document.querySelectorAll(".image_container")[index];
-                console.log(v);
                 var reader = new FileReader();
                 reader.onload = function(event) {
                     v.style.display = '';
                     v.src = event.target.result;
+                    console.log(document.querySelector("#device_image_8"));
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }

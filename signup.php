@@ -1,34 +1,30 @@
 
-
 <?php
   include "./php/db.php";
 
   if($_SERVER['REQUEST_METHOD']=='POST') {
-    if($_POST["id"] == "" || $_POST["pwd"] == ""){
-      echo '<script> alert("아이디나 패스워드 입력하세요"); history.back(); </script>';
-    } else {
-      $userid = $_POST['id'];
-      $userpwd = $_POST['pwd'];
+    $userid = $_POST['id'];
+    $userpwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+    $username = $_POST['name'];
+    $phone = $_POST['phone'];
+    $position = $_POST['position'];
+    $email = $_POST['email'];
 
-      $sql = "SELECT * FROM user WHERE user_id = '$userid'";
-      $result = mysqli_query($mysqli, $sql);
-
-      if(!($result)) {
-        echo "<script>alert('쿼리실패');</script>";
-        echo "<script>location.href='./';</script>";
-      }
-
-      while ($row = mysqli_fetch_array($result)) {
-        if( password_verify($userpwd, $row['user_pwd']) ) {
-          session_start();
-          $_SESSION['userid'] = $row["user_id"];
-          $_SESSION['name'] = $row["name"];
-          echo "<script>alert('로그인 성공');</script>";
-          echo "<script>location.href='./index.php';</script>";
-        }
-      }
+    $sql = "INSERT INTO user(name, user_id, user_pwd, phone, email, position) VALUES('$username', '$userid' ,'$userpwd' ,'$phone' ,'$email', '$position')";
+                            
+    $result = mysqli_query($mysqli, $sql);
+             
+    if($result) {
+      echo "<script>alert('회원가입 성공');</script>";
+      echo "<script>location.href='/login.php';</script>";
+    }
+    else { 
+      echo "<script>alert('회원가입 실패');</script>";
+      echo "<script>location.href='#!';</script>";
     }
   }
+
+
 ?>
 
 <!doctype html>
@@ -58,8 +54,13 @@
               <h2 class="fw-bold mb-2 text-uppercase mb-5">Login</h2>
 
               <div class="form-outline form-white mb-4">
-                <input type="text" id="typeID" class="form-control form-control-lg" name="id"/>
-                <label class="form-label" for="typeEmailX">아이디</label>
+                <input type="text" id="typeName" class="form-control form-control-lg" name="name"/>
+                <label class="form-label" for="typeName">이름</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="typeUserID" class="form-control form-control-lg" name="id"/>
+                <label class="form-label" for="typeUserID">아이디</label>
               </div>
 
               <div class="form-outline form-white mb-4">
@@ -67,18 +68,29 @@
                 <label class="form-label" for="typePasswordX">비밀번호</label>
               </div>
 
-              <button class="btn btn-outline-light btn-lg px-5" type="submit">로그인</button>
+              <div class="form-outline form-white mb-4">
+                <input type="email" id="typeEmailX" class="form-control form-control-lg" name="email"/>
+                <label class="form-label" for="typeEmailX">이메일</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="typeEmailX" class="form-control form-control-lg" name="phone"/>
+                <label class="form-label" for="typeEmailX">전화번호</label>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="typePosition" class="form-control form-control-lg" name="position"/>
+                <label class="form-label" for="typePosition">직급</label>
+              </div>
+
+              <button class="btn btn-outline-light btn-lg px-5" type="submit">회원가입</button>
 
               <div class="d-flex justify-content-center text-center mt-4 pt-1">
                 <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
                 <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
                 <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
               </div>
-              </form>
-
-            <div>
-              <a href="./signup.php" class="text-white-50 fw-bold">계정 생성</a></p>
-            </div>
+            </form>
 
           </div>
         </div>

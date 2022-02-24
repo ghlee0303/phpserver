@@ -67,7 +67,7 @@
             </tbody>
         </table>
         <div class="mt-5 ">
-            <button type="button" class="btn btn-info border rounded-3 float-end col-3 fs-2 h-6r "> 글쓰기 </button>
+            <button type="button" class="btn btn-info border rounded-3 float-end col-3 fs-2 h-6r " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
         </div>
     </div>
 </body>
