@@ -1,3 +1,34 @@
+<?php 
+    include "./php/db.php";
+
+    $post_db_data = array();
+    $install_spot_db_data = array();
+
+    $sql = "SELECT id FROM user";
+    $result = mysqli_query($mysqli, $sql);
+    $user = mysqli_fetch_array($result);
+    //echo $row['id'];
+    
+    /*
+    $sql = "SELECT * FROM post WHERE user_id = $user[id]" ;
+    $result = mysqli_query($mysqli, $sql);
+    
+    while($post_row = mysqli_fetch_array($result)) {
+        $post_db_data[] = $post_row;
+        echo "$post_row[id]<br>";
+    }*/
+
+    $post_db_max = mysqli_num_rows($result);
+
+    $sql = "SELECT code, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
+    //$sql = "SELECT date_format(date, '%Y-%m-%d') as date, address_2 FROM install_spot WHERE id <= $post_db_max ORDER BY date DESC";
+    $result = mysqli_query($mysqli, $sql);
+
+    while($install_spot_row = mysqli_fetch_array($result)) {
+        $install_spot_db_data[] = $install_spot_row;
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -5,6 +36,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.7">
     <meta charset="utf-8">
     <title></title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css?a">
     <link rel="stylesheet" type="text/css" href="style/mobile.css?<?php echo time(); ?>">
 </head>
@@ -50,6 +82,21 @@
                 </tr>
             </thead>
             <tbody>
+                <?php
+                
+                foreach ($install_spot_db_data as $key => $value) {
+                    $index = $key+1;
+                    $ddd = "
+                    <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
+                        <td>$index</td>
+                        <td>$value[code]</td>
+                        <td>$value[address]</td>
+                        <td>$value[date]</td>
+                        <td class='text-center'>$value[id]</td>
+                    </tr>";
+                    echo $ddd;
+                }
+                ?>
                 <tr>
                     <td onclick="location.href='/install-info.php' ">6</td>
                     <td onclick="location.href='/install-info.php' ">MMM2204K17</td>
@@ -67,7 +114,7 @@
             </tbody>
         </table>
         <div class="mt-5 ">
-            <button type="button" class="btn btn-info border rounded-3 float-end col-3 fs-2 h-6r " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
+            <button type="button" class="btn btn-light border rounded-3 float-end col-3 fs-2 h-5r " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
         </div>
     </div>
 </body>

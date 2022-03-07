@@ -2,6 +2,72 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
+if ($_GET['id'] == 'new') {
+  $user_id = $_SESSION['userid'];
+  $user_name = $_SESSION['name'];
+
+  $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
+  $user_result = mysqli_query($mysqli, $user_sql);
+  $user_row = mysqli_fetch_array($user_result);
+
+  $installer_name = $user_row['name'];
+  $installer_phone = $user_row['phone'];
+  $installer_email = $user_row['email'];
+} else {
+  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, code, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting WHERE post.id = $_GET[id]";
+  $post_result = mysqli_query($mysqli, $post_sql);
+  $post_row = mysqli_fetch_array($post_result);
+  
+  $check = $post_row['check_list'];
+  $date = $post_row['date'];
+  $region = $post_row['region'];
+  $address_1 = $post_row['address_1'];
+  $address_2 = $post_row['address_2'];
+  $office_edu = $post_row['office_edu'];
+  $location = $post_row['location'];
+  $maneger_name = $post_row['maneger_name'];
+  $maneger_phone = $post_row['maneger_phone'];
+  $maneger_email = $post_row['maneger_email'];
+  $network_ip = $post_row['network_ip'];
+  $network_subnet = $post_row['network_subnet'];
+  $network_gateway = $post_row['network_gateway'];
+  $network_dns = $post_row['network_dns'];
+  $server_ip = $post_row['server_ip'];
+  $server_port = $post_row['server_port'];
+  $server_id = $post_row['server_id'];
+  $server_pwd = $post_row['server_pwd'];
+  $lat = $post_row['latitude'];
+  $lon = $post_row['longitude'];
+
+  $brod_sql = "SELECT scale1, scale2, distance FROM brodcast WHERE menu_id = $post_row[m_id]";
+  $brod_result = mysqli_query($mysqli, $brod_sql);
+
+  $brod = array();
+  $brod[0] = mysqli_fetch_array($brod_result);
+  $brod[1] = mysqli_fetch_array($brod_result);
+  $brod[2] = mysqli_fetch_array($brod_result);
+  $brod[3] = mysqli_fetch_array($brod_result);
+
+  $image_sql = "SELECT photo, num FROM photo_name WHERE post_id = $post_row[id]";
+  $image_result = mysqli_query($mysqli, $image_sql);
+  $image_query = mysqli_fetch_array($image_result);
+  $images = array();
+  $images_num = array();
+
+  echo "$image_sql<br>";
+  print_r($image_query);
+  echo "<br>";
+  
+  while ($image_query) {
+    $images[] = $image_query['photo'];
+    $images_num[] = $image_query['num'];
+    $image_query = mysqli_fetch_array($image_result);
+  }
+  print_r($images);
+  echo "<br>";
+  print_r($images_num);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +125,38 @@ include "./php/login-ok.php";
     });
   });
 
+  function dropdown_init(classname, data) {
+    var dropdown_item = document.querySelectorAll('.'+classname);
+
+    dropdown_item.forEach((element) => {
+      if (element.value == data) {
+        element.click();
+        return;
+      }
+    })
+  }
+  
+  function check_list_init(data) {
+    var check_array = data.split('a');
+    var check_list_input = document.querySelectorAll('.check_list');
+
+    check_array.forEach(element => {
+      check_list_input[element].click();
+    });
+  }
+
+  window.onload = function() {
+    if (<?php echo isset($region) ? 1 : 0; ?>) {
+      dropdown_init('item_1', "<?php echo $region; ?>");
+    }
+    if (<?php echo isset($office_edu) ? 1 : 0; ?>) {
+      dropdown_init('item_2', "<?php echo $office_edu; ?>");
+    }
+    if (<?php echo isset($check) ? 1 : 0; ?>) {
+      check_list_init("<?php echo $check; ?>");
+    }
+  }
+
   function searchParam(key) {
     return new URLSearchParams(location.search).get(key);
   };
@@ -110,6 +208,8 @@ include "./php/login-ok.php";
 
   function form_submit(index) {
     var fd = new FormData();
+    fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
+    fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
     fd.append('query', searchParam('id'));
     for (var i = 1; i <= 4; i++) {
       var other_data = $('#form_' + i).serializeArray();
@@ -123,7 +223,7 @@ include "./php/login-ok.php";
 
       if (!(files == null)) {
         fd.append("img[]", files);
-        fd.append("file_id[]", i);
+        fd.append("file_id[]", i + 1);
       }
     }
 

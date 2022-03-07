@@ -203,15 +203,31 @@
         </div>
 
         <script>
+            image_set();
+
+            function image_set() {
+                var images = <?php echo json_encode($images); ?>;
+                var images_num = <?php echo json_encode($images_num); ?>;
+
+                images.forEach((image_file, index) => {
+                    var img = document.querySelectorAll(".image_container")[images_num[index]-1];
+                    var image_src = "./php/imagecall.php?file=" + image_file;
+                    img.style.display = '';
+                    img.src = image_src;
+
+                    console.log(img.src + " / " + images_num[index]);
+                });
+            }
+
             function setThumbnail(event, index) {
                 var v = document.querySelectorAll(".image_container")[index];
                 var reader = new FileReader();
                 reader.onload = function(event) {
                     v.style.display = '';
                     v.src = event.target.result;
-                    console.log(document.querySelector("#device_image_8"));
                 }
-                reader.readAsDataURL(event.target.files[0]);
+                if (!(event.target.files[0] == null))
+                    reader.readAsDataURL(event.target.files[0]);
             }
 
             function getElementIndex(e, range) {
