@@ -20,7 +20,7 @@
 
     $post_db_max = mysqli_num_rows($result);
 
-    $sql = "SELECT code, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
+    $sql = "SELECT count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
     //$sql = "SELECT date_format(date, '%Y-%m-%d') as date, address_2 FROM install_spot WHERE id <= $post_db_max ORDER BY date DESC";
     $result = mysqli_query($mysqli, $sql);
 
@@ -75,7 +75,6 @@
             <thead>
                 <tr>
                     <th scope="col" class="pt-4 fs-5 ">#</th>
-                    <th scope="col" class="pt-4 fs-5 text-center">CODE</th>
                     <th scope="col" class="pt-4 fs-5 text-center">방문 장소</th>
                     <th scope="col" class="pt-4 fs-5 text-center">설치일자</th>
                     <th scope="col" class="pt-4 fs-5 text-center">입력</th>
@@ -89,28 +88,13 @@
                     $ddd = "
                     <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
                         <td>$index</td>
-                        <td>$value[code]</td>
                         <td>$value[address]</td>
                         <td>$value[date]</td>
-                        <td class='text-center'>$value[id]</td>
+                        <td class='text-center'>$value[count]/66</td>
                     </tr>";
                     echo $ddd;
                 }
                 ?>
-                <tr>
-                    <td onclick="location.href='/install-info.php' ">6</td>
-                    <td onclick="location.href='/install-info.php' ">MMM2204K17</td>
-                    <td onclick="location.href='/install-info.php' ">아이초등학교</td>
-                    <td onclick="location.href='/install-info.php' ">2022.02.06</td>
-                    <td class="text-center">99/99</td>
-                </tr>
-                <tr>
-                    <td onclick="location.href='/install-info.php' ">6</td>
-                    <td onclick="location.href='/install-info.php' ">00701</td>
-                    <td onclick="location.href='/install-info.php' ">아이초등학교가가가가가</td>
-                    <td onclick="location.href='/install-info.php' ">2022.02.06</td>
-                    <td class="text-center">3/9</td>
-                </tr>
             </tbody>
         </table>
         <div class="mt-5 ">

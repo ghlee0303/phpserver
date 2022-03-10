@@ -14,10 +14,10 @@ if ($_GET['id'] == 'new') {
   $installer_phone = $user_row['phone'];
   $installer_email = $user_row['email'];
 } else {
-  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, code, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting WHERE post.id = $_GET[id]";
+  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
   $post_result = mysqli_query($mysqli, $post_sql);
   $post_row = mysqli_fetch_array($post_result);
-  
+
   $check = $post_row['check_list'];
   $date = $post_row['date'];
   $region = $post_row['region'];
@@ -38,6 +38,9 @@ if ($_GET['id'] == 'new') {
   $server_pwd = $post_row['server_pwd'];
   $lat = $post_row['latitude'];
   $lon = $post_row['longitude'];
+  $installer_name = $post_row['name'];
+  $installer_phone = $post_row['phone'];
+  $installer_email = $post_row['email'];
 
   $brod_sql = "SELECT scale1, scale2, distance FROM brodcast WHERE menu_id = $post_row[m_id]";
   $brod_result = mysqli_query($mysqli, $brod_sql);
@@ -54,18 +57,11 @@ if ($_GET['id'] == 'new') {
   $images = array();
   $images_num = array();
 
-  echo "$image_sql<br>";
-  print_r($image_query);
-  echo "<br>";
-  
   while ($image_query) {
     $images[] = $image_query['photo'];
     $images_num[] = $image_query['num'];
     $image_query = mysqli_fetch_array($image_result);
   }
-  print_r($images);
-  echo "<br>";
-  print_r($images_num);
 }
 
 ?>
@@ -126,7 +122,7 @@ if ($_GET['id'] == 'new') {
   });
 
   function dropdown_init(classname, data) {
-    var dropdown_item = document.querySelectorAll('.'+classname);
+    var dropdown_item = document.querySelectorAll('.' + classname);
 
     dropdown_item.forEach((element) => {
       if (element.value == data) {
@@ -135,7 +131,7 @@ if ($_GET['id'] == 'new') {
       }
     })
   }
-  
+
   function check_list_init(data) {
     var check_array = data.split('a');
     var check_list_input = document.querySelectorAll('.check_list');
@@ -208,23 +204,32 @@ if ($_GET['id'] == 'new') {
 
   function form_submit(index) {
     var fd = new FormData();
+    var img_count = 0;
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
     fd.append('query', searchParam('id'));
+
     for (var i = 1; i <= 4; i++) {
       var other_data = $('#form_' + i).serializeArray();
       $.each(other_data, function(key, input) {
         fd.append(input.name, input.value);
       });
     }
+
     for (var i = 0; i <= 12; i++) {
       var file_data = $('input[type="file"]')[i];
+      var img = document.querySelectorAll(".image_container")[i];
       var files = file_data.files[0];
 
       if (!(files == null)) {
         fd.append("img[]", files);
         fd.append("file_id[]", i + 1);
       }
+
+      if (img.style.display == '') 
+        img_count++;
+
+      fd.append("img_count", img_count);
     }
 
     $.ajax({

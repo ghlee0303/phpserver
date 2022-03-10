@@ -8,6 +8,13 @@ function read_img($file)
 
   return $src;
 }
+
+function th() {
+  return 100;
+}
+$var = 50;
+$jud = $var < 10 ? 1 : th();
+echo $jud;
 ?>
 
 <!DOCTYPE html>

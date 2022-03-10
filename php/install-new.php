@@ -1,15 +1,25 @@
 <?php
 include "./db.php";
 
+$input_count = 0;
+
+function counting($value) {
+  global $input_count;
+  $input_count += 1;
+
+  return "'$value'";
+}
+
 function is_Empty($val)
 {
   if (is_array($val) == 1) {
     foreach ($val as $key => $value) {
-      $val[$key] = !empty($value) ? "'$value'" : "NULL";
+      $val[$key] = !empty($value) ? counting($value) : "NULL";
     }
   } else {
-    $val = !empty($val) ? "'$val'" : "NULL";
+    $val = !empty($val) ? counting($val) : "NULL";
   }
+
   return $val;
 }
 
@@ -22,11 +32,13 @@ function install_spot_db($mysqli, $index) {
   $maneger = is_Empty($_POST["maneger"]);
   $sql = '';
 
+  global $input_count;
+  echo "install list input count : $input_count\n";
+
   if ($index == null) {
     $sql = "INSERT INTO install_spot SET date = $date, region = $region, address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2]";
   } else {
     $sql = "UPDATE install_spot SET date = $date, region = $region, address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2] WHERE id = $index";
-    echo "install update\n\n";
   }
 
   $result = mysqli_query($mysqli, $sql);
@@ -54,6 +66,9 @@ function menu_list_db($mysqli, $index) {
   $query_index_brodcast = array();
   $sql = '';
 
+  global $input_count;
+  echo "menu list input count : $input_count\n";
+
   if ($index == null) {
     $sql = "INSERT INTO menu_list(network_ip, network_subnet, network_gateway, network_dns, server_ip, server_port, server_id, server_pwd, latitude, longitude) VALUES($network[0], $network[1], $network[2], $network[3], $server[0], $server[1], $server[2], $server[3], $latitude, $longitude)";
     $result = mysqli_query($mysqli, $sql);
@@ -65,7 +80,6 @@ function menu_list_db($mysqli, $index) {
       $query_index_brodcast[$key] = mysqli_insert_id($mysqli);
     }
   } else {
-    echo "\nmenu update : $index\n";
     $sql_menu_index = "SELECT menu_setting FROM post WHERE id = $index";
     $sql_menu_index_result = mysqli_query($mysqli, $sql_menu_index);
 /*
@@ -113,6 +127,8 @@ function check_list($mysqli, $index) {
 
   $check = $_POST["check"];
   $var = '';
+  $key = 0;
+  global $input_count;
 
   if (isset($check)) {
     foreach ($check as $key => $value) {
@@ -120,7 +136,11 @@ function check_list($mysqli, $index) {
     }
     $var = substr($var, 1);
     $sql = "UPDATE post SET check_list = '$var' WHERE id = $index";
+
+    $input_count += count($check);
+    echo "check list input count : $input_count\n";
   } else {
+
     return null;
   }
   
@@ -136,16 +156,15 @@ function check_list($mysqli, $index) {
   }*/
 }
 
-function photo_list_db($mysqli, $post_index)
-{
-  if (isset($_FILES["img"])) {
-    echo "파일 있음\n";
-  } else {
-    return null;
-  }
+function photo_list_db($mysqli, $post_index) {
 
   $photo_index = $_POST['file_id'];
   $upload_dir = '../image/';
+
+  global $input_count;
+
+  $input_count += $_POST["img_count"];
+  echo "photo list input count : $input_count\n";
 
   foreach ($_FILES["img"]["error"] as $key => $error) {
     if ($error == UPLOAD_ERR_OK) {
@@ -153,8 +172,6 @@ function photo_list_db($mysqli, $post_index)
 
       $tmp_name = $_FILES["img"]["tmp_name"][$key];
       $name = $_FILES["img"]["name"][$key];
-
-      echo "파일명 : $name\n";
 
       $ext = preg_replace('/^.*\.([^.]+)$/D', '$1', $name);
       $file_name = explode("php", basename($tmp_name) . rand() . "." . $ext)[1];
@@ -183,17 +200,17 @@ function photo_list_db($mysqli, $post_index)
         echo "\n";
       }*/
       
-      echo "저장 파일 명 : $upload_file\n";
       $image_result = move_uploaded_file($tmp_name, $upload_file);
-
+/*
       if ($image_result == true) {
         echo "image upload 성공\n";
       } else {
         echo "image upload 실패\n";
         echo "\n";
-      }
+      }*/
     }
   }
+
 }
 
 
@@ -215,6 +232,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $row = mysqli_fetch_array($result);
   $user_index = $row['id'];
 
+  global $input_count;
+
   if ($query == "new") {
 
     $sql = "INSERT INTO post SET user_id = '$user_index'";
@@ -227,15 +246,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     photo_list_db($mysqli, $post_index);
     check_list($mysqli, $post_index);
 
+    /*
     $date = is_Empty($_POST["date"]);
     $sql_date = "SELECT count(id) FROM install_spot WHERE date(date) >= date_format($date, '%Y-%m-01') AND date(date) <= last_day($date) AND id IN (SELECT install_spot FROM post WHERE user_id = '$user_index')";
     $result = mysqli_query($mysqli, $sql_date);
     $count = mysqli_fetch_array($result)[0] + 1;
-    /*
-    $office_edu = is_Empty($_POST["office_edu"]);
-    $region = is_Empty($_POST["region"]);
 
-    $code = $region.$office_edu. substr(date("y", $date), 2). date("m", $date). "AA". $count;*/
     if (!($result)) {
       echo "월별 갯수 쿼리 실패\n";
       echo mysqli_error($mysqli);
@@ -243,9 +259,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     echo "$sql_date\n";
     echo "월별 갯수 : ";
-    echo $count;
+    echo $count;*/
 
-    $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list' where id = '$post_index'";
+    $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$input_count' where id = '$post_index'";
     $result = mysqli_query($mysqli, $sql);
     /*
     echo "$sql\n";
@@ -262,6 +278,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $query_index_menu_list = menu_list_db($mysqli, $query);
     photo_list_db($mysqli, $query);
     check_list($mysqli, $query);
+
+    $sql = "UPDATE post SET count = '$input_count' where id = '$query'";
+    $result = mysqli_query($mysqli, $sql);
   }
 } else {
   echo "잘못된 접근입니다.\n";
