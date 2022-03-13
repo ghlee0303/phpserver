@@ -101,6 +101,7 @@ if ($_GET['id'] == 'new') {
     <?php include "./install-form/form_2.php" ?>
     <?php include "./install-form/form_3.php" ?>
     <?php include "./install-form/form_4.php" ?>
+    <?php include "./install-form/form_5.php" ?>
     <?php
     if ($jud) {
       include "install-comment.php";
@@ -142,6 +143,8 @@ if ($_GET['id'] == 'new') {
   }
 
   window.onload = function() {
+    image_set();
+
     if (<?php echo isset($region) ? 1 : 0; ?>) {
       dropdown_init('item_1', "<?php echo $region; ?>");
     }
@@ -156,25 +159,9 @@ if ($_GET['id'] == 'new') {
   function searchParam(key) {
     return new URLSearchParams(location.search).get(key);
   };
+
   var menu_val = 0;
-  var edit_val = 0;
-
-  function edit_btn(index, val) {
-    var edit = document.querySelectorAll('.edit');
-    var view = document.querySelectorAll('.install');
-
-    if (val) {
-      console.log("edit_btn 1 : " + index + "/" + edit_val);
-      edit[index].style.display = '';
-      view[index].style.display = 'none';
-      edit_val = index + 1;
-    } else {
-      console.log("edit_btn 2 : " + index + "/" + edit_val);
-      edit[--edit_val].style.display = 'none';
-      view[index].style.display = '';
-      edit_val = 0;
-    }
-  }
+  var sub_form_val = 0;
 
   function top_menu(index) {
     if (menu_val != index) {
@@ -183,16 +170,24 @@ if ($_GET['id'] == 'new') {
 
       var view = document.querySelectorAll('.install');
 
-      if (edit_val > 0) {
-        console.log("top 1 : " + index + "/" + edit_val);
-        edit_btn(index, 0);
-      } else {
-        console.log("top 2 : " + index + "/" + edit_val);
-        view[index].style.display = '';
-        view[menu_val].style.display = 'none';
-      }
+      console.log("top 2 : " + index + "/" + menu_val);
+      view[index].style.display = '';
+      view[menu_val].style.display = 'none';
+      
       menu_val = index;
     }
+  }
+
+  function sub_form(index) {
+    if (sub_form_val != index) {
+      var view = document.querySelectorAll('.photo_form');
+
+      console.log("form : " + index + "/" + menu_val);
+      view[index].style.display = '';
+      view[sub_form_val].style.display = 'none';
+      
+      sub_form_val = index;
+    } 
   }
 
   function calendar_btn() {
@@ -201,6 +196,31 @@ if ($_GET['id'] == 'new') {
   document.getElementById('calendar_text').addEventListener('blur', function() {
     document.getElementById("calendar_text").readOnly = true;
   });
+
+  function image_set() {
+    var images = <?php echo json_encode($images); ?>;
+    var images_num = <?php echo json_encode($images_num); ?>;
+
+    images.forEach((image_file, index) => {
+      var img = document.querySelectorAll(".image_container")[images_num[index]-1];
+      var image_src = "./php/imagecall.php?file=" + image_file;
+      img.style.display = '';
+      img.src = image_src;
+
+      console.log(img.src + " / " + images_num[index]);
+    });
+  }
+
+  function setThumbnail(event, index) {
+    var v = document.querySelectorAll(".image_container")[index];
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      v.style.display = '';
+      v.src = event.target.result;
+    }
+    if (!(event.target.files[0] == null))
+      reader.readAsDataURL(event.target.files[0]);
+  }
 
   function form_submit(index) {
     var fd = new FormData();
@@ -216,21 +236,22 @@ if ($_GET['id'] == 'new') {
       });
     }
 
-    for (var i = 0; i <= 12; i++) {
-      var file_data = $('input[type="file"]')[i];
-      var img = document.querySelectorAll(".image_container")[i];
+    $.each($('input[type="file"]'), function(index, file_data) {
+      console.log("이미지 테스트");
+      var img = document.querySelectorAll(".image_container")[index];
       var files = file_data.files[0];
 
       if (!(files == null)) {
+        console.log("이미지 테스트2");
         fd.append("img[]", files);
-        fd.append("file_id[]", i + 1);
+        fd.append("file_id[]", index + 1);
       }
 
       if (img.style.display == '') 
         img_count++;
 
       fd.append("img_count", img_count);
-    }
+    })
 
     $.ajax({
       url: './php/install-new.php',

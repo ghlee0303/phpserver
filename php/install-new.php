@@ -159,6 +159,8 @@ function check_list($mysqli, $index) {
 function photo_list_db($mysqli, $post_index) {
 
   $photo_index = $_POST['file_id'];
+  print_r($photo_index);
+  echo "\n";
   $upload_dir = '../image/';
 
   global $input_count;
