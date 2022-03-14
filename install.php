@@ -1,27 +1,17 @@
 <?php 
     include "./php/db.php";
+    include "./php/login-ok.php";
 
     $post_db_data = array();
     $install_spot_db_data = array();
 
-    $sql = "SELECT id FROM user";
+    $sql = "SELECT * FROM user WHERE name = '$_SESSION[name]' AND user_id = '$_SESSION[userid]'";
     $result = mysqli_query($mysqli, $sql);
     $user = mysqli_fetch_array($result);
-    //echo $row['id'];
     
-    /*
-    $sql = "SELECT * FROM post WHERE user_id = $user[id]" ;
-    $result = mysqli_query($mysqli, $sql);
-    
-    while($post_row = mysqli_fetch_array($result)) {
-        $post_db_data[] = $post_row;
-        echo "$post_row[id]<br>";
-    }*/
-
     $post_db_max = mysqli_num_rows($result);
 
     $sql = "SELECT count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
-    //$sql = "SELECT date_format(date, '%Y-%m-%d') as date, address_2 FROM install_spot WHERE id <= $post_db_max ORDER BY date DESC";
     $result = mysqli_query($mysqli, $sql);
 
     while($install_spot_row = mysqli_fetch_array($result)) {

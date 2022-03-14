@@ -92,10 +92,11 @@ if ($_GET['id'] == 'new') {
   <?php include "./header.php" ?>
   <div class=" container container-mobile-1 pb-3">
     <div class="row mb-3">
-      <button type="button" onclick="top_menu(0)" class="btn btn-dark rounded-3 col-3 fs-5">설치 장소</button>
-      <button type="button" onclick="top_menu(1)" class="btn btn-outline-dark rounded-3 col-3 fs-5">메뉴 설정</button>
-      <button type="button" onclick="top_menu(2)" class="btn btn-outline-dark rounded-3 col-3 fs-5">체크리스트</button>
-      <button type="button" onclick="top_menu(3)" class="btn btn-outline-dark rounded-3 col-3 fs-5">사진첨부</button>
+      <button type="button" onclick="top_menu(0)" class="btn btn-dark rounded-3 col-20 fs-5">설치 장소</button>
+      <button type="button" onclick="top_menu(1)" class="btn btn-outline-dark rounded-3 col-20 fs-5">메뉴 설정</button>
+      <button type="button" onclick="top_menu(2)" class="btn btn-outline-dark rounded-3 col-20 fs-5">체크<br>리스트</button>
+      <button type="button" onclick="top_menu(3)" class="btn btn-outline-dark rounded-3 col-20 fs-5">사진첨부</button>
+      <button type="button" onclick="top_menu(4)" class="btn btn-outline-dark rounded-3 col-20 fs-5">설치완료</button>
     </div>
     <?php include "./install-form/form_1.php" ?>
     <?php include "./install-form/form_2.php" ?>
@@ -173,7 +174,7 @@ if ($_GET['id'] == 'new') {
       console.log("top 2 : " + index + "/" + menu_val);
       view[index].style.display = '';
       view[menu_val].style.display = 'none';
-      
+
       menu_val = index;
     }
   }
@@ -185,9 +186,9 @@ if ($_GET['id'] == 'new') {
       console.log("form : " + index + "/" + menu_val);
       view[index].style.display = '';
       view[sub_form_val].style.display = 'none';
-      
+
       sub_form_val = index;
-    } 
+    }
   }
 
   function calendar_btn() {
@@ -202,7 +203,7 @@ if ($_GET['id'] == 'new') {
     var images_num = <?php echo json_encode($images_num); ?>;
 
     images.forEach((image_file, index) => {
-      var img = document.querySelectorAll(".image_container")[images_num[index]-1];
+      var img = document.querySelectorAll(".image_container")[images_num[index] - 1];
       var image_src = "./php/imagecall.php?file=" + image_file;
       img.style.display = '';
       img.src = image_src;
@@ -237,17 +238,15 @@ if ($_GET['id'] == 'new') {
     }
 
     $.each($('input[type="file"]'), function(index, file_data) {
-      console.log("이미지 테스트");
       var img = document.querySelectorAll(".image_container")[index];
       var files = file_data.files[0];
 
       if (!(files == null)) {
-        console.log("이미지 테스트2");
         fd.append("img[]", files);
         fd.append("file_id[]", index + 1);
       }
 
-      if (img.style.display == '') 
+      if (img.style.display == '')
         img_count++;
 
       fd.append("img_count", img_count);
