@@ -8,9 +8,9 @@
                     <div class="input-group date" id="datetimepicker" data-target-input="nearest" data-bs-auto-close="inside">
                         <input type="text" id="calendar_text" class="form-control datetimepicker-input fs-4 border-bl h-info_form" data-target="#datetimepicker" name="date" value="<?php echo $date; ?>" readOnly />
                         <div class="input-group-append " data-target="#datetimepicker" data-toggle="datetimepicker">
-                            <div class="input-group-text btn_calendar" id="calendar_q" onclick="calendar_btn()"><i class="fa fa-calendar m-auto"></i></div>
+                            <div class="input-group-text btn_calendar" id="calendar_q" onclick="calendar_btn(0)"><i class="fa fa-calendar m-auto"></i></div>
                         </div>
-                    </div>
+                    </div>  
                 </td>
             </tr>
             <tr>

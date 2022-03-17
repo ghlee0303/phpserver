@@ -1,189 +1,58 @@
 <div class="container-md install photo_form" style="display:none">
-    <form id="form_5" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
-        <input type="hidden" name="iden" value="5">
-        <div class="row mt-4">
+    <form id="form_4" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
+        <input type="hidden" name="iden" value="4">
+        <div class="row mt-5 mb-4">
             <div class="col"></div>
-            <div class="col-11 fs-4 text-center">지진경보장치 시간 설정<br>(서버시간 동기화)</div>
+            <div class="col-11 fs-3 text-center">설치완료 증명서류승룡</div>
         </div>
         <div class="row mt-1">
             <div class="col-1">
                 <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image14">
+                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image1">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image14" accept="image/*" onchange="setThumbnail(event, 13);" />
+                <input type="file" id="image1" accept="image/*" onchange="setThumbnail(event, 0);" />
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">서버 IP(교육청 중계서버)<br>설정</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+        <div class="border-bottom-bl mt-5 mb-2"></div>
+        <div class="card-body">
+            <form class="mb-4 row" action="" method="post" onsubmit="return false">
+                <div class="align-center mb-3 row mt-2 align-center">
+                    <div class="col-3 fs-sm-2 border-bl p-2 ms-3">설치</div>
+                    <div class="col-3 fs-sm-2 border-bl p-2 ms-3">작성자</div>
+                    <div class="input-group date col me-auto" id="datetimepicker_comment" data-target-input="nearest" data-bs-auto-close="inside">
+                        <input type="text" id="calendar_text_comment" class="form-control datetimepicker-input border-bl bg-white fs-sm-2" data-target="#datetimepicker_comment" name="date" value="<?php echo $date; ?>" readOnly />
+                        <div class="input-group-append" data-target="#datetimepicker_comment" data-toggle="datetimepicker">
+                            <div class="input-group-text btn_calendar_2" id="calendar_comment" onclick="calendar_btn(1)"><i class="fa fa-calendar m-auto"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <textarea class="form-control col" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                <div class="text-end mb-3 col-3 align-center">
+                    <button type="submit" class="btn btn-outline-primary fs-7 w-100 h-100 mt-1">작성</button>
+                </div>
+                <div class="my-3 row">
+                    <input type="text" id="file_comment" class="col me-3 border-bl fs-sm-2 p-1" readonly="readonly">
+                    <label class="btn btn-outline-info fs-sm-2 col-2" for="input-file">
+                        업로드
+                    </label>
+                    <input type="file" id="input-file" style="display:none" onchange="javascript:document.getElementById('file_comment').value = this.value.split('\\')[this.value.split('\\').length-1]" />
+                </div>
+            </form>
+            <!-- Single comment-->
+            <div class="d-flex mt-4 comments">
+                <div class="ms-4">
+                    <div class="fw-bold fs-sm-2 mb-1 commenter">
+                        홍길동
+                        <span class="fw-normal fs-sm-1 comments_purpose">설치</span>
+                        <span class="fw-normal fs-sm-1 comments_time">2022.02.16</span>
+                        <span class="btn btn-outline-info fw-normal fs-sm-1 float-end p-1 commments_file">첨부파일</span>
+                    </div>
+                    If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                </div>
             </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image15">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image15" accept="image/*" onchange="setThumbnail(event, 14);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">설치정보<br>(위도/경도 좌표) 설정</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image16">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image16" accept="image/*" onchange="setThumbnail(event, 15);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">네트워크 IP(학교)<br>설정</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image17">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image17" accept="image/*" onchange="setThumbnail(event, 16);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">경보방송 설정</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image18">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image18" accept="image/*" onchange="setThumbnail(event, 17);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">지진경보장치 설치완료<br>(메인화면)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image19">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image19" accept="image/*" onchange="setThumbnail(event, 18);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">경보 문구 관리<br>(Web 접속 PC)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image20">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image20" accept="image/*" onchange="setThumbnail(event, 19);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">경보 문구 관리 (Web)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image21">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image21" accept="image/*" onchange="setThumbnail(event, 20);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">지진경보장치 동작교육<br>(메뉴얼 설명)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image22">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image22" accept="image/*" onchange="setThumbnail(event, 21);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">경보 문구 관리<br>(Web)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image23">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image23" accept="image/*" onchange="setThumbnail(event, 22);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">경보 문구 관리<br>(Web 접속 교육)</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image24">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image24" accept="image/*" onchange="setThumbnail(event, 23);" />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col"></div>
-            <div class="col-11 fs-4 text-center">지진경보장치<br>간단메뉴얼 부착</div>
-        </div>
-        <div class="row mt-1">
-            <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
-            </div>
-            <div class="filebox col-11" style="display: table;">
-                <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image25">
-                    <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
-                </label>
-                <input type="file" id="image25" accept="image/*" onchange="setThumbnail(event, 24);" />
-            </div>
-        </div>
-        <div class="text-end mt-3">
-            <button type="button" class="btn btn-info btn-mobile col-3" onclick="sub_form(0)">이전</button>
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(4)">저장</button>
         </div>
 
         <script>

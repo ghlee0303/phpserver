@@ -98,15 +98,13 @@ if ($_GET['id'] == 'new') {
       <button type="button" onclick="top_menu(3)" class="btn btn-outline-dark rounded-3 col-20 fs-5">사진첨부</button>
       <button type="button" onclick="top_menu(4)" class="btn btn-outline-dark rounded-3 col-20 fs-5">설치완료</button>
     </div>
-    <?php include "./install-form/form_1.php" ?>
-    <?php include "./install-form/form_2.php" ?>
-    <?php include "./install-form/form_3.php" ?>
-    <?php include "./install-form/form_4.php" ?>
-    <?php include "./install-form/form_5.php" ?>
-    <?php
-    if ($jud) {
-      include "install-comment.php";
-    } ?>
+    <?php include "./install-form/form_1.php"; ?>
+    <?php include "./install-form/form_2.php"; ?>
+    <?php include "./install-form/form_3.php"; ?>
+    <?php include "./install-form/form_4.php"; ?>
+    <?php include "./install-form/form_4_sub.php"; ?>
+    <?php include "./install-form/form_5.php"; ?>
+    
 
   </div>
 
@@ -116,10 +114,24 @@ if ($_GET['id'] == 'new') {
   window.onbeforeunload = function() {
     return '메세지 내용';
   };
+  
+  document.getElementById('calendar_text').addEventListener('blur', function() {
+    document.getElementById("calendar_text").readOnly = true;
+  });
+  document.getElementById('calendar_text_comment').addEventListener('blur', function() {
+    document.getElementById("calendar_text_comment").readOnly = true;
+  });
+
   $(function() {
     $('#datetimepicker').datetimepicker({
       locale: moment.locale('ko'),
       format: 'YYYY.MM.DD HH:mm:ss'
+    });
+  });
+  $(function() {
+    $('#datetimepicker_comment').datetimepicker({
+      locale: moment.locale('ko'),
+      format: 'YYYY.MM.DD'
     });
   });
 
@@ -144,6 +156,7 @@ if ($_GET['id'] == 'new') {
   }
 
   window.onload = function() {
+
     image_set();
 
     if (<?php echo isset($region) ? 1 : 0; ?>) {
@@ -171,6 +184,10 @@ if ($_GET['id'] == 'new') {
 
       var view = document.querySelectorAll('.install');
 
+      if (sub_form_val == 1) {
+        sub_form(0);
+      }
+
       console.log("top 2 : " + index + "/" + menu_val);
       view[index].style.display = '';
       view[menu_val].style.display = 'none';
@@ -180,10 +197,10 @@ if ($_GET['id'] == 'new') {
   }
 
   function sub_form(index) {
+    console.log("form : " + index + "/" + menu_val + "/" + sub_form_val);
     if (sub_form_val != index) {
       var view = document.querySelectorAll('.photo_form');
 
-      console.log("form : " + index + "/" + menu_val);
       view[index].style.display = '';
       view[sub_form_val].style.display = 'none';
 
@@ -191,12 +208,18 @@ if ($_GET['id'] == 'new') {
     }
   }
 
-  function calendar_btn() {
-    document.getElementById("calendar_text").readOnly = false;
+  function calendar_btn(index) {
+    switch (index) {
+      case 0: {
+        document.getElementById("calendar_text").readOnly = false;
+        break;
+      }
+      case 1: {
+        document.getElementById("calendar_text_comment").readOnly = false;
+        break;
+      }
+    }
   }
-  document.getElementById('calendar_text').addEventListener('blur', function() {
-    document.getElementById("calendar_text").readOnly = true;
-  });
 
   function image_set() {
     var images = <?php echo json_encode($images); ?>;

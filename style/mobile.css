@@ -20,6 +20,9 @@
 .h-5r {
     height: 5rem;
 }
+.h-2r {
+    height: 2rem;
+}
 .h-info_form {
     height: 3.5rem;
 }
@@ -100,6 +103,11 @@
 }
 .btn_calendar {
     width: 10vw;
+    height: 100%;
+    object-fit: cover;
+}
+.btn_calendar_2 {
+    width: 9vw;
     height: 100%;
     object-fit: cover;
 }
@@ -212,4 +220,19 @@
 .col-20 {
   flex: 0 0 auto;
   width: 20%;
+}
+
+.col-12 {
+  flex: 0 0 auto;
+  width: 15%;
+}
+
+.inner {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bg-white {
+    background-color: white;
 }
