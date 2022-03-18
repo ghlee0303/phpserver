@@ -72,7 +72,6 @@
             </thead>
             <tbody>
                 <?php
-                
                 foreach ($install_spot_db_data as $key => $value) {
                     $index = $key+1;
                     $ddd = "

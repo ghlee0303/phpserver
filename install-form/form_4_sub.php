@@ -13,7 +13,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image14">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image14" accept="image/*" onchange="setThumbnail(event, 13);" />
+                <input type="file" class="image_input" id="image14" accept="image/*" onchange="setThumbnail(event, 13);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -28,7 +28,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image15">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image15" accept="image/*" onchange="setThumbnail(event, 14);" />
+                <input type="file" class="image_input" id="image15" accept="image/*" onchange="setThumbnail(event, 14);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -43,7 +43,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image16">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image16" accept="image/*" onchange="setThumbnail(event, 15);" />
+                <input type="file" class="image_input" id="image16" accept="image/*" onchange="setThumbnail(event, 15);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -58,7 +58,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image17">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image17" accept="image/*" onchange="setThumbnail(event, 16);" />
+                <input type="file" class="image_input" id="image17" accept="image/*" onchange="setThumbnail(event, 16);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -73,7 +73,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image18">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image18" accept="image/*" onchange="setThumbnail(event, 17);" />
+                <input type="file" class="image_input" id="image18" accept="image/*" onchange="setThumbnail(event, 17);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -88,7 +88,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image19">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image19" accept="image/*" onchange="setThumbnail(event, 18);" />
+                <input type="file" class="image_input" id="image19" accept="image/*" onchange="setThumbnail(event, 18);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -103,7 +103,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image20">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image20" accept="image/*" onchange="setThumbnail(event, 19);" />
+                <input type="file" class="image_input" id="image20" accept="image/*" onchange="setThumbnail(event, 19);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -118,7 +118,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image21">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image21" accept="image/*" onchange="setThumbnail(event, 20);" />
+                <input type="file" class="image_input" id="image21" accept="image/*" onchange="setThumbnail(event, 20);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -133,7 +133,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image22">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image22" accept="image/*" onchange="setThumbnail(event, 21);" />
+                <input type="file" class="image_input" id="image22" accept="image/*" onchange="setThumbnail(event, 21);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -148,7 +148,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image23">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image23" accept="image/*" onchange="setThumbnail(event, 22);" />
+                <input type="file" class="image_input" id="image23" accept="image/*" onchange="setThumbnail(event, 22);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -163,7 +163,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image24">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image24" accept="image/*" onchange="setThumbnail(event, 23);" />
+                <input type="file" class="image_input" id="image24" accept="image/*" onchange="setThumbnail(event, 23);" />
             </div>
         </div>
         <div class="row mt-4">
@@ -178,7 +178,7 @@
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image25">
                     <img class="image_container" style="width:100%; height:100%; display:none" src="" alt="">
                 </label>
-                <input type="file" id="image25" accept="image/*" onchange="setThumbnail(event, 24);" />
+                <input type="file" class="image_input" id="image25" accept="image/*" onchange="setThumbnail(event, 24);" />
             </div>
         </div>
         <div class="text-end mt-3">

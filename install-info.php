@@ -2,9 +2,10 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
+$user_id = $_SESSION['userid'];
+$user_name = $_SESSION['name'];
+
 if ($_GET['id'] == 'new') {
-  $user_id = $_SESSION['userid'];
-  $user_name = $_SESSION['name'];
 
   $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
   $user_result = mysqli_query($mysqli, $user_sql);
@@ -62,6 +63,30 @@ if ($_GET['id'] == 'new') {
     $images_num[] = $image_query['num'];
     $image_query = mysqli_fetch_array($image_result);
   }
+
+
+  $comment_sql = "SELECT * FROM comment WHERE post_id = $post_row[id]";
+  $comment_result = mysqli_query($mysqli, $image_sql);
+  $comment_query = mysqli_fetch_array($image_result);
+  $comments_date = array();
+  $comments_purpose = array();
+  $comments_contents = array();
+  $comments_photo = array();
+  $comments_count = 0;
+  while ($comment_query) {
+    $comments_date[] = $comment_query['date'];
+    $comments_purpose[] = $comment_query['purpose'];
+    $comments_contents[] = $comment_query['contents'];
+    $comments_photo[] = $comment_query['photo'];
+
+    $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
+    $user_result = mysqli_query($mysqli, $user_sql);
+    $user_row = mysqli_fetch_array($user_result);
+
+    $installer_name = $user_row['name'];
+    $comment_query = mysqli_fetch_array($comment_result);
+    $comment_count = $comment_count + 1;
+  }
 }
 
 ?>
@@ -104,7 +129,7 @@ if ($_GET['id'] == 'new') {
     <?php include "./install-form/form_4.php"; ?>
     <?php include "./install-form/form_4_sub.php"; ?>
     <?php include "./install-form/form_5.php"; ?>
-    
+
 
   </div>
 
@@ -114,24 +139,28 @@ if ($_GET['id'] == 'new') {
   window.onbeforeunload = function() {
     return '메세지 내용';
   };
-  
+
   document.getElementById('calendar_text').addEventListener('blur', function() {
     document.getElementById("calendar_text").readOnly = true;
   });
-  document.getElementById('calendar_text_comment').addEventListener('blur', function() {
-    document.getElementById("calendar_text_comment").readOnly = true;
-  });
+
+  if (document.getElementById('calendar_text_comment')) {
+    document.getElementById('calendar_text_comment').addEventListener('blur', function() {
+      document.getElementById("calendar_text_comment").readOnly = true;
+    });
+
+    $(function() {
+      $('#datetimepicker_comment').datetimepicker({
+        locale: moment.locale('ko'),
+        format: 'YYYY.MM.DD'
+      });
+    });
+  }
 
   $(function() {
     $('#datetimepicker').datetimepicker({
       locale: moment.locale('ko'),
       format: 'YYYY.MM.DD HH:mm:ss'
-    });
-  });
-  $(function() {
-    $('#datetimepicker_comment').datetimepicker({
-      locale: moment.locale('ko'),
-      format: 'YYYY.MM.DD'
     });
   });
 
@@ -178,6 +207,7 @@ if ($_GET['id'] == 'new') {
   var sub_form_val = 0;
 
   function top_menu(index) {
+    console.log("top 2 : " + index + "/" + menu_val);
     if (menu_val != index) {
       document.querySelector('.btn-dark').classList.replace('btn-dark', 'btn-outline-dark');
       document.querySelectorAll('.btn-outline-dark')[index].classList.replace('btn-outline-dark', 'btn-dark');
@@ -188,7 +218,6 @@ if ($_GET['id'] == 'new') {
         sub_form(0);
       }
 
-      console.log("top 2 : " + index + "/" + menu_val);
       view[index].style.display = '';
       view[menu_val].style.display = 'none';
 
@@ -260,7 +289,7 @@ if ($_GET['id'] == 'new') {
       });
     }
 
-    $.each($('input[type="file"]'), function(index, file_data) {
+    $.each($('.image_input'), function(index, file_data) {
       var img = document.querySelectorAll(".image_container")[index];
       var files = file_data.files[0];
 
@@ -273,10 +302,50 @@ if ($_GET['id'] == 'new') {
         img_count++;
 
       fd.append("img_count", img_count);
-    })
+    });
 
     $.ajax({
       url: './php/install-new.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+      }
+    });
+  }
+
+  function comment_submit() {
+    if (searchParam('id') == 'new') {
+      alert("새 글쓰기 중에는 댓글을 작성할 수 없습니다.");
+      return;
+    }
+    var fd = new FormData();
+
+    var comment_calendar = document.querySelector('#calendar_text_comment').value;
+    var comment_text = document.querySelector('#comment_text').value
+    var comment_file = document.querySelector('#comment_file_input').files[0];
+    var comment_purpose = document.querySelector('#purpose').innerText;
+
+
+    console.log(comment_calendar + " / " + comment_text + " / " + comment_purpose);
+    console.log(comment_file);
+    if (comment_calendar == null || comment_text == null || comment_purpose == null) {
+      alert("빈 칸이 있습니다. 확인해주세요.");
+      return;
+    }
+
+    fd.append('post_id', searchParam('id'));
+    fd.append('commenter_id', '<?php echo $user_id; ?>');
+    fd.append('commenter_name', '<?php echo $user_name; ?>');
+    fd.append('comment_calendar', comment_calendar);
+    fd.append('comment_text', comment_text);
+    fd.append('comment_file', comment_file);
+    fd.append('comment_purpose', comment_purpose);
+
+    $.ajax({
+      url: './php/comment-upload.php',
       data: fd,
       contentType: false,
       processData: false,
