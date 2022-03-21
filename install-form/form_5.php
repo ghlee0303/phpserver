@@ -16,19 +16,22 @@
                 <input type="file" id="image1" accept="image/*" onchange="setThumbnail(event, 0);" />
             </div>
         </div>
-        
+
         <?php
-        for($index = 0; $index < $comment_count; $index = $index + 1) {
+        for ($index = 0; $index < $comment_count; $index = $index + 1) {
             $ddd = "
                     <div class=\"d-flex my-5 comments\">
-                        <div class=\"ms-4\">
+                        <div class=\"ms-4 w-100\">
                             <div class=\"fw-bold fs-sm-2 mb-1 commenter\">
-                                홍길동wwww
+                                $installer_name
                                 <span class=\"fw-normal fs-sm-1 comments_purpose\">$comments_purpose[$index]</span>
                                 <span class=\"fw-normal fs-sm-1 comments_time\">$comments_date[$index]</span>
-                                <span class=\"btn btn-outline-info fw-normal fs-sm-1 float-end p-1 commments_file\">첨부파일</span>
                             </div>
-                            If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                            <div>$comments_contents[$index]</div>
+                        </div>
+                        <div>
+                            <span class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 commments_file w-100\">첨부파일</span>
+                            <div class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 w-100\" onclick=\"commments_delete($comments_index[$index])\">삭제</div>
                         </div>
                     </div>
         ";

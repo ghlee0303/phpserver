@@ -64,16 +64,18 @@ if ($_GET['id'] == 'new') {
     $image_query = mysqli_fetch_array($image_result);
   }
 
-
-  $comment_sql = "SELECT * FROM comment WHERE post_id = $post_row[id]";
-  $comment_result = mysqli_query($mysqli, $image_sql);
-  $comment_query = mysqli_fetch_array($image_result);
+  $comment_sql = "SELECT * FROM comment WHERE post_id = $post_row[id] AND delete_yn is NULL";
+  echo "$comment_sql<br>";
+  $comment_result = mysqli_query($mysqli, $comment_sql);
+  $comment_query = mysqli_fetch_array($comment_result);
   $comments_date = array();
   $comments_purpose = array();
   $comments_contents = array();
   $comments_photo = array();
+  $comments_index = array();
   $comments_count = 0;
   while ($comment_query) {
+    $comments_index[] = $comment_query['id'];
     $comments_date[] = $comment_query['date'];
     $comments_purpose[] = $comment_query['purpose'];
     $comments_contents[] = $comment_query['contents'];
@@ -336,7 +338,10 @@ if ($_GET['id'] == 'new') {
       return;
     }
 
-    fd.append('post_id', searchParam('id'));
+    var query = searchParam('id');
+    fd.append('post_id', query);
+
+    fd.append('type', "upload");
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');
     fd.append('comment_calendar', comment_calendar);
@@ -344,6 +349,23 @@ if ($_GET['id'] == 'new') {
     fd.append('comment_file', comment_file);
     fd.append('comment_purpose', comment_purpose);
 
+    $.ajax({
+      url: './php/comment-upload.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+      }
+    });
+  }
+
+  function commments_delete(index) {
+
+    var fd = new FormData();
+    fd.append('comment_id', index);
+    fd.append('type', "delete");
     $.ajax({
       url: './php/comment-upload.php',
       data: fd,

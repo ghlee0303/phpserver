@@ -1,8 +1,7 @@
 <?php
 include "./db.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+function comment_upload($mysqli) {
   $post_id = $_POST["post_id"];
   $commenter_id = $_POST['commenter_id'];
   $commenter_name = $_POST['commenter_name'];
@@ -22,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
   $row = mysqli_fetch_array($result);
   $user_index = $row['id'];
-//post_id = '$post_id',
-  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_calendar', contents = '$comment_text', purpose = '$comment_purpose'";
+  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_calendar', contents = '$comment_text', purpose = '$comment_purpose', post_id = '$post_id'";
   $result = mysqli_query($mysqli, $sql_comment);
   if ($result) {
     echo "comment 쿼리성공\n";
@@ -33,5 +31,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "\n";
   }
   $index = mysqli_insert_id($mysqli);
+}
+
+function comment_delete($mysqli){
+  $comment_id = $_POST["comment_id"];
+  $sql_comment = "UPDATE comment SET delete_yn = '1' WHERE id = $comment_id";
+  echo "$sql_comment\n";
+  $result = mysqli_query($mysqli, $sql_comment);
+  if ($result) {
+    echo "delete 쿼리성공\n";
+  } else {
+    echo "delete 쿼리실패\n";
+    echo mysqli_error($mysqli);
+    echo "\n";
+  }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+  switch ($_POST["type"]) {
+    case "upload":
+      comment_upload($mysqli);
+      break;
+    case "delete":
+      comment_delete($mysqli);
+      break;
+    case "change":
+      echo "C";
+      break;
+  }
 }
 ?>

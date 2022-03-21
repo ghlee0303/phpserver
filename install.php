@@ -1,22 +1,22 @@
-<?php 
-    include "./php/db.php";
-    include "./php/login-ok.php";
+<?php
+include "./php/db.php";
+include "./php/login-ok.php";
 
-    $post_db_data = array();
-    $install_spot_db_data = array();
+$post_db_data = array();
+$install_spot_db_data = array();
 
-    $sql = "SELECT * FROM user WHERE name = '$_SESSION[name]' AND user_id = '$_SESSION[userid]'";
-    $result = mysqli_query($mysqli, $sql);
-    $user = mysqli_fetch_array($result);
-    
-    $post_db_max = mysqli_num_rows($result);
+$sql = "SELECT * FROM user WHERE name = '$_SESSION[name]' AND user_id = '$_SESSION[userid]'";
+$result = mysqli_query($mysqli, $sql);
+$user = mysqli_fetch_array($result);
 
-    $sql = "SELECT count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
-    $result = mysqli_query($mysqli, $sql);
+$post_db_max = mysqli_num_rows($result);
 
-    while($install_spot_row = mysqli_fetch_array($result)) {
-        $install_spot_db_data[] = $install_spot_row;
-    }
+$sql = "SELECT count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
+$result = mysqli_query($mysqli, $sql);
+
+while ($install_spot_row = mysqli_fetch_array($result)) {
+    $install_spot_db_data[] = $install_spot_row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +35,7 @@
     <?php include "./header.php"; ?>
     <div class="container container-mobile-1 pb-3">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-4 mt-4 nav_bottom_line">
+
             <div class="row">
                 <div class="col dropdown">
                     <div class="col btn btn-secondary dropdown-toggle fs-3 w-dropdown" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" name="region">
@@ -73,7 +74,7 @@
             <tbody>
                 <?php
                 foreach ($install_spot_db_data as $key => $value) {
-                    $index = $key+1;
+                    $index = $key + 1;
                     $ddd = "
                     <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
                         <td>$index</td>
@@ -86,8 +87,25 @@
                 ?>
             </tbody>
         </table>
-        <div class="mt-5 ">
-            <button type="button" class="btn btn-light border rounded-3 float-end col-3 fs-2 h-5r " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
+        <div class="mt-5 float-end">
+                <span class="dropdown">
+                    <div class="btn btn-light dropdown-toggle fs-2 " id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" name="region">
+                        지역
+                    </div>
+                    <ul class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu1">
+                        <li><button class="dropdown-item item_1">서울특별시</button></li>
+                        <li><button class="dropdown-item item_1">부산특별시</button></li>
+                        <li><button class="dropdown-item item_1">대구특별시</button></li>
+                        <li><button class="dropdown-item item_1">서울특별시</button></li>
+                        <li><button class="dropdown-item item_1">부산특별시</button></li>
+                        <li><button class="dropdown-item item_1">대구특별시</button></li>
+                        <li><button class="dropdown-item item_1">서울특별시</button></li>
+                        <li><button class="dropdown-item item_1">부산특별시</button></li>
+                        <li><button class="dropdown-item item_1">대구특별시</button></li>
+                    </ul>
+            </span>
+            <button type="button" class="btn btn-light border rounded-3 fs-2 " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
+
         </div>
     </div>
 </body>
