@@ -29,6 +29,12 @@
 .w-dropdown {
     width: 26vw;
 }
+.w-10 {
+    width: 18vw;
+}
+.w-23 {
+    width: 23%;
+}
 .align-center {
     text-align: center;
     vertical-align: middle;
@@ -143,6 +149,11 @@
     height:20vh;
     overflow-y:auto;
 }
+.dropdown-scroll_2 {
+    width: 12vw;
+    height:11vh;
+    overflow-y:auto;
+}
 .dropdown-header {
     width: 12vw;
     height: 20vh;
@@ -236,3 +247,11 @@
 .bg-white {
     background-color: white;
 }
+
+.parent {
+            display: flex;
+        }
+
+        .right {
+            margin-left: auto;
+        }

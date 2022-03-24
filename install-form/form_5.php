@@ -62,4 +62,8 @@
             </form>
         </div>
     </form>
+    <div class="mt-3 d-flex">
+        <button type="button" class="btn btn-danger btn-mobile d-block w-75" onclick="form_submit()"><?= $type_btn ?> 완료</button>
+        <button type="button" class="btn btn-outline-primary btn-mobile d-block ms-auto w-23" onclick="form_submit()">임시저장</button>
+    </div>
 </div>

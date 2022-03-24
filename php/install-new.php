@@ -263,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "월별 갯수 : ";
     echo $count;*/
 
-    $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$input_count' where id = '$post_index'";
+    $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$input_count', type = '$_POST[type]' where id = '$post_index'";
     $result = mysqli_query($mysqli, $sql);
     /*
     echo "$sql\n";

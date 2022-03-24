@@ -4,6 +4,7 @@ include "./php/login-ok.php";
 
 $user_id = $_SESSION['userid'];
 $user_name = $_SESSION['name'];
+$type_btn = "";
 
 if ($_GET['id'] == 'new') {
 
@@ -14,8 +15,9 @@ if ($_GET['id'] == 'new') {
   $installer_name = $user_row['name'];
   $installer_phone = $user_row['phone'];
   $installer_email = $user_row['email'];
+  $type = $_GET['type'];
 } else {
-  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
+  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
   $post_result = mysqli_query($mysqli, $post_sql);
   $post_row = mysqli_fetch_array($post_result);
 
@@ -39,6 +41,7 @@ if ($_GET['id'] == 'new') {
   $server_pwd = $post_row['server_pwd'];
   $lat = $post_row['latitude'];
   $lon = $post_row['longitude'];
+  $type = $post_row['type'];
   $installer_name = $post_row['name'];
   $installer_phone = $post_row['phone'];
   $installer_email = $post_row['email'];
@@ -65,7 +68,6 @@ if ($_GET['id'] == 'new') {
   }
 
   $comment_sql = "SELECT * FROM comment WHERE post_id = $post_row[id] AND delete_yn is NULL";
-  echo "$comment_sql<br>";
   $comment_result = mysqli_query($mysqli, $comment_sql);
   $comment_query = mysqli_fetch_array($comment_result);
   $comments_date = array();
@@ -89,6 +91,19 @@ if ($_GET['id'] == 'new') {
     $comment_query = mysqli_fetch_array($comment_result);
     $comment_count = $comment_count + 1;
   }
+}
+
+echo $type;
+switch ($type) {
+  case 0:
+    $type_btn = "설치";
+    break;
+  case 1:
+    $type_btn = "연동";
+    break;
+  case 2:
+    $type_btn = "제어기";
+    break;
 }
 
 ?>
@@ -187,8 +202,9 @@ if ($_GET['id'] == 'new') {
   }
 
   window.onload = function() {
-
-    image_set();
+    if (searchParam('id') != 'new') {
+      image_set();
+    }
 
     if (<?php echo isset($region) ? 1 : 0; ?>) {
       dropdown_init('item_1', "<?php echo $region; ?>");
@@ -277,12 +293,16 @@ if ($_GET['id'] == 'new') {
       reader.readAsDataURL(event.target.files[0]);
   }
 
-  function form_submit(index) {
+  function form_submit() {
     var fd = new FormData();
     var img_count = 0;
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
     fd.append('query', searchParam('id'));
+
+    if (searchParam('id') == 'new') {
+      fd.append('type', searchParam('type'));
+    }
 
     for (var i = 1; i <= 4; i++) {
       var other_data = $('#form_' + i).serializeArray();
@@ -326,7 +346,7 @@ if ($_GET['id'] == 'new') {
     var fd = new FormData();
 
     var comment_calendar = document.querySelector('#calendar_text_comment').value;
-    var comment_text = document.querySelector('#comment_text').value
+    var comment_text = document.querySelector('#comment_text').value;
     var comment_file = document.querySelector('#comment_file_input').files[0];
     var comment_purpose = document.querySelector('#purpose').innerText;
 
@@ -340,7 +360,6 @@ if ($_GET['id'] == 'new') {
 
     var query = searchParam('id');
     fd.append('post_id', query);
-
     fd.append('type', "upload");
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');

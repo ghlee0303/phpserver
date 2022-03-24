@@ -200,7 +200,7 @@
         </div>
         <div class="text-end mt-3">
             <button type="button" class="btn btn-info btn-mobile col-3" onclick="sub_form(1)">다음</button>
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(4)">저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit()">임시저장</button>
         </div>
 
         <script>

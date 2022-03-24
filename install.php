@@ -11,7 +11,7 @@ $user = mysqli_fetch_array($result);
 
 $post_db_max = mysqli_num_rows($result);
 
-$sql = "SELECT count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
+$sql = "SELECT type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
 $result = mysqli_query($mysqli, $sql);
 
 while ($install_spot_row = mysqli_fetch_array($result)) {
@@ -35,7 +35,6 @@ while ($install_spot_row = mysqli_fetch_array($result)) {
     <?php include "./header.php"; ?>
     <div class="container container-mobile-1 pb-3">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-4 mt-4 nav_bottom_line">
-
             <div class="row">
                 <div class="col dropdown">
                     <div class="col btn btn-secondary dropdown-toggle fs-3 w-dropdown" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" name="region">
@@ -68,18 +67,31 @@ while ($install_spot_row = mysqli_fetch_array($result)) {
                     <th scope="col" class="pt-4 fs-5 ">#</th>
                     <th scope="col" class="pt-4 fs-5 text-center">방문 장소</th>
                     <th scope="col" class="pt-4 fs-5 text-center">설치일자</th>
+                    <th scope="col" class="pt-4 fs-5 text-center">상태</th>
                     <th scope="col" class="pt-4 fs-5 text-center">입력</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 foreach ($install_spot_db_data as $key => $value) {
+                    switch ($value['type']) {
+                        case 0:
+                            $type_btn = "설치";
+                            break;
+                        case 1:
+                            $type_btn = "연동";
+                            break;
+                        case 2:
+                            $type_btn = "제어기";
+                            break;
+                    }
                     $index = $key + 1;
                     $ddd = "
                     <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
                         <td>$index</td>
                         <td>$value[address]</td>
                         <td>$value[date]</td>
+                        <td>$type_btn</td>
                         <td class='text-center'>$value[count]/66</td>
                     </tr>";
                     echo $ddd;
@@ -87,34 +99,53 @@ while ($install_spot_row = mysqli_fetch_array($result)) {
                 ?>
             </tbody>
         </table>
-        <div class="mt-5 float-end">
-                <span class="dropdown">
-                    <div class="btn btn-light dropdown-toggle fs-2 " id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" name="region">
-                        지역
-                    </div>
-                    <ul class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu1">
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
-                    </ul>
-            </span>
-            <button type="button" class="btn btn-light border rounded-3 fs-2 " onclick="location.href='/install-info.php?id=new' "> 글쓰기 </button>
-
+        <div class="d-flex text-end">
+            <div class="dropdown">
+                <div class="btn dropdown-toggle fs-4 w-10 border-bl" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" name="region">
+                    설치
+                </div>
+                <ul class="dropdown-menu dropdown-scroll_2" aria-labelledby="dropdownMenu2">
+                    <li><button class="dropdown-item item_2" value="0">설치</button></li>
+                    <li><button class="dropdown-item item_2" value="1">연동</button></li>
+                    <li><button class="dropdown-item item_2" value="2">제어기</button></li>
+                </ul>
+            </div>
+            <button type="button" class="btn fs-4 border-bl w-10" onclick="post_new()">글쓰기</button>
         </div>
     </div>
 </body>
-<script type="text/javascript" src="script/info-edit.js?<?php echo time(); ?>"></script>
+<script type="text/javascript" src="script/dropdown.js?<?php echo time(); ?>"></script>
 <script type="text/javascript" src="script/test.js?<?php echo time(); ?>"></script>
 <script type="text/javascript" src="script/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    document.getElementById('dropdownMenu2').value = "0";
+    dropdown_setting(1);
+    dropdown_setting(2);
+
+    function post_new() {
+        var type_value = document.querySelector('#dropdownMenu2').value;
+        console.log(type_value);
+        location.href = '/install-info.php?id=new&type=' + type_value;
+    }
+    /*
+    
+            <div class="dropdown col me-5">
+                <div class="btn btn-light dropdown-toggle fs-2 border-bl" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" name="region">
+                    설치
+                </div>
+                <ul class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu2">
+                    <li><button class="dropdown-item item_2">설치</button></li>
+                    <li><button class="dropdown-item item_2">연동</button></li>
+                    <li><button class="dropdown-item item_2">제어기</button></li>
+                </ul>
+            </div>
+            <div class="col-6">
+                <button type="button" class="btn btn-light border rounded-3 fs-2" onclick="location.href='/install-info.php?id=new' ">글쓰기</button>
+            </div>*/
+</script>
 
 </html>
