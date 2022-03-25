@@ -304,12 +304,10 @@ switch ($type) {
       fd.append('type', searchParam('type'));
     }
 
-    for (var i = 1; i <= 4; i++) {
-      var other_data = $('#form_' + i).serializeArray();
-      $.each(other_data, function(key, input) {
-        fd.append(input.name, input.value);
-      });
-    }
+    var post_data = $('.post_form').serializeArray();
+    $.each(post_data, function(key, input) {
+      fd.append(input.name, input.value);
+    });
 
     $.each($('.image_input'), function(index, file_data) {
       var img = document.querySelectorAll(".image_container")[index];
@@ -345,28 +343,19 @@ switch ($type) {
     }
     var fd = new FormData();
 
-    var comment_calendar = document.querySelector('#calendar_text_comment').value;
-    var comment_text = document.querySelector('#comment_text').value;
     var comment_file = document.querySelector('#comment_file_input').files[0];
-    var comment_purpose = document.querySelector('#purpose').innerText;
 
-
-    console.log(comment_calendar + " / " + comment_text + " / " + comment_purpose);
-    console.log(comment_file);
-    if (comment_calendar == null || comment_text == null || comment_purpose == null) {
-      alert("빈 칸이 있습니다. 확인해주세요.");
-      return;
-    }
+    var comment_data = $('.comment_form').serializeArray();
+    $.each(comment_data, function(key, input) {
+      fd.append(input.name, input.value);
+    });
 
     var query = searchParam('id');
     fd.append('post_id', query);
     fd.append('type', "upload");
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');
-    fd.append('comment_calendar', comment_calendar);
-    fd.append('comment_text', comment_text);
     fd.append('comment_file', comment_file);
-    fd.append('comment_purpose', comment_purpose);
 
     $.ajax({
       url: './php/comment-upload.php',
@@ -395,6 +384,35 @@ switch ($type) {
         console.log(data);
       }
     });
+  }
+
+  function image_delete() {
+    var fd = new FormData();
+
+    var delete_check = $('.image_delete');
+    var image_delete = delete_check.serializeArray();
+    $.each(image_delete, function(key, input) {
+      var image_input = document.querySelectorAll(".image_container");
+      //console.log(image_input[input.value - 1].src);
+      //console.log(window.location.href);
+      if (window.location.href == image_input[input.value - 1].src) {
+        console.log("ㅇㅇ " + key);
+      }
+      image_input[input.value - 1].src = '';
+      image_input[input.value - 1].display = 'none';
+      fd.append(input.name, input.value);
+    });
+    /*
+        $.ajax({
+          url: './php/image_delete.php',
+          data: fd,
+          contentType: false,
+          processData: false,
+          type: 'POST',
+          success: function(data) {
+            console.log(data);
+          }
+        });*/
   }
 </script>
 <script type="text/javascript" src="script/info-edit.js?<?php echo time(); ?>"></script>

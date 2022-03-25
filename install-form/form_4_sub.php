@@ -1,5 +1,5 @@
 <div class="container-md  photo_form" style="display:none">
-    <form id="form_5" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
+    <form class="post_form" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
         <input type="hidden" name="iden" value="5">
         <div class="row mt-4">
             <div class="col"></div>
@@ -7,7 +7,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="14" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image14">
@@ -22,7 +22,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="15" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image15">
@@ -37,7 +37,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="16" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image16">
@@ -52,7 +52,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="17" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image17">
@@ -67,7 +67,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="18" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image18">
@@ -82,7 +82,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="19" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image19">
@@ -97,7 +97,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="20" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image20">
@@ -112,7 +112,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="21" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image21">
@@ -127,7 +127,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="22" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image22">
@@ -142,7 +142,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="23" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image23">
@@ -157,7 +157,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="24" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image24">
@@ -172,7 +172,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-1">
-                <input class="form-check-input" type="checkbox" value="" style='zoom:1.4' name="image_delete_check[]">
+                <input class="form-check-input image_delete" type="checkbox" value="25" style='zoom:1.4' name="image_delete_check[]">
             </div>
             <div class="filebox col-11" style="display: table;">
                 <label class="border-gr align-center image-box-2" style="width:100%; display:table-cell;" for="image25">

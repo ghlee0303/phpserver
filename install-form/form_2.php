@@ -1,6 +1,6 @@
 <div class="container-md install form_2" style="display:none">
     <?php if ($jud) echo "</form>"; ?>
-    <form id="form_2" action="" method="post" onsubmit="return false">
+    <form class="post_form" action="" method=" post" onsubmit="return false">
         <input type="hidden" name="iden" value="2">
         <table class="table install-table table-border fs-4 align-middle">
             <tr>

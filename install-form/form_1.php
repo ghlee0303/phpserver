@@ -1,5 +1,5 @@
 <div class="container-md install">
-    <form id="form_1" action="" method="post" onsubmit="return false">
+    <form class="post_form" action="" method="post" onsubmit="return false">
         <input type="hidden" name="iden" value="1">
         <table class="table install-table table-border fs-4 align-middle">
             <tr>
@@ -10,7 +10,7 @@
                         <div class="input-group-append " data-target="#datetimepicker" data-toggle="datetimepicker">
                             <div class="input-group-text btn_calendar" id="calendar_q" onclick="calendar_btn(0)"><i class="fa fa-calendar m-auto"></i></div>
                         </div>
-                    </div>  
+                    </div>
                 </td>
             </tr>
             <tr>

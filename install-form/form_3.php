@@ -1,5 +1,5 @@
 <div class="container-md install mt-5 fs-7 form_3" style="display:none">
-    <form id="form_3" action="" method="post" onsubmit="return false">
+    <form class="post_form" action="" method="post" onsubmit="return false">
         <input type="hidden" name="iden" value="3">
         <div class="row  text-center">
             <div class="col-1 table-right-bl table-bottom-bl">#</div>
