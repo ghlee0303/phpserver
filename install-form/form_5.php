@@ -39,7 +39,7 @@
         }
         ?>
         <div class="card-body">
-            <form class="mb-4 row" action="" method="post" onsubmit="return false">
+            <form class="mb-4" action="" method="post" onsubmit="return false">
                 <div class="align-center mb-3 row mt-2 align-center">
                     <div class="col-2 fs-sm-2 border-bl p-2 ms-3" id="purpose">설치</div>
                     <div class="col-3 fs-sm-2 border-bl p-2 ms-3"><?php echo $user_name; ?></div>
@@ -50,13 +50,11 @@
                         </div>
                     </div>
                 </div>
-                <textarea class="form-control col" rows="3" placeholder="Join the discussion and leave a comment!" id="comment_text"></textarea>
-                <div class="my-3 row align-center">
-                    <button type="submit" class="btn btn-outline-primary fs-sm-2 col-3 mx-3" onclick="comment_submit()">작성</button>
-                    <input type="text" id="comment_file_label" class="col me-3 border-bl fs-sm-2" readonly="readonly">
-                    <label class="btn btn-outline-info fs-sm-2 col-2" for="comment_file_input">
-                        파일
-                    </label>
+                <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" id="comment_text"></textarea>
+                <div class="my-3 mx-1 row align-center">
+                    <button type="submit" class="btn btn-outline-primary fs-sm-2 col-3" onclick="comment_submit()">작성</button>
+                    <input type="text" id="comment_file_label" class="col mx-3 border-bl fs-sm-2" readonly="readonly">
+                    <label class="btn btn-outline-info fs-sm-2 col-2" for="comment_file_input">파일</label>
                     <input type="file" id="comment_file_input" style="display:none" onchange="javascript:document.getElementById('comment_file_label').value = this.value.split('\\')[this.value.split('\\').length-1]" />
                 </div>
             </form>

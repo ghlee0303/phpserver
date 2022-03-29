@@ -55,7 +55,7 @@ if ($_GET['id'] == 'new') {
   $brod[2] = mysqli_fetch_array($brod_result);
   $brod[3] = mysqli_fetch_array($brod_result);
 
-  $image_sql = "SELECT photo, num FROM photo_name WHERE post_id = $post_row[id]";
+  $image_sql = "SELECT photo, num FROM photo_name WHERE post_id = $post_row[id] AND num is not null AND delete_yn is null";
   $image_result = mysqli_query($mysqli, $image_sql);
   $image_query = mysqli_fetch_array($image_result);
   $images = array();
@@ -321,8 +321,10 @@ switch ($type) {
       if (img.style.display == '')
         img_count++;
 
-      fd.append("img_count", img_count);
+      // 여기로
     });
+
+    fd.append("img_count", img_count); // 바꾼거
 
     $.ajax({
       url: './php/install-new.php',
@@ -341,12 +343,15 @@ switch ($type) {
       alert("새 글쓰기 중에는 댓글을 작성할 수 없습니다.");
       return;
     }
+
     var fd = new FormData();
-
     var comment_file = document.querySelector('#comment_file_input').files[0];
-
     var comment_data = $('.comment_form').serializeArray();
+
+    console.log(comment_file);
+
     $.each(comment_data, function(key, input) {
+      console.log(input.name + " / " + input.value);
       fd.append(input.name, input.value);
     });
 
@@ -369,9 +374,13 @@ switch ($type) {
     });
   }
 
-  function commments_delete(index) {
+  function comment_file() {
 
+  }
+
+  function commments_delete(index) {
     var fd = new FormData();
+
     fd.append('comment_id', index);
     fd.append('type', "delete");
     $.ajax({
@@ -388,31 +397,28 @@ switch ($type) {
 
   function image_delete() {
     var fd = new FormData();
-
     var delete_check = $('.image_delete');
-    var image_delete = delete_check.serializeArray();
-    $.each(image_delete, function(key, input) {
-      var image_input = document.querySelectorAll(".image_container");
-      //console.log(image_input[input.value - 1].src);
-      //console.log(window.location.href);
-      if (window.location.href == image_input[input.value - 1].src) {
-        console.log("ㅇㅇ " + key);
+    var image_delete_btn = delete_check.serializeArray();
+    var image_input = document.querySelectorAll(".image_container");
+
+    $.each(image_delete_btn, function(key, input) {
+      if (window.location.href != image_input[input.value - 1].src) {
+        image_input[input.value - 1].style.display = 'none';
+        fd.append(input.name, input.value);
+        fd.append('post_id', searchParam('id'));
       }
-      image_input[input.value - 1].src = '';
-      image_input[input.value - 1].display = 'none';
-      fd.append(input.name, input.value);
     });
-    /*
-        $.ajax({
-          url: './php/image_delete.php',
-          data: fd,
-          contentType: false,
-          processData: false,
-          type: 'POST',
-          success: function(data) {
-            console.log(data);
-          }
-        });*/
+
+    $.ajax({
+      url: './php/image_delete.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+      }
+    });
   }
 </script>
 <script type="text/javascript" src="script/info-edit.js?<?php echo time(); ?>"></script>
