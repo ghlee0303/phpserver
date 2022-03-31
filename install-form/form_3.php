@@ -1,6 +1,5 @@
 <div class="container-md install mt-5 fs-7 form_3" style="display:none">
     <form class="post_form" action="" method="post" onsubmit="return false">
-        <input type="hidden" name="iden" value="3">
         <div class="row  text-center">
             <div class="col-1 table-right-bl table-bottom-bl">#</div>
             <div class="col-10 table-bottom-bl fs-3">설치확인 항목</div>
@@ -163,7 +162,7 @@
             </div>
         </div>
         <div class="text-end mt-3">
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit()">임시저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0)">임시저장</button>
         </div>
     </form>
 </div>

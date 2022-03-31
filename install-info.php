@@ -55,14 +55,14 @@ if ($_GET['id'] == 'new') {
   $brod[2] = mysqli_fetch_array($brod_result);
   $brod[3] = mysqli_fetch_array($brod_result);
 
-  $image_sql = "SELECT photo, num FROM photo_name WHERE post_id = $post_row[id] AND num is not null AND delete_yn is null";
+  $image_sql = "SELECT image_file_name, num FROM image_list WHERE post_id = $post_row[id] AND num is not null AND delete_yn is null";
   $image_result = mysqli_query($mysqli, $image_sql);
   $image_query = mysqli_fetch_array($image_result);
   $images = array();
   $images_num = array();
 
   while ($image_query) {
-    $images[] = $image_query['photo'];
+    $images[] = $image_query['image_file_name'];
     $images_num[] = $image_query['num'];
     $image_query = mysqli_fetch_array($image_result);
   }
@@ -73,15 +73,21 @@ if ($_GET['id'] == 'new') {
   $comments_date = array();
   $comments_purpose = array();
   $comments_contents = array();
-  $comments_photo = array();
+  $comments_image = array();
   $comments_index = array();
+  $image_download_link = array();
   $comments_count = 0;
   while ($comment_query) {
     $comments_index[] = $comment_query['id'];
-    $comments_date[] = $comment_query['date'];
+    $comments_date[] = date("Y-m-d", strtotime($comment_query['date']));
     $comments_purpose[] = $comment_query['purpose'];
     $comments_contents[] = $comment_query['contents'];
-    $comments_photo[] = $comment_query['photo'];
+    $comments_image[] = $comment_query['image_file_name'];
+
+    $image_sql = "SELECT image_file_name FROM image_list WHERE comment_id = '$comment_query[id]'";
+    $image_result = mysqli_query($mysqli, $image_sql);
+    $image_row = mysqli_fetch_array($image_result);
+    $image_download_link[] = $image_row['image_file_name'];
 
     $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
     $user_result = mysqli_query($mysqli, $user_sql);
@@ -93,7 +99,6 @@ if ($_GET['id'] == 'new') {
   }
 }
 
-echo $type;
 switch ($type) {
   case 0:
     $type_btn = "설치";
@@ -225,7 +230,6 @@ switch ($type) {
   var sub_form_val = 0;
 
   function top_menu(index) {
-    console.log("top 2 : " + index + "/" + menu_val);
     if (menu_val != index) {
       document.querySelector('.btn-dark').classList.replace('btn-dark', 'btn-outline-dark');
       document.querySelectorAll('.btn-outline-dark')[index].classList.replace('btn-outline-dark', 'btn-dark');
@@ -246,7 +250,7 @@ switch ($type) {
   function sub_form(index) {
     console.log("form : " + index + "/" + menu_val + "/" + sub_form_val);
     if (sub_form_val != index) {
-      var view = document.querySelectorAll('.photo_form');
+      var view = document.querySelectorAll('.image_form');
 
       view[index].style.display = '';
       view[sub_form_val].style.display = 'none';
@@ -277,8 +281,6 @@ switch ($type) {
       var image_src = "./php/imagecall.php?file=" + image_file;
       img.style.display = '';
       img.src = image_src;
-
-      console.log(img.src + " / " + images_num[index]);
     });
   }
 
@@ -293,19 +295,22 @@ switch ($type) {
       reader.readAsDataURL(event.target.files[0]);
   }
 
-  function form_submit() {
+  function form_submit(complete) {
     var fd = new FormData();
     var img_count = 0;
+    var total_count = 0;
+    var type = <?php echo $type; ?>;
+    console.log(type);
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
     fd.append('query', searchParam('id'));
 
-    if (searchParam('id') == 'new') {
-      fd.append('type', searchParam('type'));
-    }
-
     var post_data = $('.post_form').serializeArray();
+
     $.each(post_data, function(key, input) {
+      if (input.value) {
+        total_count++;
+      }
       fd.append(input.name, input.value);
     });
 
@@ -317,15 +322,26 @@ switch ($type) {
         fd.append("img[]", files);
         fd.append("file_id[]", index + 1);
       }
-
       if (img.style.display == '')
         img_count++;
-
-      // 여기로
     });
 
-    fd.append("img_count", img_count); // 바꾼거
+    fd.append("img_count", img_count);
+    total_count = total_count + img_count;
+    fd.append("total_count", total_count);
+    console.log("count : " + total_count);
 
+    if (complete) { // 설치,연동,제어기 완료 버튼 클릭 시
+      if (!(type) && (total_count != 78)) {
+        alert("입력이 덜 된 부분이 있습니다.");
+        return;
+      }
+      alert("<?php echo $type_btn ?> 저장");
+      fd.append("complete", complete);
+      console.log("eeee");
+    }
+
+    
     $.ajax({
       url: './php/install-new.php',
       data: fd,
@@ -348,10 +364,11 @@ switch ($type) {
     var comment_file = document.querySelector('#comment_file_input').files[0];
     var comment_data = $('.comment_form').serializeArray();
 
-    console.log(comment_file);
-
     $.each(comment_data, function(key, input) {
-      console.log(input.name + " / " + input.value);
+      if (!input.value) {
+        alert("항목이 비어있습니다.");
+        return;
+      }
       fd.append(input.name, input.value);
     });
 
@@ -361,6 +378,7 @@ switch ($type) {
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');
     fd.append('comment_file', comment_file);
+    fd.append('comment_purpose', document.querySelector('#comment_purpose').innerText);
 
     $.ajax({
       url: './php/comment-upload.php',
@@ -374,7 +392,13 @@ switch ($type) {
     });
   }
 
-  function comment_file() {
+  function comment_file(index) {
+    var image_file_name = <?php echo json_encode($image_download_link); ?>;
+    if (image_file_name[index]) {
+      console.log(image_file_name[index] + "/" + index);
+    } else {
+      console.log("비었음");
+    }
 
   }
 

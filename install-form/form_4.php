@@ -1,6 +1,5 @@
-<div class="container-md install photo_form" style="display:none">
+<div class="container-md install image_form" style="display:none">
     <form class="post_form" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
-        <input type="hidden" name="iden" value="4">
         <div class="row mt-5 mb-4">
             <div class="col"></div>
             <div class="col-11 fs-3 text-center">설치완료 증명서류</div>
@@ -201,7 +200,7 @@
         <div class="text-end mt-3">
             <button type="button" class="btn btn-info btn-mobile col-4" onclick="image_delete()">이미지 삭제</button>
             <button type="button" class="btn btn-info btn-mobile col-3" onclick="sub_form(1)">다음</button>
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit()">임시저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0)">임시저장</button>
         </div>
 
         <script>

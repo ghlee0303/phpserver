@@ -1,6 +1,5 @@
 <div class="container-md install">
     <form class="post_form" action="" method="post" onsubmit="return false">
-        <input type="hidden" name="iden" value="1">
         <table class="table install-table table-border fs-4 align-middle">
             <tr>
                 <td class="col-3">설치일자</td>
@@ -122,7 +121,7 @@
             </tr>
         </table>
         <div class="text-end mt-3">
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit()">임시저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0)">임시저장</button>
         </div>
     </form>
 </div>

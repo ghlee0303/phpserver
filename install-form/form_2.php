@@ -1,7 +1,6 @@
 <div class="container-md install form_2" style="display:none">
     <?php if ($jud) echo "</form>"; ?>
     <form class="post_form" action="" method=" post" onsubmit="return false">
-        <input type="hidden" name="iden" value="2">
         <table class="table install-table table-border fs-4 align-middle">
             <tr>
                 <td class="col-4">네트워크 설정</td>
@@ -179,7 +178,7 @@
             </tr>
         </table>
         <div class="text-end mt-3">
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit()">임시저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0)">임시저장</button>
         </div>
     </form>
 </div>

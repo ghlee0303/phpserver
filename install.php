@@ -11,7 +11,7 @@ $user = mysqli_fetch_array($result);
 
 $post_db_max = mysqli_num_rows($result);
 
-$sql = "SELECT type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
+$sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot = install_spot.id WHERE user_id = $user[id] ORDER BY date DESC";
 $result = mysqli_query($mysqli, $sql);
 
 while ($install_spot_row = mysqli_fetch_array($result)) {
@@ -85,14 +85,18 @@ while ($install_spot_row = mysqli_fetch_array($result)) {
                             $type_btn = "제어기";
                             break;
                     }
+                    $complete_color = "blue";
+                    if (empty($value['complete'])) {
+                        $complete_color = "red";
+                    }
                     $index = $key + 1;
                     $ddd = "
                     <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
                         <td>$index</td>
                         <td>$value[address]</td>
                         <td>$value[date]</td>
-                        <td>$type_btn</td>
-                        <td class='text-center'>$value[count]/66</td>
+                        <td style=\"color:$complete_color;\">$type_btn</td>
+                        <td class='text-center'>$value[count]/78</td>
                     </tr>";
                     echo $ddd;
                 }

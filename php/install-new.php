@@ -1,23 +1,14 @@
 <?php
 include "./db.php";
 
-$input_count = 0;
-
-function counting($value) {
-  global $input_count;
-  $input_count += 1;
-
-  return "'$value'";
-}
-
 function is_Empty($val)
 {
   if (is_array($val) == 1) {
     foreach ($val as $key => $value) {
-      $val[$key] = !empty($value) ? counting($value) : "NULL";
+      $val[$key] = !empty($value) ? "'$value'" : "'NULL'";
     }
   } else {
-    $val = !empty($val) ? counting($val) : "NULL";
+    $val = !empty($val) ? "'$val'" : "'NULL'";
   }
 
   return $val;
@@ -32,9 +23,6 @@ function install_spot_db($mysqli, $index) {
   $maneger = is_Empty($_POST["maneger"]);
   $sql = '';
 
-  global $input_count;
-  //echo "install list input count : $input_count\n";
-
   if ($index == null) {
     $sql = "INSERT INTO install_spot SET date = $date, region = $region, address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2]";
   } else {
@@ -44,7 +32,7 @@ function install_spot_db($mysqli, $index) {
   $result = mysqli_query($mysqli, $sql);
   $index = mysqli_insert_id($mysqli);
 
-  /*
+  
   echo "$sql\n";
   if ($result) {
     echo "install_spot 쿼리성공\n";
@@ -52,7 +40,7 @@ function install_spot_db($mysqli, $index) {
     echo "install_spot 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
-  }*/
+  }
 
   return mysqli_insert_id($mysqli);
 }
@@ -66,11 +54,8 @@ function menu_list_db($mysqli, $index) {
   $query_index_brodcast = array();
   $sql = '';
 
-  global $input_count;
-  //echo "menu list input count : $input_count\n";
-
   if ($index == null) {
-    $sql = "INSERT INTO menu_list(network_ip, network_subnet, network_gateway, network_dns, server_ip, server_port, server_id, server_pwd, latitude, longitude) VALUES($network[0], $network[1], $network[2], $network[3], $server[0], $server[1], $server[2], $server[3], $latitude, $longitude)";
+    $sql = "INSERT INTO menu_list SET (network_ip = $network[0], network_subnet = $network[1], network_gateway = $network[2], network_dns = $network[3], server_ip = $server[0], server_port = $server[1], server_id = $server[2], server_pwd = $server[3], latitude = $latitude, longitude = $longitude";
     $result = mysqli_query($mysqli, $sql);
     $menu_id = mysqli_insert_id($mysqli);
 
@@ -111,7 +96,7 @@ function menu_list_db($mysqli, $index) {
   }
 
   $result = mysqli_query($mysqli, $sql);
-  /*
+  
   echo "$sql\n";
   if ($result) {
     echo "menu_list 쿼리성공\n";
@@ -119,7 +104,7 @@ function menu_list_db($mysqli, $index) {
     echo "menu_list 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
-  }*/
+  }
 
   return $menu_id;
 }
@@ -129,7 +114,6 @@ function check_list($mysqli, $index) {
   $check = $_POST["check"];
   $var = '';
   $key = 0;
-  global $input_count;
 
   if (isset($check)) {
     foreach ($check as $key => $value) {
@@ -137,9 +121,6 @@ function check_list($mysqli, $index) {
     }
     $var = substr($var, 1);
     $sql = "UPDATE post SET check_list = '$var' WHERE id = $index";
-
-    $input_count += count($check);
-    //echo "check list input count : $input_count\n";
   } else {
 
     return null;
@@ -157,18 +138,10 @@ function check_list($mysqli, $index) {
   }*/
 }
 
-function photo_list_db($mysqli, $post_index) {
+function image_list_db($mysqli, $post_index) {
 
-  $photo_index = $_POST['file_id'];
-  /*
-  print_r($photo_index);
-  echo "\n";*/
+  $image_index = $_POST['file_id'];
   $upload_dir = '../image/';
-
-  global $input_count;
-
-  $input_count += $_POST["img_count"];
-  //echo "photo list input count : $input_count\n";
 
   foreach ($_FILES["img"]["error"] as $key => $error) {
     if ($error == UPLOAD_ERR_OK) {
@@ -181,15 +154,15 @@ function photo_list_db($mysqli, $post_index) {
       $file_name = explode("php", basename($tmp_name) . rand() . "." . $ext)[1];
       $upload_file = $upload_dir.$file_name;
 
-      $sql_select_photo_num = "SELECT * FROM photo_name WHERE post_id = '$post_index' AND num = '$photo_index[$key]'";
-      $result_select_photo_num = mysqli_query($mysqli, $sql_select_photo_num);
-      $row_select_photo_num = mysqli_fetch_array($result_select_photo_num);
-      $judge = $row_select_photo_num['num'];
+      $sql_select_image_num = "SELECT * FROM image_list WHERE post_id = '$post_index' AND num = '$image_index[$key]'";
+      $result_select_image_num = mysqli_query($mysqli, $sql_select_image_num);
+      $row_select_image_num = mysqli_fetch_array($result_select_image_num);
+      $judge = $row_select_image_num['num'];
       
       if ($judge) {
-        $sql = "UPDATE photo_name SET photo = '$file_name', delete_yn = NULL WHERE post_id = '$post_index' AND num = '$photo_index[$key]'";
+        $sql = "UPDATE image_list SET image_file_name = '$file_name', delete_yn = NULL WHERE post_id = '$post_index' AND num = '$image_index[$key]'";
       } else {
-        $sql = "INSERT INTO photo_name SET photo = '$file_name', num = '$photo_index[$key]', post_id = '$post_index'";
+        $sql = "INSERT INTO image_list SET image_file_name = '$file_name', num = '$image_index[$key]', post_id = '$post_index'";
       }
 
       $result = mysqli_query($mysqli, $sql);
@@ -197,9 +170,9 @@ function photo_list_db($mysqli, $post_index) {
       
       echo "$sql\n";
       if ($result) {
-        echo "photo_name 쿼리성공\n";
+        echo "image_list 쿼리성공\n";
       } else {
-        echo "photo_name 쿼리실패\n";
+        echo "image_list 쿼리실패\n";
         echo mysqli_error($mysqli);
         echo "\n";
       }
@@ -229,14 +202,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $query = $_POST["query"];
   $user_id = $_POST['user_id'];
   $user_name = $_POST['user_name'];
+  $total_count = $_POST['total_count'];
 
   $sql = "SELECT id FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
   $result = mysqli_query($mysqli, $sql);
 
   $row = mysqli_fetch_array($result);
   $user_index = $row['id'];
-
-  global $input_count;
 
   if ($query == "new") {
 
@@ -247,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $query_index_install_spot = install_spot_db($mysqli, null);
     $query_index_menu_list = menu_list_db($mysqli, null);
-    photo_list_db($mysqli, $post_index);
+    image_list_db($mysqli, $post_index);
     check_list($mysqli, $post_index);
 
     /*
@@ -265,9 +237,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "월별 갯수 : ";
     echo $count;*/
 
-    $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$input_count', type = '$_POST[type]' where id = '$post_index'";
+    if(empty($_POST['complete'])) {
+      $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]' where id = '$post_index'";  
+    } else {
+      $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]', complete = 1 where id = '$post_index'";
+    }
     $result = mysqli_query($mysqli, $sql);
-    /*
+    
+    echo "$sql\n";
+    if ($result) {
+      echo "post insert 쿼리성공\n";
+    } else {
+      echo "post insert 쿼리실패\n";
+      echo mysqli_error($mysqli);
+      echo "\n";
+    }
+
+  } else {
+    $query_index_install_spot = install_spot_db($mysqli, $query);
+    $query_index_menu_list = menu_list_db($mysqli, $query);
+    image_list_db($mysqli, $query);
+    check_list($mysqli, $query);
+
+    if (empty($_POST['complete'])) {
+      $sql = "UPDATE post SET count = '$total_count' where id = '$query'";
+    } else {
+      $sql = "UPDATE post SET count = '$total_count', complete = 1 where id = '$query'";
+    }
+
     echo "$sql\n";
     if ($result) {
       echo "post update 쿼리성공\n";
@@ -275,15 +272,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       echo "post update 쿼리실패\n";
       echo mysqli_error($mysqli);
       echo "\n";
-    }*/
+    }
 
-  } else {
-    $query_index_install_spot = install_spot_db($mysqli, $query);
-    $query_index_menu_list = menu_list_db($mysqli, $query);
-    photo_list_db($mysqli, $query);
-    check_list($mysqli, $query);
-
-    $sql = "UPDATE post SET count = '$input_count' where id = '$query'";
     $result = mysqli_query($mysqli, $sql);
   }
 } else {

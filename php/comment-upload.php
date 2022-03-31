@@ -14,10 +14,6 @@ function is_Empty($val) {
 }
 
 function comment_file($mysqli, $comment_index){
-  if (isset($_FILES['comment_file'])) {
-    echo "파일x";
-    return ;
-  }
   $upload_dir = '../image/';
   $comment_file = $_FILES['comment_file'];
   $tmp_name = $comment_file["tmp_name"];
@@ -27,14 +23,14 @@ function comment_file($mysqli, $comment_index){
   $file_name = explode("php", basename($tmp_name) . rand() . "." . $ext)[1];
   $upload_file = $upload_dir . $file_name;
 
-  $sql = "INSERT INTO photo_name SET photo = '$file_name', comment_id = '$comment_index'";
+  $sql = "INSERT INTO image_list SET image_file_name = '$file_name', comment_id = '$comment_index'";
   $result = mysqli_query($mysqli, $sql);
 
   echo "$sql\n";
   if ($result) {
-    echo "photo 쿼리성공\n";
+    echo "image 쿼리성공\n";
   } else {
-    echo "photo 쿼리실패\n";
+    echo "image 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
   }
@@ -49,13 +45,12 @@ function comment_file($mysqli, $comment_index){
 }
 
 function comment_upload($mysqli) {
-
-  $post_id = is_Empty($_POST["post_id"]);
-  $commenter_id = is_Empty($_POST['commenter_id']);
-  $commenter_name = is_Empty($_POST['commenter_name']);
-  $comment_date = is_Empty($_POST['comment_date']);
-  $comment_text = is_Empty($_POST['comment_text']);
-  $comment_purpose = is_Empty($_POST['comment_purpose']);
+  $post_id = $_POST["post_id"];
+  $commenter_id = $_POST['commenter_id'];
+  $commenter_name = $_POST['commenter_name'];
+  $comment_date = $_POST['comment_date'];
+  $comment_text = $_POST['comment_text'];
+  $comment_purpose = $_POST['comment_purpose'];
 
   $sql_user = "SELECT id FROM user WHERE name = '$commenter_name' AND user_id = '$commenter_id'";
   $result = mysqli_query($mysqli, $sql_user);
@@ -81,7 +76,9 @@ function comment_upload($mysqli) {
   }
   $comment_index = mysqli_insert_id($mysqli);
 
-  comment_file($mysqli, $comment_index);
+  if (isset($_FILES['comment_file'])) 
+    comment_file($mysqli, $comment_index);
+  
 }
 
 function comment_delete($mysqli){
@@ -99,7 +96,6 @@ function comment_delete($mysqli){
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
   switch ($_POST["type"]) {
     case "upload":
       comment_upload($mysqli);

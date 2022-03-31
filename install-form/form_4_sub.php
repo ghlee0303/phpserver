@@ -1,6 +1,5 @@
-<div class="container-md  photo_form" style="display:none">
+<div class="container-md image_form" style="display:none">
     <form class="post_form" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
-        <input type="hidden" name="iden" value="5">
         <div class="row mt-4">
             <div class="col"></div>
             <div class="col-11 fs-4 text-center">지진경보장치 시간 설정<br>(서버시간 동기화)</div>
