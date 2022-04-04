@@ -28,7 +28,7 @@
                         <div>$comments_contents[$index]</div>
                     </div>
                     <div>
-                        <span class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 commments_file w-100\" onclick=\"comment_file($index)\">첨부파일</span>
+                        <a class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 commments_file w-100\" href=\"$image_download_link[$index]\" download>첨부파일</a>
                         <div class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 w-100\" onclick=\"commments_delete($comments_index[$index])\">삭제</div>
                     </div>
                 </div>

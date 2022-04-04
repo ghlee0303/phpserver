@@ -15,9 +15,9 @@ if ($_GET['id'] == 'new') {
   $installer_name = $user_row['name'];
   $installer_phone = $user_row['phone'];
   $installer_email = $user_row['email'];
-  $type = $_GET['type'];
+  $post_type = $_GET['type'];
 } else {
-  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM post JOIN install_spot AS spot ON spot.id = post.install_spot JOIN menu_list AS menu ON menu.id = post.menu_setting JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
+  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM post JOIN install_spot AS spot ON spot.id = post.install_spot_id JOIN menu_list AS menu ON menu.id = post.menu_list_id JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
   $post_result = mysqli_query($mysqli, $post_sql);
   $post_row = mysqli_fetch_array($post_result);
 
@@ -41,7 +41,7 @@ if ($_GET['id'] == 'new') {
   $server_pwd = $post_row['server_pwd'];
   $lat = $post_row['latitude'];
   $lon = $post_row['longitude'];
-  $type = $post_row['type'];
+  $post_type = $post_row['type'];
   $installer_name = $post_row['name'];
   $installer_phone = $post_row['phone'];
   $installer_email = $post_row['email'];
@@ -87,7 +87,7 @@ if ($_GET['id'] == 'new') {
     $image_sql = "SELECT image_file_name FROM image_list WHERE comment_id = '$comment_query[id]'";
     $image_result = mysqli_query($mysqli, $image_sql);
     $image_row = mysqli_fetch_array($image_result);
-    $image_download_link[] = $image_row['image_file_name'];
+    $image_download_link[] = "./image/".$image_row['image_file_name'];
 
     $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
     $user_result = mysqli_query($mysqli, $user_sql);
@@ -99,7 +99,7 @@ if ($_GET['id'] == 'new') {
   }
 }
 
-switch ($type) {
+switch ($post_type) {
   case 0:
     $type_btn = "설치";
     break;
@@ -299,10 +299,11 @@ switch ($type) {
     var fd = new FormData();
     var img_count = 0;
     var total_count = 0;
-    var type = <?php echo $type; ?>;
-    console.log(type);
+    var post_type = <?php echo $post_type; ?>;
+    console.log(post_type);
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
+    fd.append('type', '<?php echo $post_type ?>');
     fd.append('query', searchParam('id'));
 
     var post_data = $('.post_form').serializeArray();
@@ -332,7 +333,7 @@ switch ($type) {
     console.log("count : " + total_count);
 
     if (complete) { // 설치,연동,제어기 완료 버튼 클릭 시
-      if (!(type) && (total_count != 78)) {
+      if (!(post_type) && (total_count != 78)) {
         alert("입력이 덜 된 부분이 있습니다.");
         return;
       }
@@ -341,7 +342,6 @@ switch ($type) {
       console.log("eeee");
     }
 
-    
     $.ajax({
       url: './php/install-new.php',
       data: fd,
@@ -374,7 +374,7 @@ switch ($type) {
 
     var query = searchParam('id');
     fd.append('post_id', query);
-    fd.append('type', "upload");
+    fd.append('comment_type', "upload");
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');
     fd.append('comment_file', comment_file);
@@ -406,7 +406,7 @@ switch ($type) {
     var fd = new FormData();
 
     fd.append('comment_id', index);
-    fd.append('type', "delete");
+    fd.append('comment_type', "delete");
     $.ajax({
       url: './php/comment-upload.php',
       data: fd,

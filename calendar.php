@@ -8,7 +8,7 @@
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <input type="text" class="form-control datetimepicker-input fs-5" data-target="#datetimepicker1"/>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text btn_calendar" onclick="date_compare()"><i class="fa fa-calendar m-auto"></i></div>
+                    <div class="input-group-text btn_calendar"><i class="fa fa-calendar m-auto"></i></div>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div class="input-group date" id="datetimepicker2" data-target-input="nearest" data-bs-auto-close="inside">
                 <input type="text" class="form-control datetimepicker-input fs-5" data-target="#datetimepicker2"/>
                 <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                    <div class="input-group-text btn_calendar" onclick="date_compare()"><i class="fa fa-calendar m-auto"></i></div>
+                    <div class="input-group-text btn_calendar"><i class="fa fa-calendar m-auto"></i></div>
                 </div>
             </div>
         </div>

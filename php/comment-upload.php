@@ -96,7 +96,7 @@ function comment_delete($mysqli){
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  switch ($_POST["type"]) {
+  switch ($_POST["comment_type"]) {
     case "upload":
       comment_upload($mysqli);
       break;

@@ -5,10 +5,10 @@ function is_Empty($val)
 {
   if (is_array($val) == 1) {
     foreach ($val as $key => $value) {
-      $val[$key] = !empty($value) ? "'$value'" : "'NULL'";
+      $val[$key] = !empty($value) ? "'$value'" : "NULL";
     }
   } else {
-    $val = !empty($val) ? "'$val'" : "'NULL'";
+    $val = !empty($val) ? "'$val'" : "NULL";
   }
 
   return $val;
@@ -31,8 +31,7 @@ function install_spot_db($mysqli, $index) {
 
   $result = mysqli_query($mysqli, $sql);
   $index = mysqli_insert_id($mysqli);
-
-  
+/*
   echo "$sql\n";
   if ($result) {
     echo "install_spot 쿼리성공\n";
@@ -40,7 +39,7 @@ function install_spot_db($mysqli, $index) {
     echo "install_spot 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
-  }
+  }*/
 
   return mysqli_insert_id($mysqli);
 }
@@ -55,7 +54,7 @@ function menu_list_db($mysqli, $index) {
   $sql = '';
 
   if ($index == null) {
-    $sql = "INSERT INTO menu_list SET (network_ip = $network[0], network_subnet = $network[1], network_gateway = $network[2], network_dns = $network[3], server_ip = $server[0], server_port = $server[1], server_id = $server[2], server_pwd = $server[3], latitude = $latitude, longitude = $longitude";
+    $sql = "INSERT INTO menu_list SET network_ip = $network[0], network_subnet = $network[1], network_gateway = $network[2], network_dns = $network[3], server_ip = $server[0], server_port = $server[1], server_id = $server[2], server_pwd = $server[3], latitude = $latitude, longitude = $longitude";
     $result = mysqli_query($mysqli, $sql);
     $menu_id = mysqli_insert_id($mysqli);
 
@@ -65,7 +64,7 @@ function menu_list_db($mysqli, $index) {
       $query_index_brodcast[$key] = mysqli_insert_id($mysqli);
     }
   } else {
-    $sql_menu_index = "SELECT menu_setting FROM post WHERE id = $index";
+    $sql_menu_index = "SELECT menu_list_id FROM post WHERE id = $index";
     $sql_menu_index_result = mysqli_query($mysqli, $sql_menu_index);
 /*
     if (!($sql_menu_index_result)) {
@@ -75,7 +74,7 @@ function menu_list_db($mysqli, $index) {
     }*/
     $sql_menu_index_row = mysqli_fetch_array($sql_menu_index_result);
     
-    $sql_brod_index = "SELECT id FROM brodcast WHERE menu_id = $sql_menu_index_row[menu_setting]";
+    $sql_brod_index = "SELECT id FROM brodcast WHERE menu_id = $sql_menu_index_row[menu_list_id]";
     $sql_brod_result =  mysqli_query($mysqli, $sql_brod_index);
 
     foreach ($scale as $key => $value) {
@@ -96,7 +95,7 @@ function menu_list_db($mysqli, $index) {
   }
 
   $result = mysqli_query($mysqli, $sql);
-  
+  /*
   echo "$sql\n";
   if ($result) {
     echo "menu_list 쿼리성공\n";
@@ -104,7 +103,7 @@ function menu_list_db($mysqli, $index) {
     echo "menu_list 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
-  }
+  }*/
 
   return $menu_id;
 }
@@ -166,8 +165,7 @@ function image_list_db($mysqli, $post_index) {
       }
 
       $result = mysqli_query($mysqli, $sql);
-
-      
+      /*
       echo "$sql\n";
       if ($result) {
         echo "image_list 쿼리성공\n";
@@ -175,7 +173,7 @@ function image_list_db($mysqli, $post_index) {
         echo "image_list 쿼리실패\n";
         echo mysqli_error($mysqli);
         echo "\n";
-      }
+      }*/
     
       $image_result = move_uploaded_file($tmp_name, $upload_file);
 
@@ -238,9 +236,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $count;*/
 
     if(empty($_POST['complete'])) {
-      $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]' where id = '$post_index'";  
+      $sql = "UPDATE post SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]' where id = '$post_index'";  
     } else {
-      $sql = "UPDATE post SET install_spot = '$query_index_install_spot', menu_setting = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]', complete = 1 where id = '$post_index'";
+      $sql = "UPDATE post SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]', complete = 1 where id = '$post_index'";
     }
     $result = mysqli_query($mysqli, $sql);
     
@@ -254,8 +252,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
   } else {
-    $query_index_install_spot = install_spot_db($mysqli, $query);
-    $query_index_menu_list = menu_list_db($mysqli, $query);
+    $post_id_sql = "SELECT * FROM post WHERE id = '$query'";
+    $post_id_result = mysqli_query($mysqli, $post_id_sql);
+    $post_id_row = mysqli_fetch_array($post_id_result);
+
+    $query_index_install_spot = install_spot_db($mysqli, $post_id_row['install_spot_id']);
+    $query_index_menu_list = menu_list_db($mysqli, $post_id_row['menu_list_id']);
     image_list_db($mysqli, $query);
     check_list($mysqli, $query);
 
@@ -266,6 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     echo "$sql\n";
+    $result = mysqli_query($mysqli, $sql);
     if ($result) {
       echo "post update 쿼리성공\n";
     } else {
@@ -273,8 +276,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       echo mysqli_error($mysqli);
       echo "\n";
     }
-
-    $result = mysqli_query($mysqli, $sql);
   }
 } else {
   echo "잘못된 접근입니다.\n";
