@@ -11,6 +11,12 @@
     border-right: 2px solid black !important;
     width: 20vw;
 }
+.lh-arrow {
+    line-height: 75;
+}
+.vh-24 {
+    height: 24vh !important;
+}
 .h-10r {
     height: 10rem;
 }
@@ -19,6 +25,12 @@
 }
 .h-5r {
     height: 5rem;
+}
+.h-4r {
+    height: 4rem;
+}
+.h-3r {
+    height: 3rem;
 }
 .h-2r {
     height: 2rem;
@@ -38,6 +50,16 @@
 .align-center {
     text-align: center;
     vertical-align: middle;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 .f-end {
     float: right;
@@ -228,9 +250,20 @@
 #calendar_text {
     background-color: white;
 }
+
+.col-44 {
+    flex: 0 0 auto;
+    width: 44%;
+}
+
 .col-20 {
   flex: 0 0 auto;
   width: 20%;
+}
+
+.col-33 {
+    flex: 0 0 auto;
+    width: 33.33%;
 }
 
 .col-12 {
@@ -248,10 +281,106 @@
     background-color: white;
 }
 
-.parent {
-            display: flex;
-        }
+.manege_table_border_x {
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+}
 
-        .right {
-            margin-left: auto;
-        }
+.manege_table_border_bottom {
+    border-bottom: 1px solid black !important;
+}
+
+.arrow-prev,
+.arrow-next {
+    position: relative;
+    float: left;
+    border: 1px solid #000;
+    height: 5em;
+    margin-right: 5px;
+}
+
+.arrow-prev::after {
+    position: absolute;
+    left: 25px;
+    top: 18px;
+    content: '';
+    width: 40px;
+    /* 사이즈 */
+    height: 40px;
+    /* 사이즈 */
+    border-top: 5px solid #000;
+    /* 선 두께 */
+    border-right: 5px solid #000;
+    /* 선 두께 */
+    transform: rotate(225deg);
+    /* 각도 */
+    
+}
+
+.arrow-next::after {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    content: '';
+    width: 50px;
+    /* 사이즈 */
+    height: 50px;
+    /* 사이즈 */
+    border-top: 5px solid #000;
+    /* 선 두께 */
+    border-right: 5px solid #000;
+    /* 선 두께 */
+    transform: rotate(45deg);
+    /* 각도 */
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 9px;
+    line-height: 30px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.arrow_prev {
+    transform:rotate(180deg);
+}
+
+.totop_arrow2 {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    text-indent: -9999px;
+}
+
+.totop_arrow2:before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+    transform: translateX(-70%) rotate(135deg);
+}

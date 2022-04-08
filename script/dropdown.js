@@ -1,12 +1,10 @@
 var btn = [];
 var menu = [];
-var val = [];
 
 function dropdown_setting(index) { 
     console.log("dropdown : "+index);
     btn[index] = document.querySelectorAll('.item_' + index);
     menu[index] = document.getElementById('dropdownMenu'+index);
-    val[index] = document.getElementById('val_'+index);
 
     [].forEach.call(btn[index], function (e) {
         e.addEventListener("click", function () {
