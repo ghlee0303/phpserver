@@ -15,7 +15,7 @@
     line-height: 75;
 }
 .vh-24 {
-    height: 24vh !important;
+    height: 20vh !important;
 }
 .h-10r {
     height: 10rem;
@@ -142,6 +142,9 @@
 .w-btn {
     width: 12vw;
 }
+.border-blue {
+    border: 1px solid #0d6efd;
+}
 .border-bl {
     border: 1px solid black !important;
     border-radius: 0.35rem;
@@ -256,6 +259,11 @@
     width: 44%;
 }
 
+.col-9 {
+    flex: 0 0 auto;
+    width: 9%;
+}
+
 .col-20 {
   flex: 0 0 auto;
   width: 20%;
@@ -290,97 +298,40 @@
     border-bottom: 1px solid black !important;
 }
 
-.arrow-prev,
-.arrow-next {
-    position: relative;
-    float: left;
-    border: 1px solid #000;
-    height: 5em;
-    margin-right: 5px;
-}
-
-.arrow-prev::after {
-    position: absolute;
-    left: 25px;
-    top: 18px;
-    content: '';
-    width: 40px;
-    /* 사이즈 */
-    height: 40px;
-    /* 사이즈 */
-    border-top: 5px solid #000;
-    /* 선 두께 */
-    border-right: 5px solid #000;
-    /* 선 두께 */
-    transform: rotate(225deg);
-    /* 각도 */
-    
-}
-
-.arrow-next::after {
-    position: absolute;
-    left: 10px;
-    top: 20px;
-    content: '';
-    width: 50px;
-    /* 사이즈 */
-    height: 50px;
-    /* 사이즈 */
-    border-top: 5px solid #000;
-    /* 선 두께 */
-    border-right: 5px solid #000;
-    /* 선 두께 */
-    transform: rotate(45deg);
-    /* 각도 */
-}
-
-.arrow {
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 9px;
-    line-height: 30px;
-}
-
-.right {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-}
-
-.left {
-    transform: rotate(135deg);
-    -webkit-transform: rotate(135deg);
-}
-
-.up {
-    transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
-}
-
-.down {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-}
-
-.arrow_prev {
-    transform:rotate(180deg);
-}
-
-.totop_arrow2 {
+.toright_arrow {
     width: 80px;
     height: 80px;
     position: relative;
     text-indent: -9999px;
 }
 
-.totop_arrow2:before {
+.toright_arrow:before {
     content: '';
-    width: 28px;
-    height: 28px;
+    width: 23px;
+    height: 23px;
     position: absolute;
-    left: 50%;
+    left: 47%;
     top: 34%;
     border-left: 3px solid black;
     border-top: 3px solid black;
     transform: translateX(-70%) rotate(135deg);
+}
+
+.toleft_arrow {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    text-indent: -9999px;
+}
+
+.toleft_arrow:before {
+    content: '';
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    left: 73%;
+    top: 34%;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+    transform: translateX(-70%) rotate(315deg);
 }
