@@ -7,10 +7,9 @@
     $userpwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
     $username = $_POST['name'];
     $phone = $_POST['phone'];
-    $position = $_POST['position'];
     $email = $_POST['email'];
 
-    $sql = "INSERT INTO user(name, user_id, user_pwd, phone, email, position) VALUES('$username', '$userid' ,'$userpwd' ,'$phone' ,'$email', '$position')";
+    $sql = "INSERT INTO user(name, user_id, user_pwd, phone, email) VALUES('$username', '$userid' ,'$userpwd' ,'$phone' ,'$email')";
                             
     $result = mysqli_query($mysqli, $sql);
              
@@ -76,11 +75,6 @@
               <div class="form-outline form-white mb-4">
                 <input type="text" id="typeEmailX" class="form-control form-control-lg" name="phone"/>
                 <label class="form-label" for="typeEmailX">전화번호</label>
-              </div>
-
-              <div class="form-outline form-white mb-4">
-                <input type="text" id="typePosition" class="form-control form-control-lg" name="position"/>
-                <label class="form-label" for="typePosition">직급</label>
               </div>
 
               <button class="btn btn-outline-light btn-lg px-5" type="submit">회원가입</button>

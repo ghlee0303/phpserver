@@ -2,57 +2,7 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
-/*
-class table_set {
-  private $user_name;
-  private $user_id;
-  private $user_pwd;
-  private $user_phone;
-  private $user_email;
-
-  public function __construct($user_name, $user_id, $user_pwd, $user_phone, $user_email) {
-    $this->user_name = $user_name;
-    $this->user_id = $user_id;
-    $this->user_pwd = $user_pwd;
-    $this->user_phone = $user_phone;
-    $this->user_email = $user_email; 
-  }
-
-  public function spec_table_temp_set() {
-    $temp = "<table class=\"w-100 border-bl spec_user_form\">
-          <tr class=\"manege_table_border_bottom\">
-            <td class=\"px-2\">$this->user_name</td>
-            <td class=\"manege_table_border_x px-2\">$this->user_id</td>
-            <td class=\"px-2\">$this->user_pwd</td>
-          </tr>
-          <tr class=\"manege_table_border_bottom\">
-            <td class=\"px-2\" colspan=\"2\">$this->user_phone</td>
-            <td class=\"px-2 text-center manege_table_border_x h-3r dropdown\" colspan=\"3\">
-              <div class=\"btn text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
-                소속
-              </div>
-              <ul class=\"dropdown-menu dropdown-scroll\">
-                <li><button class=\"dropdown-item\" value=\"b01\">본사</button></li>
-                <li><button class=\"dropdown-item\" value=\"b02\">지사A</button></li>
-                <li><button class=\"dropdown-item\" value=\"b03\">지사B</button></li>
-                <li><button class=\"dropdown-item\" value=\"b04\">지사C</button></li>
-              </ul>
-            </td>
-          </tr>
-          <tr class=\"manege_table_border_bottom\">
-            <td class=\"px-2\" colspan=\"2\">$this->user_email</td>
-            <td class=\"p-0 text-center manege_table_border_x\" colspan=\"3\">
-              <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
-            </td>
-          </tr>
-        </table>";
-
-    return $temp;
-  }
-}*/
-
-function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email)
-{
+function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email) {
   $temp = "
       <table class=\"w-100 spec_manege_table manege_table_border mb-3\">
         <tr class=\"table_click\">
@@ -85,8 +35,7 @@ function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user
   return $temp;
 }
 
-function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email)
-{
+function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email) {
   $temp = "<table class=\"w-100 unspec_manege_table manege_table_border mb-3\">
           <tr class=\"table_click\">
             <td id=\"name\" class=\"px-2 manege_table_border name\">$user_name</td>
@@ -110,20 +59,36 @@ function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $us
   return $temp;
 }
 
+$user_sql = "SELECT * FROM user";
+$user_result = mysqli_query($mysqli, $user_sql);
+$user_data = mysqli_fetch_array($user_result);
+$unspec_data = array();
+$spec_data = array();
+
+while($user_data != null) {
+  if(!$user_data["position"]) {
+    $unspec_data[] = $user_data;
+  } else {
+    $spec_data[] = $user_data;
+  }
+  $user_data = mysqli_fetch_array($user_result);
+}
+
 $spec_tables = array();
 
 for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
   $spec_table_set = "<div class=\"spec_user_form\">";
-  for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
-    $spec_table_set = $spec_table_set . spec_table_temp_set("홍길동", "wwwww" . $index_a . $index_b, "*****", "010-8888-7777", "eeeee@eewwq");
+  foreach($spec_data as $index => $value) {
+    if($value["position"] == $index_b)
+      $spec_table_set = $spec_table_set . spec_table_temp_set($value["name"], $value["user_id"], "*****", $value["phone"], $value["email"]);
   }
   $spec_table_set = $spec_table_set . "</div>";
-  $spec_tables[$index_b] = $spec_table_set;
+  $spec_tables[] = $spec_table_set;
 }
 
 $unspec_table_set = "<div id=\"unspec_user_form\">";
-for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
-  $unspec_table_set = $unspec_table_set . unspec_table_temp_set("홍길동", "wwwww" . $index_a, "*****", "010-8888-7777", "eeeee@eewwq");
+foreach($unspec_data as $index => $value) {
+  $unspec_table_set = $unspec_table_set . unspec_table_temp_set($value["name"], $value["user_id"], "*****", $value["phone"], $value["email"]);
 }
 $unspec_table_set = $unspec_table_set . "</div>";
 ?>
@@ -242,7 +207,7 @@ $unspec_table_set = $unspec_table_set . "</div>";
     }
   }
 
-  var table_data_array = []; // table_data class 배열
+  var table_data_array = [];
   var btn = [];
   var menu = [];
   var unspec_array = []; // 미지정 index 배열
@@ -320,13 +285,14 @@ $unspec_table_set = $unspec_table_set . "</div>";
   }
 
   function table_data_insert(jud) {
+    var index_array = [];
     if (jud) {
       unspec_array.sort();
       while (unspec_array.length) {
         var index = unspec_array.pop();
         var table = $(`.unspec_manege_table:eq(${index})`);
 
-        console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
+        //console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
         table_data_array.push(new table_data(table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text()));
         table.detach();
       }
@@ -336,7 +302,7 @@ $unspec_table_set = $unspec_table_set . "</div>";
         var index = spec_array.pop();
         var table = $(`.spec_manege_table:eq(${index})`);
 
-        console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
+        //console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
         table_data_array.push(new table_data(table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text()));
         table.detach();
       }

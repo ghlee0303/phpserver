@@ -77,6 +77,7 @@ if ($_GET['id'] == 'new') {
   $comments_index = array();
   $image_download_link = array();
   $comments_count = 0;
+  
   while ($comment_query) {
     $comments_index[] = $comment_query['id'];
     $comments_date[] = date("Y-m-d", strtotime($comment_query['date']));
