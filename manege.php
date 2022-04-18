@@ -94,13 +94,13 @@ function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $us
             <td id=\"phone\" class=\"px-2 manege_table_border pwd\">$user_pwd</td>
           </tr>
           <tr class=\"\">
-            <td id=\"phone\" class=\"px-2 manege_table_border table_click\" colspan=\"2\">$user_phone</td>
+            <td id=\"phone\" class=\"px-2 manege_table_border table_click phone\" colspan=\"2\">$user_phone</td>
             <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
               <button class=\"btn text-primary p-0 w-100\">비번<br>초기화</button>
             </td>
           </tr>
           <tr class=\"\">
-            <td id=\"email\" class=\"px-2 manege_table_border table_click\" colspan=\"2\">$user_email</td>
+            <td id=\"email\" class=\"px-2 manege_table_border table_click email\" colspan=\"2\">$user_email</td>
             <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
               <button class=\"btn text-primary p-0 w-100\">정보<br>삭제</button>
             </td>
@@ -113,7 +113,7 @@ function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $us
 $spec_tables = array();
 
 for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
-  $spec_table_set = "<div id=\"spec_user_form\">";
+  $spec_table_set = "<div class=\"spec_user_form\">";
   for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
     $spec_table_set = $spec_table_set . spec_table_temp_set("홍길동", "wwwww" . $index_a . $index_b, "*****", "010-8888-7777", "eeeee@eewwq");
   }
@@ -123,7 +123,6 @@ for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
 
 $unspec_table_set = "<div id=\"unspec_user_form\">";
 for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
-  echo "ddd / ";
   $unspec_table_set = $unspec_table_set . unspec_table_temp_set("홍길동", "wwwww" . $index_a, "*****", "010-8888-7777", "eeeee@eewwq");
 }
 $unspec_table_set = $unspec_table_set . "</div>";
@@ -152,7 +151,6 @@ $unspec_table_set = $unspec_table_set . "</div>";
       <button type="button" onclick="top_menu(2)" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치</button>
       <button type="button" onclick="top_menu(3)" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수</button>
     </div>
-    <div class="wwww">ddd</div>
     <div class="row mt-5 d-flex ">
       <div class="col-44 p-0">
         <div class="flex-center fs-4 h-4r mb-3 manege_table_border">미지정</div>
@@ -212,75 +210,84 @@ $unspec_table_set = $unspec_table_set . "</div>";
     }
 
     get name() {
-      return this.name;
+      return this._name;
     }
     get id() {
-      return this.id;
+      return this._id;
     }
     get pwd() {
-      return this.pwd;
+      return this._pwd;
     }
     get phone() {
-      return this.phone;
+      return this._phone;
     }
     get email() {
-      return this.email;
+      return this._email;
     }
 
     set name(value) {
-      this.name = value;
+      this._name = value;
     }
     set id(value) {
-      this.id = value;
+      this._id = value;
     }
     set pwd(value) {
-      this.pwd = value;
+      this._pwd = value;
     }
     set phone(value) {
-      this.phone = value;
+      this._phone = value;
     }
     set email(value) {
-      this.email = value;
+      this._email = value;
     }
   }
 
+  var table_data_array = []; // table_data class 배열
   var btn = [];
   var menu = [];
-  var unspec_array = [];
-  var spec_array = [];
-  var auth_val = 0;
+  var unspec_array = []; // 미지정 index 배열
+  var spec_array = []; // 권한 지정된 index 배열
+  var auth_val = 0; // 권한 dropdown 클릭 했던 index값 저장
 
-  let user_class = new table_data("홍길동", "wewww", "*****", "010-8888-4444", "wwww@dddd");
-  console.log(user_class);
+  function arrow_click_event_init() {
+    $('.toright_arrow').click(function() {
+      table_data_insert(1);
+      table_insert(1);
+    });
+
+    $('.toleft_arrow').click(function() {
+      table_data_insert(0);
+      table_insert(0);
+    });
+  }
 
   $('.table_click').each(function(index) {
-    $(this).click(function() {
-      var $table_clicked = $(this).closest('table');
+    table_click_event_init($(this));
+  });
 
+  function table_click_event_init($table) {
+    $table.click(function() {
+      var $table_clicked = $table.closest('table');
+
+      //색 변경
       if ($table_clicked.is(".manege_table_clicked")) {
         $table_clicked.removeClass('manege_table_clicked');
       } else {
         $table_clicked.addClass('manege_table_clicked');
       }
 
+      //배열에 index 삽입
       if ($table_clicked.closest('div').is("#unspec_user_form")) {
+        console.log("2-1");
         unspec_array.array_insert($(".unspec_manege_table").index($table_clicked));
-      } else if ($table_clicked.closest('div').is("#spec_user_form")) {
+      } else if ($table_clicked.closest('div').is(".spec_user_form")) {
+        console.log("2-2");
         spec_array.array_insert($(".spec_manege_table").index($table_clicked));
       }
     });
-  });
+  }
 
-  $('.toright_arrow').click(function() {
-    $(".spec_manege_table").eq(auth_val).prepend("<div>Hello</div>");
-    console.log("right : " + unspec_array);
-  });
-
-  $('.toleft_arrow').click(function() {
-    console.log("left : " + spec_array);
-  });
-
-  document.querySelectorAll('#spec_user_form').forEach(function(table, index) {
+  document.querySelectorAll('.spec_user_form').forEach(function(table, index) {
     if (index >= 1) {
       table.style.display = "none";
     }
@@ -293,7 +300,122 @@ $unspec_table_set = $unspec_table_set . "</div>";
     } else {
       this.push(num);
     }
+    console.log(this);
   };
+
+  function top_menu(index) {
+    console.log("top : " + index);
+    document.querySelector('.btn-dark').classList.replace('btn-dark', 'btn-outline-dark');
+    document.querySelectorAll('.btn-outline-dark')[index].classList.replace('btn-outline-dark', 'btn-dark');
+  }
+
+  function test(index) {
+    if (auth_val != index) {
+      var view = document.querySelectorAll('.spec_user_form');
+      view[index].style.display = '';
+      view[auth_val].style.display = 'none';
+
+      auth_val = index;
+    }
+  }
+
+  function table_data_insert(jud) {
+    if (jud) {
+      unspec_array.sort();
+      while (unspec_array.length) {
+        var index = unspec_array.pop();
+        var table = $(`.unspec_manege_table:eq(${index})`);
+
+        console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
+        table_data_array.push(new table_data(table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text()));
+        table.detach();
+      }
+    } else {
+      spec_array.sort();
+      while (spec_array.length) {
+        var index = spec_array.pop();
+        var table = $(`.spec_manege_table:eq(${index})`);
+
+        console.log("이름 : " + table.find(`.name`).text() + "index : " + index);
+        table_data_array.push(new table_data(table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text()));
+        table.detach();
+      }
+    }
+    console.log(table_data_array);
+  }
+
+  function table_insert(jud) {
+    if (jud) {
+      while (table_data_array.length) {
+        var unspec_table_data = table_data_array.pop();
+        $(".spec_user_form").eq(auth_val).prepend(spec_table_temp_set(unspec_table_data));
+        table_click_event_init($(".spec_manege_table").eq(0));
+      }
+    } else {
+      while (table_data_array.length) {
+        var spec_table_data = table_data_array.pop();
+        $("#unspec_user_form").prepend(unspec_table_temp_set(spec_table_data));
+        table_click_event_init($(".unspec_manege_table").eq(0));
+      }
+    }
+  }
+
+  function unspec_table_temp_set(spec_table_data) {
+    $temp = `<table class=\"w-100 unspec_manege_table manege_table_border mb-3\">
+          <tr class=\"table_click\">
+            <td id=\"name\" class=\"px-2 manege_table_border name\">${spec_table_data.name}</td>
+            <td id=\"id\" class=\"px-2 manege_table_border id\">${spec_table_data.id}</td>
+            <td id=\"phone\" class=\"px-2 manege_table_border pwd\">${spec_table_data.pwd}</td>
+          </tr>
+          <tr class=\"\">
+            <td id=\"phone\" class=\"px-2 manege_table_border table_click phone\" colspan=\"2\">${spec_table_data.phone}</td>
+            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+              <button class=\"btn text-primary p-0 w-100\">비번<br>초기화</button>
+            </td>
+          </tr>
+          <tr class=\"\">
+            <td id=\"email\" class=\"px-2 manege_table_border table_click email\" colspan=\"2\">${spec_table_data.email}</td>
+            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+              <button class=\"btn text-primary p-0 w-100\">정보<br>삭제</button>
+            </td>
+          </tr>
+        </table>`;
+
+    return $temp;
+  }
+
+  function spec_table_temp_set(unspec_table_data) {
+    $temp = `
+      <table class=\"w-100 spec_manege_table manege_table_border mb-3\">
+        <tr class=\"table_click\">
+          <td id=\"name\" class=\"px-2 manege_table_border name\">${unspec_table_data.name}</td>
+          <td id=\"id\" class=\"px-2 manege_table_border id\">${unspec_table_data.id}</td>
+          <td id=\"pwd\" class=\"px-2 manege_table_border pwd\">${unspec_table_data.pwd}</td>
+        </tr>
+        <tr class=\"\">
+          <td id=\"phone\" class=\"px-2 table_click manege_table_border phone\" colspan=\"2\">${unspec_table_data.phone}</td>
+          <td class=\"px-2 text-center manege_table_border h-3r w-13 dropdown\" colspan=\"3\">
+            <div class=\"btn text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+              소속
+            </div>
+            <ul class=\"dropdown-menu dropdown-scroll\">
+              <li><button class=\"dropdown-item\" value=\"b01\">본사</button></li>
+              <li><button class=\"dropdown-item\" value=\"b02\">지사A</button></li>
+              <li><button class=\"dropdown-item\" value=\"b03\">지사B</button></li>
+              <li><button class=\"dropdown-item\" value=\"b04\">지사C</button></li>
+            </ul>
+          </td>
+        </tr>
+        <tr class=\"\">
+          <td id=\"email\" class=\"px-2 table_click manege_table_border email\" colspan=\"2\">${unspec_table_data.email}</td>
+          <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+            <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
+          </td>
+        </tr>
+      </table>`;
+
+    return $temp;
+  }
 
   function dropdown_init() {
     document.querySelectorAll('.dropdownMenu').forEach(function(a, index) {
@@ -320,55 +442,7 @@ $unspec_table_set = $unspec_table_set . "</div>";
   }
 
   dropdown_init();
-
-  function top_menu(index) {
-    console.log("top : " + index);
-    document.querySelector('.btn-dark').classList.replace('btn-dark', 'btn-outline-dark');
-    document.querySelectorAll('.btn-outline-dark')[index].classList.replace('btn-outline-dark', 'btn-dark');
-  }
-
-  function test(index) {
-    if (auth_val != index) {
-      var view = document.querySelectorAll('#spec_user_form');
-      view[index].style.display = '';
-      view[auth_val].style.display = 'none';
-
-      auth_val = index;
-    }
-  }
-
-  function spec_table_temp_set(user_name, user_id, user_pwd, user_phone, user_email) {
-    $temp = `
-      <table class=\"w-100 spec_manege_table manege_table_border mb-3\">
-        <tr class=\"table_click\">
-          <td id=\"name\" class=\"px-2 manege_table_border name\">$user_name</td>
-          <td id=\"id\" class=\"px-2 manege_table_border id\">$user_id</td>
-          <td id=\"pwd\" class=\"px-2 manege_table_border pwd\">$user_pwd</td>
-        </tr>
-        <tr class=\"\">
-          <td id=\"phone\" class=\"px-2 table_click manege_table_border phone\" colspan=\"2\">$user_phone</td>
-          <td class=\"px-2 text-center manege_table_border h-3r w-13 dropdown\" colspan=\"3\">
-            <div class=\"btn text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
-              소속
-            </div>
-            <ul class=\"dropdown-menu dropdown-scroll\">
-              <li><button class=\"dropdown-item\" value=\"b01\">본사</button></li>
-              <li><button class=\"dropdown-item\" value=\"b02\">지사A</button></li>
-              <li><button class=\"dropdown-item\" value=\"b03\">지사B</button></li>
-              <li><button class=\"dropdown-item\" value=\"b04\">지사C</button></li>
-            </ul>
-          </td>
-        </tr>
-        <tr class=\"\">
-          <td id=\"email\" class=\"px-2 table_click manege_table_border email\" colspan=\"2\">$user_email</td>
-          <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-            <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
-          </td>
-        </tr>
-      </table>`;
-
-    return $temp;
-  }
+  arrow_click_event_init();
 </script>
 
 </html>
