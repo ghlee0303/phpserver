@@ -19,7 +19,7 @@ class table_set {
   }
 
   public function spec_table_temp_set() {
-    $temp = "<table class=\"w-100 border-bl spec_user_table\">
+    $temp = "<table class=\"w-100 border-bl spec_user_form\">
           <tr class=\"manege_table_border_bottom\">
             <td class=\"px-2\">$this->user_name</td>
             <td class=\"manege_table_border_x px-2\">$this->user_id</td>
@@ -54,15 +54,15 @@ class table_set {
 function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email)
 {
   $temp = "
-      <table class=\"w-100 border-bl mb-3 user_table\">
-        <tr class=\"manege_table_border_bottom\">
-          <td class=\"px-2\">$user_name</td>
-          <td class=\"manege_table_border_x px-2\">$user_id</td>
-          <td class=\"px-2\">$user_pwd</td>
+      <table class=\"w-100 spec_manege_table manege_table_border mb-3\">
+        <tr class=\"table_click\">
+          <td id=\"name\" class=\"px-2 manege_table_border name\">$user_name</td>
+          <td id=\"id\" class=\"px-2 manege_table_border id\">$user_id</td>
+          <td id=\"pwd\" class=\"px-2 manege_table_border pwd\">$user_pwd</td>
         </tr>
-        <tr class=\"manege_table_border_bottom\">
-          <td class=\"px-2\" colspan=\"2\">$user_phone</td>
-          <td class=\"px-2 text-center manege_table_border_x h-3r dropdown\" colspan=\"3\">
+        <tr class=\"\">
+          <td id=\"phone\" class=\"px-2 table_click manege_table_border phone\" colspan=\"2\">$user_phone</td>
+          <td class=\"px-2 text-center manege_table_border h-3r w-13 dropdown\" colspan=\"3\">
             <div class=\"btn text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
               소속
             </div>
@@ -74,9 +74,9 @@ function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user
             </ul>
           </td>
         </tr>
-        <tr class=\"manege_table_border_bottom\">
-          <td class=\"px-2\" colspan=\"2\">$user_email</td>
-          <td class=\"p-0 text-center manege_table_border_x\" colspan=\"3\">
+        <tr class=\"\">
+          <td id=\"email\" class=\"px-2 table_click manege_table_border email\" colspan=\"2\">$user_email</td>
+          <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
             <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
           </td>
         </tr>
@@ -85,9 +85,35 @@ function spec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user
   return $temp;
 }
 
+function unspec_table_temp_set($user_name, $user_id, $user_pwd, $user_phone, $user_email)
+{
+  $temp = "<table class=\"w-100 unspec_manege_table manege_table_border mb-3\">
+          <tr class=\"table_click\">
+            <td id=\"name\" class=\"px-2 manege_table_border name\">$user_name</td>
+            <td id=\"id\" class=\"px-2 manege_table_border id\">$user_id</td>
+            <td id=\"phone\" class=\"px-2 manege_table_border pwd\">$user_pwd</td>
+          </tr>
+          <tr class=\"\">
+            <td id=\"phone\" class=\"px-2 manege_table_border table_click\" colspan=\"2\">$user_phone</td>
+            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+              <button class=\"btn text-primary p-0 w-100\">비번<br>초기화</button>
+            </td>
+          </tr>
+          <tr class=\"\">
+            <td id=\"email\" class=\"px-2 manege_table_border table_click\" colspan=\"2\">$user_email</td>
+            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+              <button class=\"btn text-primary p-0 w-100\">정보<br>삭제</button>
+            </td>
+          </tr>
+        </table>";
+
+  return $temp;
+}
+
 $spec_tables = array();
+
 for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
-  $spec_table_set = "<div class=\"spec_user_table\">";
+  $spec_table_set = "<div id=\"spec_user_form\">";
   for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
     $spec_table_set = $spec_table_set . spec_table_temp_set("홍길동", "wwwww" . $index_a . $index_b, "*****", "010-8888-7777", "eeeee@eewwq");
   }
@@ -95,6 +121,12 @@ for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
   $spec_tables[$index_b] = $spec_table_set;
 }
 
+$unspec_table_set = "<div id=\"unspec_user_form\">";
+for ($index_a = 0; $index_a <= 3; $index_a = $index_a + 1) {
+  echo "ddd / ";
+  $unspec_table_set = $unspec_table_set . unspec_table_temp_set("홍길동", "wwwww" . $index_a, "*****", "010-8888-7777", "eeeee@eewwq");
+}
+$unspec_table_set = $unspec_table_set . "</div>";
 ?>
 
 <!DOCTYPE html>
@@ -120,28 +152,13 @@ for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
       <button type="button" onclick="top_menu(2)" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치</button>
       <button type="button" onclick="top_menu(3)" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수</button>
     </div>
+    <div class="wwww">ddd</div>
     <div class="row mt-5 d-flex ">
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r border-bl mb-3">미지정</div>
-        <table class="w-100 border-bl unspec_user_table">
-          <tr class="manege_table_border_bottom">
-            <td class="px-2">홍길동</td>
-            <td class="manege_table_border_x px-2">fdfdf</td>
-            <td class="px-2">*******</td>
-          </tr>
-          <tr class="manege_table_border_bottom">
-            <td class="px-2" colspan="2">010-0000-0000</td>
-            <td class="p-0 text-center manege_table_border_x" colspan="3">
-              <button class="btn text-primary p-0 w-100">비번<br>초기화</button>
-            </td>
-          </tr>
-          <tr class="manege_table_border_bottom">
-            <td class="px-2" colspan="2">pjh1343@naver.com</td>
-            <td class="p-0 text-center manege_table_border_x" colspan="3">
-              <button class="btn text-primary p-0 w-100">정보<br>삭제</button>
-            </td>
-          </tr>
-        </table>
+        <div class="flex-center fs-4 h-4r mb-3 manege_table_border">미지정</div>
+        <?php
+        echo $unspec_table_set;
+        ?>
       </div>
       <div class="col-9 p-0 mx-2">
         <div class="vh-24"></div>
@@ -185,26 +202,101 @@ for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
 <script>
+  class table_data {
+    constructor(name, id, pwd, phone, email) {
+      this.name = name;
+      this.id = id;
+      this.pwd = pwd;
+      this.phone = phone;
+      this.email = email;
+    }
+
+    get name() {
+      return this.name;
+    }
+    get id() {
+      return this.id;
+    }
+    get pwd() {
+      return this.pwd;
+    }
+    get phone() {
+      return this.phone;
+    }
+    get email() {
+      return this.email;
+    }
+
+    set name(value) {
+      this.name = value;
+    }
+    set id(value) {
+      this.id = value;
+    }
+    set pwd(value) {
+      this.pwd = value;
+    }
+    set phone(value) {
+      this.phone = value;
+    }
+    set email(value) {
+      this.email = value;
+    }
+  }
+
   var btn = [];
   var menu = [];
+  var unspec_array = [];
+  var spec_array = [];
   var auth_val = 0;
 
-  var user_table = document.querySelectorAll('.user_table');
-  user_table.forEach(function(table, index) {
-    table.onclick = function() {
-      alert('클릭');
-    }
-  })
+  let user_class = new table_data("홍길동", "wewww", "*****", "010-8888-4444", "wwww@dddd");
+  console.log(user_class);
 
-  document.querySelectorAll('.spec_user_table').forEach(function(table, index) {
+  $('.table_click').each(function(index) {
+    $(this).click(function() {
+      var $table_clicked = $(this).closest('table');
+
+      if ($table_clicked.is(".manege_table_clicked")) {
+        $table_clicked.removeClass('manege_table_clicked');
+      } else {
+        $table_clicked.addClass('manege_table_clicked');
+      }
+
+      if ($table_clicked.closest('div').is("#unspec_user_form")) {
+        unspec_array.array_insert($(".unspec_manege_table").index($table_clicked));
+      } else if ($table_clicked.closest('div').is("#spec_user_form")) {
+        spec_array.array_insert($(".spec_manege_table").index($table_clicked));
+      }
+    });
+  });
+
+  $('.toright_arrow').click(function() {
+    $(".spec_manege_table").eq(auth_val).prepend("<div>Hello</div>");
+    console.log("right : " + unspec_array);
+  });
+
+  $('.toleft_arrow').click(function() {
+    console.log("left : " + spec_array);
+  });
+
+  document.querySelectorAll('#spec_user_form').forEach(function(table, index) {
     if (index >= 1) {
       table.style.display = "none";
     }
-  })
+  });
+
+  Array.prototype.array_insert = function(num) {
+    var index = $.inArray(num, this);
+    if (index != -1) {
+      this.splice(index, 1);
+    } else {
+      this.push(num);
+    }
+  };
 
   function dropdown_init() {
     document.querySelectorAll('.dropdownMenu').forEach(function(a, index) {
-      console.log(index);
       dropdown_setting(index);
     });
   }
@@ -237,12 +329,45 @@ for ($index_b = 0; $index_b <= 3; $index_b = $index_b + 1) {
 
   function test(index) {
     if (auth_val != index) {
-      var view = document.querySelectorAll('.spec_user_table');
+      var view = document.querySelectorAll('#spec_user_form');
       view[index].style.display = '';
       view[auth_val].style.display = 'none';
 
       auth_val = index;
     }
+  }
+
+  function spec_table_temp_set(user_name, user_id, user_pwd, user_phone, user_email) {
+    $temp = `
+      <table class=\"w-100 spec_manege_table manege_table_border mb-3\">
+        <tr class=\"table_click\">
+          <td id=\"name\" class=\"px-2 manege_table_border name\">$user_name</td>
+          <td id=\"id\" class=\"px-2 manege_table_border id\">$user_id</td>
+          <td id=\"pwd\" class=\"px-2 manege_table_border pwd\">$user_pwd</td>
+        </tr>
+        <tr class=\"\">
+          <td id=\"phone\" class=\"px-2 table_click manege_table_border phone\" colspan=\"2\">$user_phone</td>
+          <td class=\"px-2 text-center manege_table_border h-3r w-13 dropdown\" colspan=\"3\">
+            <div class=\"btn text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+              소속
+            </div>
+            <ul class=\"dropdown-menu dropdown-scroll\">
+              <li><button class=\"dropdown-item\" value=\"b01\">본사</button></li>
+              <li><button class=\"dropdown-item\" value=\"b02\">지사A</button></li>
+              <li><button class=\"dropdown-item\" value=\"b03\">지사B</button></li>
+              <li><button class=\"dropdown-item\" value=\"b04\">지사C</button></li>
+            </ul>
+          </td>
+        </tr>
+        <tr class=\"\">
+          <td id=\"email\" class=\"px-2 table_click manege_table_border email\" colspan=\"2\">$user_email</td>
+          <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
+            <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
+          </td>
+        </tr>
+      </table>`;
+
+    return $temp;
   }
 </script>
 

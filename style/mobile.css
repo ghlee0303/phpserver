@@ -47,6 +47,9 @@
 .w-23 {
     width: 23%;
 }
+.w-13 {
+    width: 28%;
+}
 .align-center {
     text-align: center;
     vertical-align: middle;
@@ -289,15 +292,6 @@
     background-color: white;
 }
 
-.manege_table_border_x {
-    border-right: 1px solid black !important;
-    border-left: 1px solid black !important;
-}
-
-.manege_table_border_bottom {
-    border-bottom: 1px solid black !important;
-}
-
 .toright_arrow {
     width: 80px;
     height: 80px;
@@ -334,4 +328,13 @@
     border-left: 3px solid black;
     border-top: 3px solid black;
     transform: translateX(-70%) rotate(315deg);
+}
+
+.manege_table_clicked {
+    box-shadow: 0 0 2px 2px #FA8258;
+}
+
+.manege_table_border {
+    border: 1px solid black !important;
+    border-collapse: collapse;
 }
