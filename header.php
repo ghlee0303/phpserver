@@ -9,7 +9,7 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="HeaderMenu1">
         <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href = '/mypage.php' ">마이페이지</button></li>
-        <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3">로그아웃</button></li>
+        <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href = '/logout.php' ">로그아웃</button></li>
         <li class="border-bottom-bl mx-4"></li>
         <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3">설치</button></li>
         <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3">유지보수</button></li>

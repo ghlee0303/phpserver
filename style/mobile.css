@@ -50,6 +50,9 @@
 .w-13 {
     width: 28%;
 }
+.w-33 {
+    width: 38%;
+}
 .align-center {
     text-align: center;
     vertical-align: middle;
@@ -337,4 +340,12 @@
 .manege_table_border {
     border: 1px solid black !important;
     border-collapse: collapse;
+}
+
+.bg_manege_view {
+    background-color: #CED8F6;
+}
+
+.manege_sub_header {
+    height: 46px;
 }
