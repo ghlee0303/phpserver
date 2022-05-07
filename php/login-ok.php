@@ -8,3 +8,4 @@
         $userid = $_SESSION['userid'];
         $name = $_SESSION['name'];
     }
+?>

@@ -1,5 +1,5 @@
 <div class="container-md install mt-5 fs-7 form_3" style="display:none">
-    <form class="post_form" action="" method="post" onsubmit="return false">
+    <form class="install_form" action="" method="post" onsubmit="return false">
         <div class="row  text-center">
             <div class="col-1 table-right-bl table-bottom-bl">#</div>
             <div class="col-10 table-bottom-bl fs-3">설치확인 항목</div>

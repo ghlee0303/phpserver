@@ -50,6 +50,12 @@
 .w-13 {
     width: 28%;
 }
+.w-33 {
+    width: 38%;
+}
+.w-49 {
+    width: 49%;
+}
 .align-center {
     text-align: center;
     vertical-align: middle;
@@ -337,4 +343,26 @@
 .manege_table_border {
     border: 1px solid black !important;
     border-collapse: collapse;
+}
+
+.bg_manege_view {
+    background-color: #CED8F6;
+}
+
+.manege_sub_header {
+    height: 46px;
+}
+
+.mw-360 {
+    width: 100%;
+    max-width: 363px;
+}
+
+.card-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: yellow;
 }

@@ -15,38 +15,40 @@ if ($_GET['id'] == 'new') {
   $installer_name = $user_row['name'];
   $installer_phone = $user_row['phone'];
   $installer_email = $user_row['email'];
-  $post_type = $_GET['type'];
+  $install_type = $_GET['type'];
 } else {
-  $post_sql = "SELECT menu.id AS m_id, post.id AS id, check_list, count, date, region, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM post JOIN install_spot AS spot ON spot.id = post.install_spot_id JOIN menu_list AS menu ON menu.id = post.menu_list_id JOIN user AS installer ON installer.id = post.user_id WHERE post.id = $_GET[id]";
-  $post_result = mysqli_query($mysqli, $post_sql);
-  $post_row = mysqli_fetch_array($post_result);
+  //$install_sql = "SELECT menu.id AS m_id, install.id AS id, check_list, count, date, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM install JOIN install_spot AS spot ON spot.id = install.install_spot_id JOIN menu_list AS menu ON menu.id = install.menu_list_id JOIN user AS installer ON installer.id = install.user_id JOIN WHERE install.id = $_GET[id]";
+  $region_sub_sql = "(SELECT region FROM region WHERE spot.region_id = region.id) AS region";
+  $install_sql = "SELECT menu.id AS m_id, install_spot_id AS ins_id, ". $region_sub_sql . ", install.id AS id, check_list, count, date, address_1, address_2, office_edu, location, maneger_name, maneger_phone, maneger_email, network_ip, network_subnet, network_gateway, network_dns, server_ip, server_id, server_port, server_pwd, latitude, longitude, name, phone, email, type FROM install JOIN install_spot AS spot ON spot.id = install.install_spot_id JOIN menu_list AS menu ON menu.id = install.menu_list_id JOIN user AS installer ON installer.id = install.user_id WHERE install.id = $_GET[id]";
+  $install_result = mysqli_query($mysqli, $install_sql);
+  $install_row = mysqli_fetch_array($install_result);
 
-  $check = $post_row['check_list'];
-  $date = $post_row['date'];
-  $region = $post_row['region'];
-  $address_1 = $post_row['address_1'];
-  $address_2 = $post_row['address_2'];
-  $office_edu = $post_row['office_edu'];
-  $location = $post_row['location'];
-  $maneger_name = $post_row['maneger_name'];
-  $maneger_phone = $post_row['maneger_phone'];
-  $maneger_email = $post_row['maneger_email'];
-  $network_ip = $post_row['network_ip'];
-  $network_subnet = $post_row['network_subnet'];
-  $network_gateway = $post_row['network_gateway'];
-  $network_dns = $post_row['network_dns'];
-  $server_ip = $post_row['server_ip'];
-  $server_port = $post_row['server_port'];
-  $server_id = $post_row['server_id'];
-  $server_pwd = $post_row['server_pwd'];
-  $lat = $post_row['latitude'];
-  $lon = $post_row['longitude'];
-  $post_type = $post_row['type'];
-  $installer_name = $post_row['name'];
-  $installer_phone = $post_row['phone'];
-  $installer_email = $post_row['email'];
+  $check = $install_row['check_list'];
+  $date = $install_row['date'];
+  $region = $install_row['region'];
+  $address_1 = $install_row['address_1'];
+  $address_2 = $install_row['address_2'];
+  $office_edu = $install_row['office_edu'];
+  $location = $install_row['location'];
+  $maneger_name = $install_row['maneger_name'];
+  $maneger_phone = $install_row['maneger_phone'];
+  $maneger_email = $install_row['maneger_email'];
+  $network_ip = $install_row['network_ip'];
+  $network_subnet = $install_row['network_subnet'];
+  $network_gateway = $install_row['network_gateway'];
+  $network_dns = $install_row['network_dns'];
+  $server_ip = $install_row['server_ip'];
+  $server_port = $install_row['server_port'];
+  $server_id = $install_row['server_id'];
+  $server_pwd = $install_row['server_pwd'];
+  $lat = $install_row['latitude'];
+  $lon = $install_row['longitude'];
+  $install_type = $install_row['type'];
+  $installer_name = $install_row['name'];
+  $installer_phone = $install_row['phone'];
+  $installer_email = $install_row['email'];
 
-  $brod_sql = "SELECT scale1, scale2, distance FROM brodcast WHERE menu_id = $post_row[m_id]";
+  $brod_sql = "SELECT scale1, scale2, distance FROM brodcast WHERE menu_id = $install_row[m_id]";
   $brod_result = mysqli_query($mysqli, $brod_sql);
 
   $brod = array();
@@ -55,7 +57,7 @@ if ($_GET['id'] == 'new') {
   $brod[2] = mysqli_fetch_array($brod_result);
   $brod[3] = mysqli_fetch_array($brod_result);
 
-  $image_sql = "SELECT image_file_name, num FROM image_list WHERE post_id = $post_row[id] AND num is not null AND delete_yn is null";
+  $image_sql = "SELECT image_file_name, num FROM image_list WHERE install_id = $install_row[id] AND num is not null AND delete_yn is null";
   $image_result = mysqli_query($mysqli, $image_sql);
   $image_query = mysqli_fetch_array($image_result);
   $images = array();
@@ -67,7 +69,7 @@ if ($_GET['id'] == 'new') {
     $image_query = mysqli_fetch_array($image_result);
   }
 
-  $comment_sql = "SELECT * FROM comment WHERE post_id = $post_row[id] AND delete_yn is NULL";
+  $comment_sql = "SELECT * FROM comment WHERE install_id = $install_row[id] AND delete_yn is NULL";
   $comment_result = mysqli_query($mysqli, $comment_sql);
   $comment_query = mysqli_fetch_array($comment_result);
   $comments_date = array();
@@ -77,7 +79,7 @@ if ($_GET['id'] == 'new') {
   $comments_index = array();
   $image_download_link = array();
   $comments_count = 0;
-  
+
   while ($comment_query) {
     $comments_index[] = $comment_query['id'];
     $comments_date[] = date("Y-m-d", strtotime($comment_query['date']));
@@ -88,7 +90,7 @@ if ($_GET['id'] == 'new') {
     $image_sql = "SELECT image_file_name FROM image_list WHERE comment_id = '$comment_query[id]'";
     $image_result = mysqli_query($mysqli, $image_sql);
     $image_row = mysqli_fetch_array($image_result);
-    $image_download_link[] = "./image/".$image_row['image_file_name'];
+    $image_download_link[] = "./image/" . $image_row['image_file_name'];
 
     $user_sql = "SELECT * FROM user WHERE name = '$user_name' AND user_id = '$user_id'";
     $user_result = mysqli_query($mysqli, $user_sql);
@@ -100,7 +102,7 @@ if ($_GET['id'] == 'new') {
   }
 }
 
-switch ($post_type) {
+switch ($install_type) {
   case 0:
     $type_btn = "설치";
     break;
@@ -192,6 +194,7 @@ switch ($post_type) {
 
     dropdown_item.forEach((element) => {
       if (element.value == data) {
+        console.log(element);
         element.click();
         return;
       }
@@ -300,16 +303,16 @@ switch ($post_type) {
     var fd = new FormData();
     var img_count = 0;
     var total_count = 0;
-    var post_type = <?php echo $post_type; ?>;
-    console.log(post_type);
+    var install_type = <?php echo $install_type; ?>;
+    console.log(install_type);
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
-    fd.append('type', '<?php echo $post_type ?>');
+    fd.append('type', '<?php echo $install_type ?>');
     fd.append('query', searchParam('id'));
 
-    var post_data = $('.post_form').serializeArray();
+    var install_data = $('.install_form').serializeArray();
 
-    $.each(post_data, function(key, input) {
+    $.each(install_data, function(key, input) {
       if (input.value) {
         total_count++;
       }
@@ -334,7 +337,7 @@ switch ($post_type) {
     console.log("count : " + total_count);
 
     if (complete) { // 설치,연동,제어기 완료 버튼 클릭 시
-      if (!(post_type) && (total_count != 78)) {
+      if (!(install_type) && (total_count != 78)) {
         alert("입력이 덜 된 부분이 있습니다.");
         return;
       }
@@ -374,7 +377,7 @@ switch ($post_type) {
     });
 
     var query = searchParam('id');
-    fd.append('post_id', query);
+    fd.append('install_id', query);
     fd.append('comment_type', "upload");
     fd.append('commenter_id', '<?php echo $user_id; ?>');
     fd.append('commenter_name', '<?php echo $user_name; ?>');
@@ -430,7 +433,7 @@ switch ($post_type) {
       if (window.location.href != image_input[input.value - 1].src) {
         image_input[input.value - 1].style.display = 'none';
         fd.append(input.name, input.value);
-        fd.append('post_id', searchParam('id'));
+        fd.append('install_id', searchParam('id'));
       }
     });
 

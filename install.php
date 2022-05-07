@@ -2,7 +2,7 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
-$post_db_data = array();
+$install_db_data = array();
 $install_spot_db_data = array();
 
 $user_sql = "SELECT * FROM user WHERE name = '$_SESSION[name]' AND user_id = '$_SESSION[userid]'";
@@ -10,14 +10,14 @@ $user_result = mysqli_query($mysqli, $user_sql);
 $user_data = mysqli_fetch_array($user_result);
 
 if (empty($_GET['search'])) {
-    $post_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot_id = install_spot.id WHERE user_id = $user_data[id] ORDER BY date DESC";
-    $post_result = mysqli_query($mysqli, $post_sql);
+    $install_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id FROM install JOIN install_spot ON install.install_spot_id = install_spot.id WHERE user_id = $user_data[id] ORDER BY date DESC";
+    $install_result = mysqli_query($mysqli, $install_sql);
 } else {
-    $post_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, post.id as id FROM post JOIN install_spot ON post.install_spot_id = install_spot.id JOIN user ON post.user_id = user.id WHERE MATCH(install_spot.address_2) AGAINST('$_GET[search]*' IN BOOLEAN MODE) OR MATCH(user.name) AGAINST('$_GET[search]*' IN BOOLEAN MODE)";
-    $post_result = mysqli_query($mysqli, $post_sql);
+    $install_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id FROM install JOIN install_spot ON install.install_spot_id = install_spot.id JOIN user ON install.user_id = user.id WHERE MATCH(install_spot.address_2) AGAINST('$_GET[search]*' IN BOOLEAN MODE) OR MATCH(user.name) AGAINST('$_GET[search]*' IN BOOLEAN MODE)";
+    $install_result = mysqli_query($mysqli, $install_sql);
 }
 
-while ($install_spot_row = mysqli_fetch_array($post_result)) {
+while ($install_spot_row = mysqli_fetch_array($install_result)) {
     $install_spot_db_data[] = $install_spot_row;
 }
 ?>
@@ -124,7 +124,7 @@ while ($install_spot_row = mysqli_fetch_array($post_result)) {
                     <li><button class="dropdown-item item_2" value="2">제어기</button></li>
                 </ul>
             </div>
-            <button type="button" class="btn fs-4 border-bl w-10" onclick="post_new()">글쓰기</button>
+            <button type="button" class="btn fs-4 border-bl w-10" onclick="install_new()">글쓰기</button>
         </div>
     </div>
 </body>
@@ -140,7 +140,7 @@ while ($install_spot_row = mysqli_fetch_array($post_result)) {
     dropdown_setting(1);
     dropdown_setting(2);
 
-    function post_new() {
+    function install_new() {
         var type_value = document.querySelector('#dropdownMenu2').value;
         console.log(type_value);
         location.href = '/install-info.php?id=new&type=' + type_value;

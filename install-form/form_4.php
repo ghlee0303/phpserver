@@ -1,5 +1,5 @@
 <div class="container-md install image_form" style="display:none">
-    <form class="post_form" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
+    <form class="install_form" action="" enctype="multipart/form-data" method="post" onsubmit="return false">
         <div class="row mt-5 mb-4">
             <div class="col"></div>
             <div class="col-11 fs-3 text-center">설치완료 증명서류</div>
