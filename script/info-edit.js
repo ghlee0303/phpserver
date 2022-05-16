@@ -10,6 +10,7 @@ val[1] = document.getElementById('val_2');
 
 [].forEach.call(btn[0], function(e){ 
     e.addEventListener("click", function () {
+        console.log("누름");
         var index = getElementIndex(btn[0], e);
         menu[0].innerText = btn[0][index].innerText;
         val[0].value = btn[0][index].value;
@@ -18,6 +19,7 @@ val[1] = document.getElementById('val_2');
 
 [].forEach.call(btn[1], function(e){ 
     e.addEventListener("click", function () {
+        console.log("누름");
         var index = getElementIndex(btn[1], e);
         menu[1].innerText = btn[1][index].innerText;
         val[1].value = btn[1][index].value;

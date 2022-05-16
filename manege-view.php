@@ -38,11 +38,7 @@ include "./php/login-ok.php";
             </div>
             <button id="test1">테스트</button>
             <div class="text-center mx-auto fs-4 mt-4 mb-3">설치</div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총설치<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     총설치완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
@@ -52,11 +48,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총기기설치<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     기기설치완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
@@ -66,11 +58,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총연동<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     연동완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
@@ -80,11 +68,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총제어기<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     제어기완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 install">&nbsp</span>
@@ -117,8 +101,8 @@ include "./php/login-ok.php";
                         <ul class="dropdown-menu dropdown-scroll">
                             <?php
                             for ($index = 1; $index < 11; $index = $index + 1) {
-                                $var = $index."차";
-                                echo "<li><button class=\"dropdown-item\" value=\"$index\">$var&nbsp</button></li>";
+                                $var = $index . "차";
+                                echo "<li><button class=\"dropdown-item maintenance_date\" value=\"$index\">$var&nbsp</button></li>";
                             }
                             ?>
                         </ul>
@@ -126,11 +110,7 @@ include "./php/login-ok.php";
                 </div>
 
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총유지보수<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     총유지완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
@@ -140,11 +120,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총설치유지보수<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     총설치유지완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
@@ -154,11 +130,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총연동유지보수<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     연동유지완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
@@ -168,11 +140,7 @@ include "./php/login-ok.php";
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
                 </div>
             </div>
-            <div class="row fs-4 text-center mb-3">
-                <div class="col-4">
-                    총제어기유지보수<br>
-                    <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
-                </div>
+            <div class="d-flex justify-content-around fs-4 text-center mb-3">
                 <div class="col-4">
                     제어기유지완료<br>
                     <span class="d-inline-block text-center w-33 border-bl bg-light mt-1 maintenance">&nbsp</span>
@@ -226,15 +194,17 @@ include "./php/login-ok.php";
             type: 'POST',
             success: function(data) {
                 install_setting(JSON.parse(data));
+                //console.log(data);
             }
         });
     }
 
-    function maintenance_call() {
+    function maintenance_call(quarter) {
+        console.log(quarter);
         var fd = new FormData();
         var result = [];
         fd.append('jud', 2);
-        fd.append('quarter', 2);
+        fd.append('quarter', quarter);
         fd.append('year', 2022);
 
         $.ajax({
@@ -246,11 +216,18 @@ include "./php/login-ok.php";
             success: function(data) {
                 //console.log(data);
                 maintenance_setting(JSON.parse(data));
+                console.log(data);
             }
         });
     }
 
+    $(`.maintenance_date`).click(function() {
+        maintenance_call($(this).val());
+    });
+
     $(`#test1`).click(function() {
+        install_call();
+        /*
         var fd = new FormData();
         var result = [];
         fd.append('quarter', 2);
@@ -265,7 +242,7 @@ include "./php/login-ok.php";
             success: function(data) {
                 console.log(data);
             }
-        });
+        });*/
     });
 
     function dropdown_init() {
@@ -294,7 +271,7 @@ include "./php/login-ok.php";
 
     dropdown_init();
     install_call();
-    maintenance_call();
+    maintenance_call(1);
 </script>
 
 </html>

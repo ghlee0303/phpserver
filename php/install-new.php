@@ -14,24 +14,43 @@ function is_Empty($val)
   return $val;
 }
 
+function region_db($mysqli) {
+
+  $region = is_Empty($_POST["region"]);
+
+  $region_search_sql = "SELECT * FROM region WHERE region = $region";
+  $region_search_result = mysqli_query($mysqli, $region_search_sql);
+  $region_search_row = mysqli_fetch_array($region_search_result);
+
+  if ($region_search_row == null) {
+    $region_insert_sql = "INSERT INTO region SET region = $region";
+    $region_insert_result = mysqli_query($mysqli, $region_insert_sql);
+    $region_id = mysqli_insert_id($mysqli);
+  } else {
+    $region_id = $region_search_row['id'];
+  }
+
+  return $region_id;
+}
+
 function install_spot_db($mysqli, $index) {
   $date = is_Empty($_POST["date"]);
   $office_edu = is_Empty($_POST["office_edu"]);
-  $address = is_Empty($_POST["address"]);
-  $region = is_Empty($_POST["region"]);
+  $region = region_db($mysqli);
   $location = is_Empty($_POST["location"]);
+  $address = is_Empty($_POST["address"]);
   $maneger = is_Empty($_POST["maneger"]);
   $sql = '';
 
   if ($index == null) {
-    $sql = "INSERT INTO install_spot SET date = $date, region = $region, address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2]";
+    $sql = "INSERT INTO install_spot SET date = $date, region_id = '$region', address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2]";
   } else {
-    $sql = "UPDATE install_spot SET date = $date, region = $region, address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2] WHERE id = $index";
+    $sql = "UPDATE install_spot SET date = $date, region_id = '$region', address_1 = $address[0], address_2 = $address[1], office_edu = $office_edu, location = $location, maneger_name = $maneger[0], maneger_phone = $maneger[1], maneger_email = $maneger[2] WHERE id = $index";
   }
 
   $result = mysqli_query($mysqli, $sql);
   $index = mysqli_insert_id($mysqli);
-/*
+
   echo "$sql\n";
   if ($result) {
     echo "install_spot 쿼리성공\n";
@@ -39,7 +58,7 @@ function install_spot_db($mysqli, $index) {
     echo "install_spot 쿼리실패\n";
     echo mysqli_error($mysqli);
     echo "\n";
-  }*/
+  }
 
   return mysqli_insert_id($mysqli);
 }
@@ -64,7 +83,7 @@ function menu_list_db($mysqli, $index) {
       $query_index_brodcast[$key] = mysqli_insert_id($mysqli);
     }
   } else {
-    $sql_menu_index = "SELECT menu_list_id FROM post WHERE id = $index";
+    $sql_menu_index = "SELECT menu_list_id FROM install WHERE id = $index";
     $sql_menu_index_result = mysqli_query($mysqli, $sql_menu_index);
 /*
     if (!($sql_menu_index_result)) {
@@ -119,7 +138,7 @@ function check_list($mysqli, $index) {
       $var = $var . "a" . $value;
     }
     $var = substr($var, 1);
-    $sql = "UPDATE post SET check_list = '$var' WHERE id = $index";
+    $sql = "UPDATE install SET check_list = '$var' WHERE id = $index";
   } else {
 
     return null;
@@ -137,7 +156,7 @@ function check_list($mysqli, $index) {
   }*/
 }
 
-function image_list_db($mysqli, $post_index) {
+function image_list_db($mysqli, $install_index) {
 
   $image_index = $_POST['file_id'];
   $upload_dir = '../image/';
@@ -153,15 +172,15 @@ function image_list_db($mysqli, $post_index) {
       $file_name = explode("php", basename($tmp_name) . rand() . "." . $ext)[1];
       $upload_file = $upload_dir.$file_name;
 
-      $sql_select_image_num = "SELECT * FROM image_list WHERE post_id = '$post_index' AND num = '$image_index[$key]'";
+      $sql_select_image_num = "SELECT * FROM image_list WHERE install_id = '$install_index' AND num = '$image_index[$key]'";
       $result_select_image_num = mysqli_query($mysqli, $sql_select_image_num);
       $row_select_image_num = mysqli_fetch_array($result_select_image_num);
       $judge = $row_select_image_num['num'];
       
       if ($judge) {
-        $sql = "UPDATE image_list SET image_file_name = '$file_name', delete_yn = NULL WHERE post_id = '$post_index' AND num = '$image_index[$key]'";
+        $sql = "UPDATE image_list SET image_file_name = '$file_name', delete_yn = NULL WHERE install_id = '$install_index' AND num = '$image_index[$key]'";
       } else {
-        $sql = "INSERT INTO image_list SET image_file_name = '$file_name', num = '$image_index[$key]', post_id = '$post_index'";
+        $sql = "INSERT INTO image_list SET image_file_name = '$file_name', num = '$image_index[$key]', install_id = '$install_index'";
       }
 
       $result = mysqli_query($mysqli, $sql);
@@ -210,19 +229,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($query == "new") {
 
-    $sql = "INSERT INTO post SET user_id = '$user_index'";
+    $sql = "INSERT INTO install SET user_id = '$user_index'";
     $result = mysqli_query($mysqli, $sql);
 
-    $post_index = mysqli_insert_id($mysqli);
+    $install_index = mysqli_insert_id($mysqli);
 
     $query_index_install_spot = install_spot_db($mysqli, null);
     $query_index_menu_list = menu_list_db($mysqli, null);
-    image_list_db($mysqli, $post_index);
-    check_list($mysqli, $post_index);
+    image_list_db($mysqli, $install_index);
+    check_list($mysqli, $install_index);
 
     /*
     $date = is_Empty($_POST["date"]);
-    $sql_date = "SELECT count(id) FROM install_spot WHERE date(date) >= date_format($date, '%Y-%m-01') AND date(date) <= last_day($date) AND id IN (SELECT install_spot FROM post WHERE user_id = '$user_index')";
+    $sql_date = "SELECT count(id) FROM install_spot WHERE date(date) >= date_format($date, '%Y-%m-01') AND date(date) <= last_day($date) AND id IN (SELECT install_spot FROM install WHERE user_id = '$user_index')";
     $result = mysqli_query($mysqli, $sql_date);
     $count = mysqli_fetch_array($result)[0] + 1;
 
@@ -236,43 +255,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $count;*/
 
     if(empty($_POST['complete'])) {
-      $sql = "UPDATE post SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]' where id = '$post_index'";  
+      $sql = "UPDATE install SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]' where id = '$install_index'";  
     } else {
-      $sql = "UPDATE post SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]', complete = 1 where id = '$post_index'";
+      $sql = "UPDATE install SET install_spot_id = '$query_index_install_spot', menu_list_id = '$query_index_menu_list', count = '$total_count', type = '$_POST[type]', complete = 1 where id = '$install_index'";
     }
     $result = mysqli_query($mysqli, $sql);
     
+    
     echo "$sql\n";
     if ($result) {
-      echo "post insert 쿼리성공\n";
+      echo "install insert 쿼리성공\n";
     } else {
-      echo "post insert 쿼리실패\n";
+      echo "install insert 쿼리실패\n";
       echo mysqli_error($mysqli);
       echo "\n";
     }
 
   } else {
-    $post_id_sql = "SELECT * FROM post WHERE id = '$query'";
-    $post_id_result = mysqli_query($mysqli, $post_id_sql);
-    $post_id_row = mysqli_fetch_array($post_id_result);
+    $install_id_sql = "SELECT * FROM install WHERE id = '$query'";
+    $install_id_result = mysqli_query($mysqli, $install_id_sql);
+    $install_id_row = mysqli_fetch_array($install_id_result);
 
-    $query_index_install_spot = install_spot_db($mysqli, $post_id_row['install_spot_id']);
-    $query_index_menu_list = menu_list_db($mysqli, $post_id_row['menu_list_id']);
+    $query_index_install_spot = install_spot_db($mysqli, $install_id_row['install_spot_id']);
+    $query_index_menu_list = menu_list_db($mysqli, $install_id_row['menu_list_id']);
     image_list_db($mysqli, $query);
     check_list($mysqli, $query);
 
     if (empty($_POST['complete'])) {
-      $sql = "UPDATE post SET count = '$total_count' where id = '$query'";
+      $sql = "UPDATE install SET count = '$total_count' where id = '$query'";
     } else {
-      $sql = "UPDATE post SET count = '$total_count', complete = 1 where id = '$query'";
+      $sql = "UPDATE install SET count = '$total_count', complete = 1 where id = '$query'";
     }
 
     echo "$sql\n";
     $result = mysqli_query($mysqli, $sql);
     if ($result) {
-      echo "post update 쿼리성공\n";
+      echo "install update 쿼리성공\n";
     } else {
-      echo "post update 쿼리실패\n";
+      echo "install update 쿼리실패\n";
       echo mysqli_error($mysqli);
       echo "\n";
     }

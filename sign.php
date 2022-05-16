@@ -13,7 +13,6 @@
 </head>
 
 <style>
-
   body {
     overscroll-behavior-y: none;
   }

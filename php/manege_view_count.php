@@ -97,15 +97,16 @@ function insert_array($array, $query_row, $query_result) {
     while ($query_row != null ) {
         $index = $query_row['type'] + 1;
         if (empty($query_row['complete'])) {
-            $array[$index][2] = $array[$index][2] + 1;
-            $array[0][2] = $array[0][2] + 1;
-        } else {
             $array[$index][1] = $array[$index][1] + 1;
             $array[0][1] = $array[0][1] + 1;
+        } else {
+            $array[$index][0] = $array[$index][0] + 1;
+            $array[0][0] = $array[0][0] + 1;
         }
 
+        /*
         $array[$index][0] = $array[$index][0] + 1;
-        $array[0][0] = $array[0][0] + 1;
+        $array[0][0] = $array[0][0] + 1;*/
         
         $query_row = mysqli_fetch_array($query_result);
     }
@@ -121,23 +122,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //data_array 배열 초기화
         foreach ($data_array as $key => $value) {
-            for($index = 0; $index < 3; $index = $index + 1) {
+            for($index = 0; $index < 2; $index = $index + 1) {
                 $data_array[$key][$index] = 0;
             }
         }
         $query_sql = "SELECT * FROM post WHERE maintenance is null AND delete_yn is null";
     } else if ($_POST['jud'] == 2) {
 
-        while ($query_row != null) {
-            print_r($query_row);
-            $query_row = mysqli_fetch_array($query_result);
-        }
-
         $data_array = array(array(), array(), array(), array());
 
         //data_array 배열 초기화
         foreach ($data_array as $key => $value) {
-            for ($index = 0; $index < 3; $index = $index + 1) {
+            for ($index = 0; $index < 2; $index = $index + 1) {
                 $data_array[$key][$index] = 0;
             }
         }

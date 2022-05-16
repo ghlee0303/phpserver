@@ -45,7 +45,7 @@ function comment_file($mysqli, $comment_index){
 }
 
 function comment_upload($mysqli) {
-  $post_id = $_POST["post_id"];
+  $install_id = $_POST["install_id"];
   $commenter_id = $_POST['commenter_id'];
   $commenter_name = $_POST['commenter_name'];
   $comment_date = $_POST['comment_date'];
@@ -64,7 +64,7 @@ function comment_upload($mysqli) {
   $row = mysqli_fetch_array($result);
   $user_index = $row['id'];
 
-  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_date', contents = '$comment_text', purpose = '$comment_purpose', post_id = '$post_id'";
+  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_date', contents = '$comment_text', purpose = '$comment_purpose', install_id = '$install_id'";
   $result = mysqli_query($mysqli, $sql_comment);
   echo "$sql_comment\n";
   if ($result) {

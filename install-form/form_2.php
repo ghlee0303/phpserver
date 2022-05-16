@@ -1,6 +1,6 @@
 <div class="container-md install form_2" style="display:none">
     <?php if ($jud) echo "</form>"; ?>
-    <form class="post_form" action="" method=" post" onsubmit="return false">
+    <form class="install_form" action="" method=" post" onsubmit="return false">
         <table class="table install-table table-border fs-4 align-middle">
             <tr>
                 <td class="col-4">네트워크 설정</td>

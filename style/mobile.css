@@ -41,6 +41,9 @@
 .w-dropdown {
     width: 26vw;
 }
+.w-25p {
+    width: 25%;
+}
 .w-10 {
     width: 18vw;
 }
@@ -52,6 +55,15 @@
 }
 .w-33 {
     width: 38%;
+}
+.w-49 {
+    width: 49%;
+}
+.w-89 {
+    width: 93%;
+}
+.border-bottom-2 {
+    border: 2px solid black;
 }
 .align-center {
     text-align: center;
@@ -155,6 +167,9 @@
     border: 1px solid black !important;
     border-radius: 0.35rem;
 }
+.border-bl-90 {
+    border: 1px solid black !important;
+}
 .border-gr {
     border: 1px solid gray !important;
 }
@@ -174,6 +189,10 @@
 .table-border-2 {
     border-collapse: separate;
     border-spacing: 0.1rem;
+}
+.table-border-0 {
+    border-collapse: separate;
+    border-spacing: 0px;
 }
 .dropdown-scroll {
     width: 12vw;
@@ -348,4 +367,27 @@
 
 .manege_sub_header {
     height: 46px;
+}
+
+.mw-360 {
+    width: 100%;
+    max-width: 363px;
+}
+
+.card-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: yellow;
+}
+
+.bg-check {
+    background-color: #E6E6E6;
+}
+
+.canvas_style {
+    width: 100vw !important;
+    height: 75vh !important;
 }
