@@ -37,10 +37,10 @@ $row_sign = mysqli_fetch_array($result_sign);
 
   </div>
 
-    <div class="m-5 d-flex justify-content-center">
-      <button class="btn btn-secondary fs-3 mx-4 sign_save">서명저장</button>
-      <button class="btn btn-info fs-3 mx-4 sign_clean">새로고침</button>
-    </div>
+  <div class="m-5 d-flex justify-content-center">
+    <button class="btn btn-secondary fs-3 mx-4 sign_save">서명저장</button>
+    <button class="btn btn-info fs-3 mx-4 sign_clean">새로고침</button>
+  </div>
   </div>
 
   <script type="text/javascript" src="script/bootstrap.bundle.min.js"></script>
@@ -112,31 +112,34 @@ $row_sign = mysqli_fetch_array($result_sign);
     };
 
     function imageSave() {
-      //const canvas = document.getElementById('myCanvas');
-      const imgBase64 = canvas.toDataURL();
-      const decodImg = atob(imgBase64.split(',')[1]);
+      if (confirm("서명을 저장하시겠습니까?.")) {
+        const imgBase64 = canvas.toDataURL();
+        const decodImg = atob(imgBase64.split(',')[1]);
 
-      let array = [];
-      for (let i = 0; i < decodImg.length; i++) {
-        array.push(decodImg.charCodeAt(i));
+        let array = [];
+        for (let i = 0; i < decodImg.length; i++) {
+          array.push(decodImg.charCodeAt(i));
+        }
+
+        const file = new Blob([new Uint8Array(array)], {
+          type: 'image/jpeg'
+        });
+        let formData = new FormData();
+        formData.append('sign', file);
+        formData.append('install_id', searchParam('install_id'));
+
+        $.ajax({
+          type: 'post',
+          url: './php/sign-upload.php',
+          cache: false,
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            location.href = `/install-info.php?id=${searchParam('install_id')}`;
+          }
+        });
       }
-
-      const file = new Blob([new Uint8Array(array)], {
-        type: 'image/jpeg'
-      });
-      let formData = new FormData();
-      formData.append('sign', file);
-      formData.append('install_id', searchParam('install_id'));
-
-      $.ajax({
-        type: 'post',
-        url: './php/sign-upload.php',
-        cache: false,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {}
-      });
     }
 
     function sign_image_set() {

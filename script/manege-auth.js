@@ -96,31 +96,21 @@ var install_menu_val = 0;
 var install_seq = 0;
 var sortable_ok = 0;
 
-var change_auth_user_array = [];
+/*
+################
+기초 설정 함수
+################
+*/
+function list_prepend(ul_tag, data) {
+  return ul_tag.prepend(data);
+}
 
-function install_set_seq(seq) {
-  if (seq == install_seq) {
-    return;
-  }
-  var total = $(`.spec_install_form:eq(${install_menu_val})`).children().length;
-  
-  var fd = new FormData();
-  fd.append('pre_seq', total - install_seq);
-  fd.append('seq', total - seq);
-  fd.append('key_install', 3);
-  fd.append('installer_id', $(`.installer_dropdown:eq(${install_menu_val})`).attr("value"));
+function list_append(ul_tag, data) {
+  return ul_tag.append(data);
+}
 
-  //console.log ("auth : " + auth + " / jud : " + jud);
-  $.ajax({
-    url: './php/user-auth.php',
-    data: fd,
-    contentType: false,
-    processData: false,
-    type: 'POST',
-    success: function (data) {
-      console.log(data);
-    }
-  });
+function list_clean(ul_tag) {
+  ul_tag.remove();
 }
 
 function arrow_click_event(jud) {
@@ -165,11 +155,20 @@ function table_click_event_init() {
   });
 }
 
+/*
+################
+auth 함수
+################
+*/
+
 function auth_dropdown_init() {
   $(".dropdown-menu").on('click', '.auth_dropdown', function () {
     var focus = $(this).parent();
     var pre_focus = focus.parent().children();
     var index = pre_focus.index(focus);
+    if (index == auth_menu_val) {
+      return;
+    }
 
     var view = $(".spec_user_form");
     view.eq(index).css("display", '');
@@ -180,10 +179,123 @@ function auth_dropdown_init() {
   });
 }
 
+function user_auth_table_data_insert(jud) {
+  var table_data_array = [];
+
+  if (jud) {
+    $(`.unspec_auth_table`).each(function (index, value) {
+      if (value.classList.contains("manege_table_clicked")) {
+        var table = $(`.unspec_auth_table:eq(${index})`);
+
+        //console.log("index : " + table.attr("value"));
+        table_data_array.push(new user_table_data(table.attr("value"), table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text(), table.find(`.name`).attr("value") ));
+        //console.log("user branch id : " + table.find(`.name`).attr("value"));
+      }
+    });
+    $(`.unspec_auth_table.manege_table_clicked`).each(function (index, value) {
+      value.remove();
+    });
+  } else {
+    $(`.spec_auth_table`).each(function (index, value) {
+      if (value.classList.contains("manege_table_clicked")) {
+        var table = $(`.spec_auth_table:eq(${index})`);
+
+        //console.log("index : " + table.attr("value"));
+        table_data_array.push(new user_table_data(table.attr("value"), table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text(), table.find(`.branch_list`).attr("value") ));
+        //console.log("user branch id : " + table.find(`.branch_list`).attr("value"));
+      }
+    });
+    $(`.spec_auth_table.manege_table_clicked`).each(function (index, value) {
+      value.remove();
+    });
+  }
+
+  return table_data_array;
+}
+
+function user_auth_table_control(jud, table_data_array) {
+  send_user_auth_data(jud, table_data_array);
+
+  if (jud) {
+    table_data_array.forEach(function (table_data) {
+      $(".spec_user_form").eq(auth_menu_val).prepend(spec_auth_table_temp(table_data));
+      var table = $(".spec_auth_table").eq(0);
+
+      list_prepend(table.find(".branch_list"), branch_list);
+    }); 
+  } else {
+    table_data_array.forEach(function (table_data) {
+      $("#unspec_user_form").prepend(unspec_auth_table_temp(table_data));
+    });
+  }
+}
+
+function send_user_auth_data(jud, table_data_array) {
+  var fd = new FormData();
+  var auth = auth_menu_val + 1;
+  fd.append('table_data_array', JSON.stringify(table_data_array));
+  fd.append('jud', jud);
+  fd.append('key_auth', 0);
+  fd.append('auth', auth);
+
+  $.ajax({
+    url: './php/user-auth.php',
+    data: fd,
+    contentType: false,
+    processData: false,
+    type: 'POST',
+    success: function (data) {
+      switch (auth) {
+        case 1 : //관리자
+
+          break;
+        case 2 : //설치자
+          table_data_array.forEach(function (value) {
+            //console.log(value.index + " / " + value.name);
+            //call_installer_list(value.index, jud);
+          });
+          break;
+      }
+    }
+  });
+}
+
+/*
+################
+install 함수
+################
+*/
+
+function install_set_seq(seq) {
+  if (seq == install_seq) {
+    return;
+  }
+  var total = $(`.spec_install_form:eq(${install_menu_val})`).children().length;
+  
+  var fd = new FormData();
+  fd.append('pre_seq', total - install_seq);
+  fd.append('seq', total - seq);
+  fd.append('key_install', 3);
+  fd.append('installer_id', $(`.installer_dropdown:eq(${install_menu_val})`).attr("value"));
+
+  $.ajax({
+    url: './php/user-auth.php',
+    data: fd,
+    contentType: false,
+    processData: false,
+    type: 'POST',
+    success: function (data) {
+    }
+  });
+}
+
 function install_dropdown_init() {
   $(".dropdown-menu").on('click', '.installer_dropdown', function () {
     var focus = $(this).parent();
     var index = focus.parent().children().index(focus);
+    if (index == install_menu_val) {
+      return;
+    }
 
     var view = $(".spec_install_form");
     view.eq(index).css("display", '');
@@ -193,10 +305,8 @@ function install_dropdown_init() {
       view.eq(install_menu_val).css("display", 'none');
     }
 
-    console.log(install_menu_val + " / " + index);
     install_menu_val = index;
   });
-  
 }
 
 function install_table_data_insert(jud) {
@@ -232,14 +342,11 @@ function install_table_data_insert(jud) {
   return table_data_array;
 }
 
-// install update 새로 만들것
-// user-auth의 jud 부분 install, auth, 유지보수 부분으로 새분화
 function install_table_control(jud, table_data_array) {
   send_install_data(jud, table_data_array);
 
   if (jud) {
     while (table_data_array.length) {
-      console.log(table_data_array.length + "???");
       $(".spec_install_form").eq(install_menu_val).prepend(spec_install_table_temp(table_data_array.pop()));
       var table = $(".spec_install_table").eq(0);
     }
@@ -265,84 +372,25 @@ function send_install_data(jud, table_data_array) {
     processData: false,
     type: 'POST',
     success: function (data) {
-      console.log(data);
+      //console.log(data);
     }
   });
 }
 
-function spec_form_delete() {
-  switch (auth_menu_val+1) {
-    case 1: //관리
-      break;
-    case 2: //설치
-      var eee = "";
-  }
-}
-
-function user_auth_table_data_insert(jud) {
-  var table_data_array = [];
-
-  if (jud) {
-    $(`.unspec_auth_table`).each(function (index, value) {
-      if (value.classList.contains("manege_table_clicked")) {
-        var table = $(`.unspec_auth_table:eq(${index})`);
-
-        //console.log("index : " + table.attr("value"));
-        table_data_array.push(new user_table_data(table.attr("value"), table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text(), table.find(`.name`).attr("value") ));
-        console.log("user branch id : " + table.find(`.name`).attr("value"));
-      }
+function call_installer_list(id, jud) {
+  if (!(jud)) { 
+    $(".installer").children().each(function (index, value) {
+      list_clean($(this));
     });
-    $(`.unspec_auth_table.manege_table_clicked`).each(function (index, value) {
-      value.remove();
-    });
-  } else {
-    $(`.spec_auth_table`).each(function (index, value) {
-      if (value.classList.contains("manege_table_clicked")) {
-        var table = $(`.spec_auth_table:eq(${index})`);
-
-        //console.log("index : " + table.attr("value"));
-        table_data_array.push(new user_table_data(table.attr("value"), table.find(`.name`).text(), table.find(`.id`).text(), table.find(`.pwd`).text(), table.find(`.phone`).text(), table.find(`.email`).text(), table.find(`.branch_list`).attr("value") ));
-        console.log("user branch id : " + table.find(`.branch_list`).attr("value"));
-      }
-    });
-    $(`.spec_auth_table.manege_table_clicked`).each(function (index, value) {
-      value.remove();
+    $("#spec_install").children().each(function (index, value) {
+      list_clean($(this));
     });
   }
-
-  return table_data_array;
-}
-
-//여기
-function user_auth_table_control(jud, table_data_array) {
-  send_user_auth_data(jud, table_data_array);
-
-  if (jud) {
-    table_data_array.forEach(function (table_data) {
-      $(".spec_user_form").eq(auth_menu_val).prepend(spec_auth_table_temp(table_data));
-      var table = $(".spec_auth_table").eq(0);
-
-      list_prepend(table.find(".branch_list"), branch_list);
-    }); 
-  } else {
-    table_data_array.forEach(function (table_data) {
-      $("#unspec_user_form").prepend(unspec_auth_table_temp(table_data));
-      console.log(`user_id : ${table_data.index}`);
-      console.log($(`.spec_install_table[value=${table_data.index}]`).parent().html());
-      $(`.spec_install_table[value=${table_data.index}]`).parent().remove();
-    });
-  }
-}
-
-function send_user_auth_data(jud, table_data_array) {
   var fd = new FormData();
-  var auth = auth_menu_val + 1;
-  fd.append('table_data_array', JSON.stringify(table_data_array));
-  fd.append('jud', jud);
-  fd.append('key_auth', 0);
-  fd.append('auth', auth);
 
-  //console.log ("auth : " + auth + " / jud : " + jud);
+  fd.append('key_install', 0);
+  fd.append('id', id);
+
   $.ajax({
     url: './php/user-auth.php',
     data: fd,
@@ -350,31 +398,136 @@ function send_user_auth_data(jud, table_data_array) {
     processData: false,
     type: 'POST',
     success: function (data) {
-      switch (auth) {
-        case 1 : //관리자
-
-          break;
-        case 2 : //설치자
-          table_data_array.forEach(function (value) {
-            //console.log(value.index + " / " + value.name);
-            call_installer_list(value.index, jud);
-          });
-          break;
+      var target = $(".installer");
+      var installer_data = JSON.parse(data);
+      
+      installer_data = installer_data.reverse();
+      for (key in installer_data) {
+        list_prepend(target, installer_li_temp(installer_data[key]));
+        call_install_data(installer_data[key]['id']);
       }
+      call_install_data("NULL"); // NULL install 조회
+      
+      sortable_add($(`.spec_install_form`));
     }
   });
 }
 
-function list_prepend(ul_tag, data) {
-  return ul_tag.prepend(data);
+async function install_form_insert(install_data_class_array) {
+
+  if (install_data_class_array == 0) {
+    return 0;
+  }
+
+  for (key in install_data_class_array) {
+    var install_data = install_data_class_array[key];
+
+    if (install_data.user_id) {
+      var $installer = $(`.installer_dropdown[value="${install_data.user_id}"]`).parent();
+      var $installer_table = $installer.closest(".installer").children();
+      var installer_index = $installer_table.index($installer);
+      $(`.spec_install_form:eq(${installer_index})`).prepend(spec_install_table_temp(install_data));
+      var parent = $(`.spec_install_form:eq(${installer_index})`);
+      var table = parent.find(`.spec_install_table:eq(0)`);
+    } else {
+      $(`#unspec_install_form`).prepend(unspec_install_table_temp(install_data));
+    }    
+  }
 }
 
-function list_append(ul_tag, data) {
-  return ul_tag.append(data);
+function install_data_list_init(install_data) {
+  var install_data_class = [];
+  var install_data_key = Object.keys(install_data)[0];
+  install_data = install_data[install_data_key];
+
+  for (key in install_data) {
+    if (install_data[key].length == 0) {
+      return 0;
+    }
+    
+    install_data_class.push(new install_table_data(install_data[key]['region'], install_data[key]['address'], install_data[key]['user_id'], install_data[key]['id']));
+  }
+  
+  return install_data_class;
 }
 
-function list_clean(ul_tag, id) {
-  ul_tag.find(`button[value='${id}']`).remove();
+function call_install_data(id) {
+  if (id == "NULL") {
+    var target = $(`#unspec_install`);
+    var install_form = `<div id="unspec_install_form"></div>`;
+  } else {
+    var target = $(`#spec_install`);
+    var install_form = `<div class="spec_install_form" style="display: none"></div>`;
+    $("#installer_btn").text("설치자");
+    install_menu_val = 0;
+  }
+  install_form = list_prepend(target, install_form);
+
+  var fd = new FormData();
+
+  fd.append('key_install', 1);
+  fd.append('id', id);
+
+  $.ajax({
+    url: './php/user-auth.php',
+    data: fd,
+    contentType: false,
+    processData: false,
+    type: 'POST',
+    success: function (data) {
+      //console.log(data);
+      var install_data = JSON.parse(data);
+      install_form_insert(install_data_list_init(install_data));
+    }
+  });
+}
+
+/*
+################
+maintenance 함수
+################
+*/
+
+/*
+################
+branch 함수
+################
+*/
+
+function branch_dropdown_init() {
+  $(document).on('click', '.branch', function () {
+    var fd = new FormData();
+
+    fd.append('key', 5);
+    fd.append('branch_id', $(this).attr("value"));
+    fd.append('user_id', $(this).closest("table").attr("value"));
+
+    console.log(`branch id : ${$(this).attr("value")} / user id : ${$(this).closest("table").attr("value")}`);
+
+    $.ajax({
+      url: './php/user-auth.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function (data) { }
+    });
+  });
+}
+
+function branch_value_set(table) {
+  var branch_list = table.find(`.branch[value='${table.find(`.branch_list`).attr("value")}']`);
+  var branch_dropdown = table.find(`.dropdownMenu`);
+
+  if (branch_list.attr("value")) {
+
+    branch_dropdown.text(branch_list.text());
+    branch_dropdown.attr("value", branch_list.attr("value"));
+    console.log(table.find(`.dropdownMenu`).html());
+    console.log(branch_list.text());
+    console.log(branch_list.attr("value"));
+
+  }
 }
 
 function branch_insert(jud) {
@@ -424,112 +577,11 @@ function call_branch_list() {
   });
 }
 
-function call_installer_list(id, jud) {
-  if (!(jud)) {
-    var target = $(".installer");
-    list_clean(target, id);
-
-    return 0;
-  }
-  var fd = new FormData();
-
-  fd.append('key_install', 0);
-  fd.append('id', id);
-
-  $.ajax({
-    url: './php/user-auth.php',
-    data: fd,
-    contentType: false,
-    processData: false,
-    type: 'POST',
-    success: function (data) {
-      var target = $(".installer");
-      var installer_data = JSON.parse(data);
-
-      if (id) { // 한번에 한개씩
-        list_prepend(target, installer_li_temp(installer_data[0]));
-        call_install_data(installer_data[0]['id']);
-      } else { // 한번에 싹다
-        installer_data = installer_data.reverse();
-        for (key in installer_data) {
-          list_prepend(target, installer_li_temp(installer_data[key]));
-          call_install_data(installer_data[key]['id']);
-        }
-        call_install_data("NULL"); // NULL install 조회
-      }
-      sortable_add($(`.spec_install_form`));
-    }
-  });
-}
-
-async function install_form_insert(install_data_class_array) {
-
-  if (install_data_class_array == 0) {
-    return 0;
-  }
-
-  for (key in install_data_class_array) {
-    var install_data = install_data_class_array[key];
-
-    if (install_data.user_id) {
-      var $installer = $(`.installer_dropdown[value="${install_data.user_id}"]`).parent();
-      var $installer_table = $installer.closest(".installer").children();
-      var installer_index = $installer_table.index($installer);
-      $(`.spec_install_form:eq(${installer_index})`).prepend(spec_install_table_temp(install_data));
-      var parent = $(`.spec_install_form:eq(${installer_index})`);
-      var table = parent.find(`.spec_install_table:eq(0)`);
-      
-      //console.log(table);
-    } else {
-      console.log($(`#unspec_install_form`).prepend(unspec_install_table_temp(install_data)));
-    }    
-  }
-}
-
-function install_data_list_init(install_data) {
-  var install_data_class = [];
-  var install_data_key = Object.keys(install_data)[0];
-  install_data = install_data[install_data_key];
-
-  for (key in install_data) {
-    if (install_data[key].length == 0) {
-      return 0;
-    }
-    
-    install_data_class.push(new install_table_data(install_data[key]['region'], install_data[key]['address'], install_data[key]['user_id'], install_data[key]['id']));
-  }
-  
-  return install_data_class;
-}
-
-function call_install_data(id) {
-  if (id == "NULL") {
-    var target = $(`#unspec_install`);
-    var install_form = `<div id="unspec_install_form"></div>`;
-  } else {
-    var target = $(`#spec_install`);
-    var install_form = `<div class="spec_install_form" style="display: none"></div>`;
-  }
-  install_form = list_prepend(target, install_form);
-
-  var fd = new FormData();
-
-  fd.append('key_install', 1);
-  fd.append('id', id);
-
-  $.ajax({
-    url: './php/user-auth.php',
-    data: fd,
-    contentType: false,
-    processData: false,
-    type: 'POST',
-    success: function (data) {
-      //console.log(data);
-      var install_data = JSON.parse(data);
-      install_form_insert(install_data_list_init(install_data));
-    }
-  });
-}
+/*
+################
+templete 함수
+################
+*/
 
 function unspec_auth_table_temp(spec_auth_table_data) {
   $temp = `<table class=\"mw-360 unspec_auth_table manege_table_border mb-3\" value=\"${spec_auth_table_data.index}\">
@@ -541,13 +593,13 @@ function unspec_auth_table_temp(spec_auth_table_data) {
           <tr class=\"\">
             <td class=\"px-2 manege_table_border table_click phone\" colspan=\"2\">${spec_auth_table_data.phone}</td>
             <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-              <button class=\"btn text-primary p-0 w-100\">비번<br>초기화</button>
+              <button class=\"btn text-primary p-0 w-100\">초기화</button>
             </td>
           </tr>
           <tr class=\"\">
             <td class=\"px-2 manege_table_border table_click email\" colspan=\"2\">${spec_auth_table_data.email}</td>
             <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-              <button class=\"btn text-primary p-0 w-100\">정보<br>삭제</button>
+              <button class=\"btn text-primary p-0 w-100\">삭제</button>
             </td>
           </tr>
         </table>`;
@@ -577,7 +629,7 @@ function spec_auth_table_temp(unspec_auth_table_data) {
         <tr class=\"\">
           <td class=\"px-2 table_click manege_table_border email\" colspan=\"2\">${unspec_auth_table_data.email}</td>
           <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-            <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
+            <button class=\"btn text-primary p-0 w-100\">초기화</button>
           </td>
         </tr>
       </table>`;

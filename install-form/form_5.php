@@ -127,31 +127,114 @@
         </div>
     </div>
 
-    <?php
-    for ($index = 0; $index < $comment_count; $index = $index + 1) {
-        $ddd = "
-                <div class=\"d-flex my-5 comments\">
-                    <div class=\"ms-4 w-100\">
-                        <div class=\"fw-bold fs-sm-2 mb-1 commenter\">
-                            $installer_name
-                            <span class=\"fw-normal fs-sm-1 comments_purpose\">$comments_purpose[$index]</span>
-                            <span class=\"fw-normal fs-sm-1 comments_time\">$comments_date[$index]</span>
-                        </div>
-                        <div>$comments_contents[$index]</div>
-                    </div>
-                    <div>
-                        <a class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 commments_file w-100\" href=\"$image_download_link[$index]\" download>첨부파일</a>
-                        <div class=\"btn btn-outline-info fw-normal fs-sm-1 p-1 w-100\" onclick=\"commments_delete($comments_index[$index])\">삭제</div>
-                    </div>
+    <div class="mx-3">
+        <section class="d-flex bg-grey">
+            <div class="">설치</div>
+            <div class="border-bl-90 text-center mx-2" style="width: 100px;"><?php echo $comment_total[0] ?></div>
+            <div class="">연동</div>
+            <div class="border-bl-90 text-center mx-2" style="width: 100px;"><?php echo $comment_total[1] ?></div>
+            <div class="">제어기</div>
+            <div class="border-bl-90 text-center mx-2" style="width: 100px;"><?php echo $comment_total[2] ?></div>
+            <div class="ms-auto dropdown">
+                <div id="search_purpose" class="dropdown-toggle dropdownMenu border-bl-90 text-center" style="width: 90px;" value="0" data-bs-toggle="dropdown" aria-expanded="false">
+                    전체
                 </div>
-                ";
-        echo $ddd;
-    }
-    ?>
+                <ul class="dropdown-menu dropdown-scroll">
+                    <li><button class="dropdown-item search_purpose_item">전체</button></li>
+                    <li><button class="dropdown-item search_purpose_item">설치</button></li>
+                    <li><button class="dropdown-item search_purpose_item">추가설치</button></li>
+                    <li><button class="dropdown-item search_purpose_item">연동설치</button></li>
+                    <li><button class="dropdown-item search_purpose_item">제어기설치</button></li>
+                    <li><button class="dropdown-item search_purpose_item">교체</button></li>
+                    <li><button class="dropdown-item search_purpose_item">반품</button></li>
+                </ul>
+            </div>
+        </section>
+        <section class="d-flex justify-content-center w-100 fs-5 bg-grey">
+            <div class="col text-center">#</div>
+            <div class="col text-center">목적</div>
+            <div class="col text-center">차수</div>
+            <div class="col text-center">날짜</div>
+            <div class="col text-center">시간</div>
+            <div class="col text-center">성명</div>
+            <div class="col text-center">사진</div>
+        </section>
+        <div id="comment_list">
+
+        </div>
+        <div class="card-body">
+            <form class="comment_form" class="mb-4 row" action="" method="post" onsubmit="return false">
+                <div class="align-center mb-3 row mt-2 align-center mx-5">
+                    <section class="d-flex justify-content-between w-100 fs-5">
+                        <div class="dropdown">
+                            <div id="comment_purpose" class="dropdown-toggle dropdownMenu border-bl-90 p-1 text-center" style="width: 130px;" data-bs-toggle="dropdown" aria-expanded="false">
+                                설치
+                            </div>
+                            <ul class="dropdown-menu dropdown-scroll purpose_menu">
+                                <li><button class="dropdown-item purpose_item">설치</button></li>
+                                <li><button class="dropdown-item purpose_item">추가설치</button></li>
+                                <li><button class="dropdown-item purpose_item">연동설치</button></li>
+                                <li><button class="dropdown-item purpose_item">제어기설치</button></li>
+                                <li><button class="dropdown-item purpose_item">교체</button></li>
+                                <li><button class="dropdown-item purpose_item">반품</button></li>
+                            </ul>
+                        </div>
+
+                        <div id="product_div" class="d-flex">
+                            <div class="p-1">제품번호</div>
+                            <input type="text" class="col border-bl-90 ms-2 me-4 p-1 product" style="width: 100px;">
+                        </div>
+                    </section>
+                </div>
+                <textarea class="form-control col" rows="2" placeholder="특이사항" id="comment_text" name="comment_text"></textarea>
+
+                <section class="d-flex justify-content-center w-100 fs-5 mt-3">
+                    <input type="text" id="comment_file_label" class="me-3 border-bl-90" style="flex-grow: 2;" readonly="readonly">
+                    <label class="btn btn-outline-info" for="comment_file_input">
+                        파일
+                    </label>
+                    <input type="file" id="comment_file_input" style="display:none" onchange="javascript:document.getElementById('comment_file_label').value = this.value.split('\\')[this.value.split('\\').length-1]" />
+                    <button type="submit" class="btn btn-outline-primary ms-3" onclick="comment_submit()">작성</button>
+                </section>
+            </form>
+        </div>
+    </div>
+    <!--
+        
+                    <div class="col-2 border-bl ms-3 dropdown">
+                        <div class="btn dropdown-toggle install_type dropdownMenu " value="0" data-bs-toggle="dropdown" aria-expanded="false" name="type">
+                            설치
+                        </div>
+                        <ul class="dropdown-menu dropdown-scroll">
+                            <li><button class="dropdown-item" value="0">설치</button></li>
+                            <li><button class="dropdown-item" value="1">연동</button></li>
+                            <li><button class="dropdown-item" value="2">제어기</button></li>
+                        </ul>
+                    </div>
+                    <div class="col-3 border-bl p-2 ms-3"><?php echo $user_name; ?></div>
+                    <div class="input-group date col me-auto" id="datetimepicker_comment" data-target-input="nearest" data-bs-auto-close="inside">
+                        <input type="text" id="calendar_text_comment" class="form-control datetimepicker-input border-bl bg-white" data-target="#datetimepicker_comment" name="comment_date" readOnly />
+                        <div class="input-group-append" data-target="#datetimepicker_comment" data-toggle="datetimepicker">
+                            <div class="input-group-text btn_calendar_2" id="comment_calendar" onclick="calendar_btn(1)"><i class="fa fa-calendar m-auto"></i></div>
+                        </div>
+                    </div>
+        <div class="dropdown">
+                        <div class="btn dropdown-toggle install_type border-bl dropdownMenu" value="0" data-bs-toggle="dropdown" aria-expanded="false" name="type">
+                            설치
+                        </div>
+                        <ul class="dropdown-menu dropdown-scroll">
+                            <li><button class="dropdown-item" value="0">설치</button></li>
+                            <li><button class="dropdown-item" value="1">연동</button></li>
+                            <li><button class="dropdown-item" value="2">제어기</button></li>
+                        </ul>
+                    </div>
+
     <div class=" card-body">
         <form class="comment_form" class="mb-4 row" action="" method="post" onsubmit="return false">
             <div class="align-center mb-3 row mt-2 align-center">
-                <div class="col-2 fs-sm-2 border-bl p-2 ms-3" id="comment_purpose">설치</div>
+                <div class="col-2 border-bl p-2 ms-3" id="comment_purpose">
+                    
+                </div>
                 <div class="col-3 fs-sm-2 border-bl p-2 ms-3"><?php echo $user_name; ?></div>
                 <div class="input-group date col me-auto" id="datetimepicker_comment" data-target-input="nearest" data-bs-auto-close="inside">
                     <input type="text" id="calendar_text_comment" class="form-control datetimepicker-input border-bl bg-white fs-sm-2" data-target="#datetimepicker_comment" name="comment_date" readOnly />
@@ -171,6 +254,7 @@
             </div>
         </form>
     </div>
+-->
     <div class="mt-3 d-flex">
         <button type="button" class="btn btn-danger btn-mobile d-block w-75" onclick="form_submit(1)"><?= $type_btn ?> 완료</button>
         <button type="button" class="btn btn-outline-primary btn-mobile d-block ms-auto w-23" onclick="form_submit(0)">임시저장</button>

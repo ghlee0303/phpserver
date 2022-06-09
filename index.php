@@ -2,6 +2,9 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
+$sql = "SELECT * FROM image_list WHERE id = 5";
+$result = mysqli_query($mysqli, $sql);
+$data = mysqli_fetch_array($result);
 
 ?>
 
@@ -25,10 +28,12 @@ include "./php/login-ok.php";
   <div class="container container-mobile-1 pb-3">
     <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
       <button type="button" class="btn btn-secondary border rounded-3 col-8 mt-5 h-10r fs-mobile-2 mx-auto" onclick="location.href='/install.php' "> 설치 </button>
-      <button type="button" class="btn btn-secondary border rounded-3 col-8 mt-5 h-10r fs-mobile-2 mx-auto" onclick="location.href='/manege-menu.php' "> 관리자 메뉴 </button>
+      <button type="button" class="btn btn-secondary border rounded-3 col-8 mt-5 h-10r fs-mobile-2 mx-auto" onclick="location.href='/manege-total.php' "> 관리 </button>
       <button type="button" class="btn btn-secondary border rounded-3 col-8 mt-5 h-10r fs-mobile-2 mx-auto" onclick="location.href='/maintenance.php' "> 유지보수 </button>
     </div>
   </div>
 </body>
-
+<script>
+  
+</script>
 </html>

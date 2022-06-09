@@ -20,14 +20,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }*/
 
   if (isset($delete_images_num)) {
-    $sql = "UPDATE photo_name SET delete_yn = 1 WHERE install_id = '$install_id' AND num in (";
+    $sql = "UPDATE image_list SET delete_yn = 1 WHERE install_id = '$install_id' AND num in (";
     foreach ($delete_images_num as $key => $value) {
       $nums = $nums . ", " . "'$value'";
     }
     $sql_delete = $sql . substr($nums, 1) . ")";
   }
 
+  $result = mysqli_query($mysqli, $sql_delete);
+
+  if ($result) {
+    echo "update 쿼리성공\n";
+  } else {
+    echo "update 쿼리실패\n";
+    echo mysqli_error($mysqli);
+    echo "\n";
+  }
+
   echo "$sql_delete\n";
-  echo "$nums";
+  print_r($delete_images_num);
 }
 ?>

@@ -163,7 +163,7 @@ function test(&$qqq)
 <html lang="en" dir="ltr">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <meta name="viewport" content="width=device-width">
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -176,10 +176,20 @@ function test(&$qqq)
 <body>
   <?php include "./header.php" ?>
   <div class=" container container-mobile-1 pb-3">
-    <div class="row mb-5">
-      <button type="button" onclick="top_menu(0)" class="btn btn-dark rounded-3 col-4 fs-5 h-5r">권한</button>
-      <button type="button" onclick="top_menu(1)" class="btn btn-outline-dark rounded-3 col-4 fs-5">설치</button>
-      <button type="button" onclick="top_menu(2)" class="btn btn-outline-dark rounded-3 col-4 fs-5">유지보수</button>
+    <div class="row mb-2">
+      <button type="button" onclick="location.href = '/manege-total.php' " class="btn btn-outline-dark rounded-3 col-3 fs-5">현황</button>
+      <div class="btn btn-dark rounded-3 col-3 fs-5 dropdown align-center">
+        <div class="dropdown-toggle dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+          권한
+        </div>
+        <ul class="dropdown-menu dropdown-scroll">
+          <li><button class="dropdown-item" onclick="top_menu(0)">관리권한&nbsp</button></li>
+          <li><button class="dropdown-item" onclick="top_menu(1)">설치권한&nbsp</button></li>
+          <li><button class="dropdown-item" onclick="top_menu(2)">유지보수권한&nbsp</button></li>
+        </ul>
+      </div>
+      <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치</button>
+      <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수</button>
     </div>
 
     <!-- Modal -->
@@ -229,17 +239,6 @@ function test(&$qqq)
       </div>
     </div>
 
-
-    <div class="eeeee">
-      <button class="test">dddd</button>
-    </div>
-    <div class="qqqqq">
-      <button class="test2">dddd</button>
-    </div>
-    <div class="wwwww">
-      <button class="test3">33333</button>
-    </div>
-
     <div class="row mt-0 d-flex auth">
       <div class="row mb-0 mx-0 d-flex">
         <div class="col-44"></div>
@@ -254,7 +253,7 @@ function test(&$qqq)
         </div>
       </div>
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r mb-3 border-bl">미지정</div>
+        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
         <?php
         echo $unspec_table_set;
         ?>
@@ -269,7 +268,7 @@ function test(&$qqq)
         </div>
       </div>
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r border-bl mb-3">
+        <div class="flex-center fs-4 h-3r border-bl mb-3">
           <div class="dropdown text-center">
             <div class="btn dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
               관리권한
@@ -292,7 +291,7 @@ function test(&$qqq)
 
     <div class="row mt-5 d-flex d-none auth">
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r mb-3 manege_table_border">미지정</div>
+        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
         <div id="unspec_install">
 
         </div>
@@ -308,9 +307,9 @@ function test(&$qqq)
       </div>
 
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r border-bl mb-3">
+        <div class="flex-center fs-4 h-3r border-bl mb-3">
           <div class="dropdown text-center">
-            <div class="btn btn-white dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
+            <div id="installer_btn" class="btn btn-white dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
               설치자
             </div>
             <ul class="dropdown-menu dropdown-scroll installer">
@@ -326,7 +325,7 @@ function test(&$qqq)
 
     <div class="row mt-5 d-flex auth d-none">
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r mb-3 manege_table_border">미지정</div>
+        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
         <?php
         echo $unspec_table_set;
         ?>
@@ -341,7 +340,7 @@ function test(&$qqq)
         </div>
       </div>
       <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-4r border-bl mb-3">
+        <div class="flex-center fs-4 h-3r border-bl mb-3">
           <div class="dropdown text-center">
             <div class="btn btn-white dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
               유지보수자
@@ -373,9 +372,15 @@ function test(&$qqq)
 <script type="text/javascript" src="script/manege-auth.js?<?php echo time(); ?>"></script>
 <script>
   function top_menu(index) {
-    document.querySelector('.btn-dark').classList.replace('btn-dark', 'btn-outline-dark');
-    document.querySelectorAll('.btn-outline-dark')[index].classList.replace('btn-outline-dark', 'btn-dark');
+    if (top_menu_val == index)
+      return;
+    switch (index) {
+      case 1:
+        console.log("ㄷㄷ");
+        call_installer_list(0, 0);
+        break;
 
+    }
     var view = $('.auth');
 
     view.eq(index).removeClass('d-none');
@@ -401,55 +406,18 @@ function test(&$qqq)
     });
   }
 
-  function branch_dropdown_init() {
-    $(document).on('click', '.branch', function() {
-      var fd = new FormData();
-      
-      fd.append('key', 5);
-      fd.append('branch_id', $(this).attr("value"));
-      fd.append('user_id', $(this).closest("table").attr("value"));
-
-      console.log(`branch id : ${$(this).attr("value")} / user id : ${$(this).closest("table").attr("value")}`);
-
-      $.ajax({
-        url: './php/user-auth.php',
-        data: fd,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function (data) {
-        }
-      });
-    });
-  }
-
-  function branch_value_set(table) {
-    var branch_list = table.find(`.branch[value='${table.find(`.branch_list`).attr("value")}']`);
-    var branch_dropdown = table.find(`.dropdownMenu`);
-
-    if (branch_list.attr("value")) {
-      
-      branch_dropdown.text(branch_list.text());
-      branch_dropdown.attr("value", branch_list.attr("value"));
-      console.log(table.find(`.dropdownMenu`).html());
-      console.log(branch_list.text());
-      console.log(branch_list.attr("value"));
-
-    }
-  }
-
   function getElementIndex(e, range) {
     if (!!range) return [].indexOf.call(e, range);
     return [].indexOf.call(e.parentNode.children, e);
   }
 
   function sortable_add(target) {
-    target.each(function (index, value) {
+    target.each(function(index, value) {
       $(this).sortable({
-        start:function(event, ui){
+        start: function(event, ui) {
           install_seq = ui.item.index();
         },
-        stop:function(event, ui){
+        stop: function(event, ui) {
           install_set_seq(ui.item.index());
         },
       });
@@ -477,13 +445,14 @@ function test(&$qqq)
     install_dropdown_init();
     branch_dropdown_init();
     call_branch_list();
-    
+
     $(".test1").on("click", function() {
       $(`.spec_install_form`).sortable('refresh');
     });
 
     $(".test2").on("click", function() {
-      sortable_add($(`.spec_install_form`));
+      console.log("뭔데");
+      call_installer_list(0, 0);
     });
 
     $(".test3").on("click", function() {

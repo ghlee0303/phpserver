@@ -2,24 +2,9 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
-$install_db_data = array();
-$install_spot_db_data = array();
-
 $user_sql = "SELECT * FROM user WHERE name = '$_SESSION[name]' AND user_id = '$_SESSION[userid]'";
 $user_result = mysqli_query($mysqli, $user_sql);
 $user_data = mysqli_fetch_array($user_result);
-
-if (empty($_GET['search'])) {
-    $install_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id FROM install JOIN install_spot ON install.install_spot_id = install_spot.id WHERE user_id = $user_data[id] ORDER BY date DESC";
-    $install_result = mysqli_query($mysqli, $install_sql);
-} else {
-    $install_sql = "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id FROM install JOIN install_spot ON install.install_spot_id = install_spot.id JOIN user ON install.user_id = user.id WHERE MATCH(install_spot.address_2) AGAINST('$_GET[search]*' IN BOOLEAN MODE) OR MATCH(user.name) AGAINST('$_GET[search]*' IN BOOLEAN MODE)";
-    $install_result = mysqli_query($mysqli, $install_sql);
-}
-
-while ($install_spot_row = mysqli_fetch_array($install_result)) {
-    $install_spot_db_data[] = $install_spot_row;
-}
 ?>
 
 <!DOCTYPE html>
@@ -38,23 +23,24 @@ while ($install_spot_row = mysqli_fetch_array($install_result)) {
 
 <body>
     <?php include "./header.php"; ?>
+    <button onclick="call_install_list()">eeeee</button>
     <div class="container container-mobile-1 pb-3">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-4 mt-4 nav_bottom_line">
             <div class="row">
                 <div class="col dropdown">
-                    <div class="col btn btn-secondary dropdown-toggle fs-3 w-dropdown" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false" name="region">
+                    <div class="col btn btn-secondary dropdown-toggle fs-3 w-dropdown dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" name="region">
                         지역
                     </div>
-                    <ul class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu1">
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
-                        <li><button class="dropdown-item item_1">서울특별시</button></li>
-                        <li><button class="dropdown-item item_1">부산특별시</button></li>
-                        <li><button class="dropdown-item item_1">대구특별시</button></li>
+                    <ul class="dropdown-menu dropdown-scroll">
+                        <li><button class="dropdown-item">서울특별시</button></li>
+                        <li><button class="dropdown-item">부산특별시</button></li>
+                        <li><button class="dropdown-item">대구특별시</button></li>
+                        <li><button class="dropdown-item">서울특별시</button></li>
+                        <li><button class="dropdown-item">부산특별시</button></li>
+                        <li><button class="dropdown-item">대구특별시</button></li>
+                        <li><button class="dropdown-item">서울특별시</button></li>
+                        <li><button class="dropdown-item">부산특별시</button></li>
+                        <li><button class="dropdown-item">대구특별시</button></li>
                     </ul>
                 </div>
             </div>
@@ -80,55 +66,25 @@ while ($install_spot_row = mysqli_fetch_array($install_result)) {
                     <th scope="col" class="pt-4 fs-5 ">입력</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php
-                foreach ($install_spot_db_data as $key => $value) {
-                    switch ($value['type']) {
-                        case 0:
-                            $type_btn = "설치";
-                            break;
-                        case 1:
-                            $type_btn = "연동";
-                            break;
-                        case 2:
-                            $type_btn = "제어기";
-                            break;
-                    }
-                    $complete_color = "blue";
-                    if (empty($value['complete'])) {
-                        $complete_color = "red";
-                    }
-                    $index = $key + 1;
-                    $ddd = "
-                    <tr onclick=\"location.href='/install-info.php?id=$value[id]' \">
-                        <td>$index</td>
-                        <td>$value[date]</td>
-                        <td>$value[address]</td>
-                        <td>홍길동</td>
-                        <td style=\"color:$complete_color;\">$type_btn</td>
-                        <td class='text-center'>$value[count]/78</td>
-                    </tr>";
-                    echo $ddd;
-                }
-                ?>
+            <tbody id="install_list_tbody">
+
             </tbody>
         </table>
         <div class="d-flex text-end">
             <div class="dropdown">
-                <div class="btn dropdown-toggle fs-4 w-10 border-bl" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" name="region">
-                    설치
+                <div class="btn dropdown-toggle fs-4 w-10 border-bl install_type dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" name="type">
+                    설치 종류
                 </div>
-                <ul class="dropdown-menu dropdown-scroll_2" aria-labelledby="dropdownMenu2">
-                    <li><button class="dropdown-item item_2" value="0">설치</button></li>
-                    <li><button class="dropdown-item item_2" value="1">연동</button></li>
-                    <li><button class="dropdown-item item_2" value="2">제어기</button></li>
+                <ul class="dropdown-menu dropdown-scroll">
+                    <li><button class="dropdown-item" value="0">설치</button></li>
+                    <li><button class="dropdown-item" value="1">연동</button></li>
+                    <li><button class="dropdown-item" value="2">제어기</button></li>
                 </ul>
             </div>
             <button type="button" class="btn fs-4 border-bl w-10" onclick="install_new()">글쓰기</button>
         </div>
     </div>
 </body>
-<script type="text/javascript" src="script/dropdown.js?<?php echo time(); ?>"></script>
 <script type="text/javascript" src="script/test.js?<?php echo time(); ?>"></script>
 <script type="text/javascript" src="script/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -136,20 +92,118 @@ while ($install_spot_row = mysqli_fetch_array($install_result)) {
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
 <script>
-    document.getElementById('dropdownMenu2').value = "0";
-    dropdown_setting(1);
-    dropdown_setting(2);
+    var called = 0;
+    window.onload = function() {
+        dropdown_init();
+        call_install_list();
+    }
+
+    function dropdown_init() {
+        $(document).on('click', '.dropdown-item', function() {
+            console.log($(this));
+            var parent = $(this).parents(".dropdown-menu").siblings(".dropdownMenu");
+            parent.text($(this).text());
+            parent.attr("value", $(this).attr("value"));
+        });
+    }
 
     function install_new() {
-        var type_value = document.querySelector('#dropdownMenu2').value;
+        var type_value = document.querySelector('.dropdownMenu')[1].value;
         console.log(type_value);
         location.href = '/install-info.php?id=new&type=' + type_value;
     }
 
     function search_submit() {
         var search_value = document.querySelector('#search').value;
-        location.href = "?search=" + search_value;
+        var date_1 = $(".datetimepicker-input:eq(0)").val();
+        var date_2 = $(".datetimepicker-input:eq(1)").val();
+        location.href = `?search=${search_value}&date1=${date_1}&date2=${date_2}`;
     }
+
+    function call_install_list() {
+        var fd = new FormData();
+
+        fd.append('type', $(".install_type").attr("value"));
+        fd.append('date_1', $(".datetimepicker-input:eq(0)").val());
+        fd.append('date_2', $(".datetimepicker-input:eq(1)").val());
+        fd.append('search', $("#search").val());
+        fd.append('name', "<?php echo $name; ?>");
+        fd.append('userid', "<?php echo $userid; ?>");
+
+        $.ajax({
+            url: './php/install-list.php',
+            data: fd,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data) {
+                //console.log(JSON.parse(data));
+                //console.log(data);
+                set_install_table(JSON.parse(data));
+            }
+        });
+    }
+
+    function remove_install_table() {
+        $("#install_list_tbody").children().each(function() {
+            $(this).remove();
+        });
+    }
+
+    function set_install_table(db_data) {
+        console.log("dd " + called);
+        if (!called == 0) {
+            remove_install_table();
+            console.log("eeee");
+        }
+        called = 1;
+        db_data.forEach(function(value, index) {
+            var type_btn;
+            //console.log("type : " + value.type);
+            switch (value.type) {
+                case "0":
+                    //console.log("1번");
+                    type_btn = "설치";
+                    break;
+                case "1":
+                    //console.log("2번");
+                    type_btn = "연동";
+                    break;
+                case "2":
+                    //console.log("3번");
+                    type_btn = "제어기";
+                    break;
+            }
+
+            var complete_color = "blue";
+            if (!value.complete)
+                complete_color = "red";
+
+            var date = value.date;
+            if (!value.date)
+                date = "";
+
+            var address = value.address;
+            if (!value.address)
+                address = "";
+
+            var count = value.count;
+            if (!value.count)
+                count = "0";
+
+            var ddd = ` 
+            <tr onclick=\"location.href='/install-info.php?id=${value.id}' \">
+                <td>${index+1}</td>
+                <td>${date}</td>
+                <td>${address}</td>
+                <td>${value.name}</td>
+                <td style=\"color:${complete_color};\">${type_btn}</td>
+                <td class='text-center'>${count}/78</td>
+            </tr>`;
+            $("#install_list_tbody").append(ddd);
+        });
+    }
+
     /*
     
             <div class="dropdown col me-5">

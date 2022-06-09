@@ -48,10 +48,25 @@ function comment_upload($mysqli) {
   $install_id = $_POST["install_id"];
   $commenter_id = $_POST['commenter_id'];
   $commenter_name = $_POST['commenter_name'];
-  $comment_date = $_POST['comment_date'];
+  $comment_date = date("Y-m-d H:i:s");
   $comment_text = $_POST['comment_text'];
   $comment_purpose = $_POST['comment_purpose'];
+  $comment_product_val = $_POST['comment_product_val'];
+  $product = $_POST['product'];
 
+  /*
+  echo "작성자 id: $commenter_id\n";
+  echo "작성자명: $commenter_name\n";
+  echo "날짜: $comment_date\n";
+  echo "내용: $comment_text\n";
+  echo "목적: $comment_purpose\n";
+  echo "변수: $comment_product_val\n";
+  echo "제품1: $product[0]\n";*/
+
+  if ($comment_product_val) {
+    $product[1] = "NULL";
+  }
+  
   $sql_user = "SELECT id FROM user WHERE name = '$commenter_name' AND user_id = '$commenter_id'";
   $result = mysqli_query($mysqli, $sql_user);
   if ($result) {
@@ -64,7 +79,7 @@ function comment_upload($mysqli) {
   $row = mysqli_fetch_array($result);
   $user_index = $row['id'];
 
-  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_date', contents = '$comment_text', purpose = '$comment_purpose', install_id = '$install_id'";
+  $sql_comment = "INSERT INTO comment SET u_id = '$user_index', date = '$comment_date', contents = '$comment_text', purpose = '$comment_purpose', install_id = '$install_id', productNo = '$product[0]', productChange = '$product[1]'";
   $result = mysqli_query($mysqli, $sql_comment);
   echo "$sql_comment\n";
   if ($result) {

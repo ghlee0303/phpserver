@@ -23,19 +23,6 @@
     <canvas id="myCanvas" class="" style="background-color:aliceblue " width="500" height="700"></canvas>
   </div>
 
-
-  <div class="can_x">
-
-  </div>
-  <div class="can_y">
-
-  </div>
-  <div class="ok">
-
-  </div>
-
-
-
   <script type="text/javascript" src="script/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -50,10 +37,11 @@
       canvas = document.getElementById("myCanvas");
       context = canvas.getContext("2d");
 
-      context.lineWidth = 2; // 선 굵기를 2로 설정
+      // 선 굵기 2, 검은색
+      context.lineWidth = 2;
       context.strokeStyle = "black";
 
-      // 마우스 리스너 등록. e는 MouseEvent 객체
+      // 터치 리스너 등록. e는 MouseEvent 객체
       canvas.addEventListener("touchmove", function(e) {
         move(e)
       }, false);
@@ -77,14 +65,12 @@
     }
 
     function start(e) {
-      $(".ok").text("시작");
       startX = e.changedTouches[0].pageX - 30;
       startY = e.changedTouches[0].pageY - 70;
       drawing = true;
     }
 
     function end(e) {
-      $(".ok").text("끝");
       drawing = false;
     }
 
@@ -100,9 +86,6 @@
       /*
       var endX = e.changedTouches[0].clientX;
       var endY = e.changedTouches[0].clientY;*/
-
-      $(".can_x").text(curX);
-      $(".can_y").text(curY);
 
     }
 
