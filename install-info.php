@@ -89,7 +89,8 @@ if ($_GET['id'] == 'new') {
     COUNT(CASE WHEN purpose='설치' THEN 1 END) as '설치2',
     COUNT(CASE WHEN purpose='연동설치' THEN 1 END) as '연동',
     COUNT(CASE WHEN purpose='제어기설치' THEN 1 END) as '제어기'
-  FROM comment";
+  FROM comment
+  WHERE install_id = $_GET[id]";
   $comment_total_result = mysqli_query($mysqli, $comment_total_sql);
   $comment_total_row = mysqli_fetch_array($comment_total_result);
   $comment_total[0] = $comment_total_row['설치'] + $comment_total_row['설치2'];
@@ -161,7 +162,22 @@ switch ($install_type) {
 
 
   </div>
-
+  <div class="modal fade" id="newinstall_confirm" tabindex="-1" aria-labelledby="newinstall_confirmLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-2" id="newinstall_confirmLabel">알림</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="mx-auto text-center fs-4 my-4">
+          글쓰기 중에는 저장 후에 댓글 및 싸인을 작성 하실 수 있습니다.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 <script type="text/javascript">
@@ -173,6 +189,8 @@ switch ($install_type) {
     $(window).on('beforeunload', function() {
       return "값이 저장되지 않았습니다. 나가시겠습니까?";
     });
+    if (searchParam('id') == 'new')
+      $('#newinstall_confirm').modal("show");
 
     confirm_menu_click();
     setThumbnail();
@@ -205,7 +223,7 @@ switch ($install_type) {
     console.log("ㅇㅇ");
     return $(parent).index(target.closest($(parent)));
   }
-    //text로 시작하는 html을 가진 Element 찾기
+  //text로 시작하는 html을 가진 Element 찾기
   $.fn.findByStartText = function(text) {
     return this.filter(function() {
       return this.innerHTML.indexOf(text) == 0;
@@ -274,7 +292,8 @@ switch ($install_type) {
     var check_list_input = document.querySelectorAll('.check_list');
 
     check_array.forEach(element => {
-      check_list_input[element].click();
+      console.log(check_list_input[element - 1]);
+      check_list_input[element - 1].click();
     });
   }
 
@@ -296,7 +315,7 @@ switch ($install_type) {
     }
   }
 
-    //상단 메뉴 중 설치완료 클릭 시
+  //상단 메뉴 중 설치완료 클릭 시
   function confirm_menu_click() {
     $(".confirm").on("click", function() {
       $("#confirm_region").val($("#region").val());
@@ -388,15 +407,14 @@ switch ($install_type) {
   ################
   */
 
-  function form_submit(complete) { // 저장함수 (complete = 1 저장 / 0 임시저장)
+  function form_submit(complete, href_jud) { // 저장함수 (complete = 1 저장 / 0 임시저장)
     var fd = new FormData();
     var img_count = 0;
     var total_count = 0;
-    var install_type = <?php echo $install_type; ?>;
-    //console.log(install_type);
+    var install_type = $("#comment_purpose").text().trim();
     fd.append('user_id', '<?php echo $_SESSION['userid'] ?>');
     fd.append('user_name', '<?php echo $_SESSION['name'] ?>');
-    fd.append('type', '<?php echo $install_type ?>');
+    fd.append('type', install_type);
     fd.append('query', searchParam('id'));
 
     //사용자가 입력한 데이터들을 formdata에 넣음
@@ -427,7 +445,7 @@ switch ($install_type) {
     console.log("count : " + total_count);
 
     if (complete) { // 설치,연동,제어기 완료 버튼 클릭 시
-      if (!(install_type) && (total_count != 78)) { // 설치의 경우 비어있는 항목 없이 모든 항목을 채워야함
+      if ((install_type == "추가설치" || install_type == "설치") && (total_count != 78)) { // 설치의 경우 비어있는 항목 없이 모든 항목을 채워야함
         alert("입력이 덜 된 부분이 있습니다.");
         return;
       }
@@ -443,13 +461,30 @@ switch ($install_type) {
       async: false,
       type: 'POST',
       success: function(data) {
-        console.log(data);
-        /*
-        $(window).off('beforeunload');
-        alert('message');
-        window.location = '/install.php';*/
+        if (href_jud) {
+          $(window).off('beforeunload');
+          window.location = '/install.php';
+        }
       }
     });
+  }
+
+  function install_complete_text(text) {
+    switch (text) {
+      case "추가설치": {
+        text = "설치";
+        break;
+      }
+      case "연동설치": {
+        text = "연동";
+        break;
+      }
+      case "제어기설치": {
+        text = "제어기";
+        break;
+      }
+    }
+    $("#install_complete").text(text + " 완료");
   }
 
   /*
@@ -460,6 +495,7 @@ switch ($install_type) {
 
   function comment_purpose_dropdown_change_click() { // 댓글 작성 시 "교체" 항목 일 경우 제품번호 입력 div 변경
     $('.purpose_item').on("click", function() {
+      install_complete_text($(this).text());
       if ($(this).text() == "교체") {
         comment_product_div_control(0);
         return;
@@ -486,11 +522,16 @@ switch ($install_type) {
     }
   }
 
-  function comment_submit() {
+  async function comment_submit() {
     if (searchParam('id') == 'new') {
       alert("새 글쓰기 중에는 댓글을 작성할 수 없습니다.");
       return;
     }
+
+    if (!confirm("임시저장 후 댓글 작성이 가능합니다. 임시저장 하시겠습니까?")) {
+      return;
+    }
+    await form_submit(0, 0);
 
     var fd = new FormData();
     var comment_file = document.querySelector('#comment_file_input').files[0];
@@ -520,33 +561,8 @@ switch ($install_type) {
       processData: false,
       type: 'POST',
       success: function(data) {
-        console.log(data);
-      }
-    });
-  }
-
-  function comment_file(index) { // 댓글 파일 나중에 고쳐야함
-    var image_file_name = <?php echo json_encode($image_download_link); ?>;
-    if (image_file_name[index]) {
-      console.log(image_file_name[index] + "/" + index);
-    } else {
-      console.log("비었음");
-    }
-  }
-
-  function commments_delete(index) { // 안쓴다던데 고쳐야하나
-    var fd = new FormData();
-
-    fd.append('comment_id', index);
-    fd.append('comment_type', "delete");
-    $.ajax({
-      url: './php/comment-server.php',
-      data: fd,
-      contentType: false,
-      processData: false,
-      type: 'POST',
-      success: function(data) {
-        console.log(data);
+        $(window).off('beforeunload');
+        location.reload();
       }
     });
   }
@@ -567,28 +583,33 @@ switch ($install_type) {
       async: true,
       success: function(data) {
         //console.log(data);
-        var comment_list_data = JSON.parse(data);   
+        var comment_list_data = JSON.parse(data);
         var target = $("#comment_list");
         target.empty();
-        comment_list_data.forEach(function (value, index) {
+        comment_list_data.forEach(function(value, index) {
           console.log(value);
-          target.append(comment_list_temp(index+1, value));
+          target.append(comment_list_temp(index + 1, value));
         });
       }
     });
   }
 
   function search_purpose_item_click() {
-    document.querySelectorAll(".search_purpose_item").forEach(function (value, index) {
+    document.querySelectorAll(".search_purpose_item").forEach(function(value, index) {
       value.addEventListener('click', function() {
-        console.log("테스트 : " + index );
+        console.log("테스트 : " + index);
         var search_purpose = value.innerText.trim();
         console.log(search_purpose);
         call_comment_list(search_purpose);
       });
     })
   }
-  
+
+  function comment_image_href(image) {
+    var img_link = `http://ealert.iconnect.kr/image/${image}`;
+    window.open(img_link);
+  }
+
   /*
   ################
   싸인 함수
@@ -596,7 +617,11 @@ switch ($install_type) {
   */
 
   async function sign_ok() {
-    await form_submit(0);
+    if (searchParam('id') == 'new') {
+      alert("새 글쓰기 중에는 댓글을 작성할 수 없습니다.");
+      return;
+    }
+    await form_submit(0, 0);
     location.href = `/install-sign.php?install_id=${searchParam('id')}`;
   }
 
@@ -626,24 +651,27 @@ switch ($install_type) {
 
     return temp;
   }
-  
+
   function comment_list_temp(index, comment_list_data) {
     var temp = `
-    <section class=\"d-flex justify-content-center border-bottom-gr w-100 fs-5\">
-      <div class=\"col text-center\">${index}</div>
-      <div class=\"col text-center\">${comment_list_data.purpose}</div>
-      <div class=\"col text-center\"></div>
-      <div class=\"col text-center\">${comment_list_data.date}</div>
-      <div class=\"col text-center\">${comment_list_data.time}</div>
-      <div class=\"col text-center\">${comment_list_data.name}</div>
-      <div class=\"col text-center\">사진</div>
-    </section>`;
-    
+    <div class="border-bottom-gr">
+      <section class=\"d-flex justify-content-center w-100 fs-5\">
+        <div class=\"col text-center\">${index}</div>
+        <div class=\"col text-center\">${comment_list_data.purpose}</div>
+        <div class=\"col text-center\"></div>
+        <div class=\"col text-center\">${comment_list_data.date}</div>
+        <div class=\"col text-center\">${comment_list_data.time}</div>
+        <div class=\"col text-center\">${comment_list_data.name}</div>
+        <div class=\"col text-center\" onclick=\"window.open('http://ealert.iconnect.kr/image/${comment_list_data.image}');\">사진</div>
+        `;
+
+    temp += `</section>`;
+
     if (comment_list_data.contents) {
       var sub = `<div class="mx-auto border-bl-90" style="width: 580px;">${comment_list_data.contents}</div>`;
-      temp = temp+sub;
+      temp = temp + sub;
     }
-
+    temp += "</div>";
     return temp;
   }
 </script>

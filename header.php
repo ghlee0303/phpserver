@@ -6,7 +6,7 @@
       <span class="fs-mobile-4 p-0 mx-3" onclick="location.href = '/maintenance.php' ">유지보수</span>
       <span class="fs-mobile-4 p-0 mx-3" onclick="location.href = '/manege-total.php' ">관리자 메뉴</span>
     </div>
-    
+
     <div class="col-1 dropdown flex-item ms-auto">
       <button class="toggler cat" type="button" data-bs-toggle="dropdown" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="toggler-icon "></span>
@@ -17,9 +17,9 @@
         <li class="border-bottom-bl mx-4"></li>
         <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href = '/install.php' ">설치</button></li>
         <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href = '/maintenance.php' ">유지보수</button></li>
-        <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href = '/manege-menu.php' ">관리자 메뉴</button></li>
+        <li><button class="dropdown-item header_item_1 fs-mobile-3 m-3" onclick="location.href='/manege-total.php' ">관리자 메뉴</button></li>
       </ul>
     </div>
-    
+
   </header>
 </div>

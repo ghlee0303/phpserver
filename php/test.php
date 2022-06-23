@@ -1,29 +1,77 @@
 <?php
 include "./db.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$sql = "SELECT * FROM install WHERE delete_yn is null";
+$result = mysqli_query($mysqli, $sql);
+$data = mysqli_fetch_array($result);
+$array = array();
+$start = 0;
 
-  $quarter = 1;
-  //$query_sql = "SELECT * FROM post WHERE install_spot_id IN (SELECT id FROM install_spot WHERE quarter(date) = $quarter)";
-
-  $query_sql = "SELECT * FROM post WHERE install_spot_id IN (SELECT id FROM install_spot WHERE quarter(date_format(date, '$_POST[year]-%m-%d')) = $_POST[quarter]) AND delete_yn is null AND maintenance is null";
-
-  echo "$query_sql\n";
-  
-  $query_result = mysqli_query($mysqli, $query_sql);
-
-  if (!($query_result)) {
-    echo "data_array 쿼리실패\n";
-    echo mysqli_error($mysqli);
-    echo "\n";
+while ($data != null) {
+  if (strpos($data['next'], "a") !== false) {
+    $start = $data['id'];
+    $data['next'] = explode("a", $data['next'])[1];
   }
-
-  $query_row = mysqli_fetch_array($query_result);
-
-  while ($query_row != null) {
-
-    print_r($query_row);
-    $query_row = mysqli_fetch_array($query_result);
-  }
+  $array[$data['id']] = $data;
+  $data = mysqli_fetch_array($result);
 }
+
+//print_r($array);
+$return = array();
+
+foreach($array as $val) {
+  echo "id : $start";
+  echo " / ";  
+  echo "next : ";
+  echo $array[$start]['next'];
+  echo "\n";
+  //echo $array[$start]['id'];
+  $return[] = $array[$start];
+  $start = $array[$start]['next'];
+}
+
+//print_r($return);
+echo "\n";
+echo "\n";
+echo "\n";
+echo "\n";
+  echo "\n";
+  echo "\n";
+  echo "\n";
+  echo "\n";
+  echo "\n";
+echo "\n";
+
+if ($_POST['ddd']) {
+  $prev = array();
+  $change = array();
+
+  $prev[] = prev($return[7]);
+  $prev[] = $return[7];
+
+  $change[] = prev($return[13]);
+  $change[] = $return[13];
+
+  $element = current($return[7]);
+  print_r($element);
+  print_r(prev($return));
+/*
+  print_r($prev);
+  echo "dddd\n";
+  print_r($change);*/
+  //change_seq($return[7])
+}
+
+function change_seq($prev, $change) {
+  $save = $prev;
+  $prev[0]['next'] = $change[0]['next'];
+  $prev[1]['next'] = $change[1]['next'];
+  $change[0]['next'] = $save[0]['next'];
+  $change[1]['next'] = $save[1]['next'];
+
+  print_r($prev);
+  echo "dddd\n";
+  print_r($change);
+}
+
 ?>

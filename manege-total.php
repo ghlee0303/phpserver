@@ -21,10 +21,19 @@ include "./php/login-ok.php";
 
     <div class="container container-mobile-1 pb-3">
         <div class="row mb-2">
-            <button type="button" onclick="location.href = '/manege-total.php'" class="btn btn-dark rounded-3 col-3 fs-5">현황</button>
-            <button type="button" onclick="location.href = '/manege-auth.php'" class="btn btn-outline-dark rounded-3 col-3 fs-5">권한</button>
-            <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치</button>
-            <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수</button>
+            <div class="btn btn-dark rounded-3 col-3 fs-5 dropdown align-center">
+                <div class="dropdown-toggle dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    현황
+                </div>
+                <ul class="dropdown-menu dropdown-scroll">
+                    <li><button class="dropdown-item" onclick="top_menu(0)">구역별 현황&nbsp</button></li>
+                    <li><button class="dropdown-item" onclick="top_menu(1)">인원별 현황&nbsp</button></li>
+                    <li><button class="dropdown-item" onclick="top_menu(2)">메일/인쇄/다운&nbsp</button></li>
+                </ul>
+            </div>
+            <button type="button" onclick="location.href = '/manege-user.php'" class="btn btn-outline-dark rounded-3 col-3 fs-5">유저관리</button>
+            <button type="button" onclick="location.href = '/manege-install.php'" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치관리</button>
+            <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수관리</button>
         </div>
         <div class="bg_manege_view p-2">
             <div class="text-center mx-auto mt-4 fs-3 fw-bold">관리현황</div>

@@ -138,6 +138,16 @@ height: 13%;
       max-width: 820px;
     }
 }
+@media (min-width: 843px) {
+    .container-2 {
+        max-width: 1500px;
+    }
+}
+@media (min-width: 843px) {
+    .container-3 {
+        max-width: 1700px;
+    }
+}
 .btn-mobile, .btn-group-mobile > .btn {
     padding: 0.6rem 1.1rem;
     font-size: 2rem;
@@ -186,6 +196,9 @@ height: 13%;
 }
 .border-gr {
     border: 1px solid gray !important;
+}
+.border-top-bl {
+    border-top: 2px solid black !important;
 }
 .border-bottom-bl {
     border-bottom: 2px solid black !important;
@@ -411,4 +424,9 @@ height: 13%;
 .canvas_style {
     width: 100vw !important;
     height: 75vh !important;
+}
+
+.grid_set {
+    grid:
+            "sidebar body" 1fr / auto 1fr;
 }

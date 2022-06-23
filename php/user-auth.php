@@ -192,29 +192,32 @@ function install_seq_update($mysqli) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['key_auth']) {
-        case 0:
+        case 1:
+            echo "여기왔냐";
             user_auth_update($mysqli);
             break;
     }
+    
     switch ($_POST['key_branch']) {
-        case 0:
+        case 1:
             branch_insert_or_delete($mysqli);
             break;
-        case 1:
+        case 2:
             send_branch_html(branch_return($mysqli, 0));
             break;
     }
+    
     switch ($_POST['key_install']) {
-        case 0:
+        case 1:
             send_installer_html(installer_return($mysqli));
             break;
-        case 1:
+        case 2:
             send_install_list_data($mysqli, installer_return($mysqli));
             break;
-        case 2:
+        case 3:
             install_update($mysqli);
             break;
-        case 3:
+        case 4:
             install_seq_update($mysqli);
             break;
     }

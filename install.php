@@ -23,7 +23,6 @@ $user_data = mysqli_fetch_array($user_result);
 
 <body>
     <?php include "./header.php"; ?>
-    <button onclick="call_install_list()">eeeee</button>
     <div class="container container-mobile-1 pb-3">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-4 mt-4 nav_bottom_line">
             <div class="row">
@@ -49,11 +48,32 @@ $user_data = mysqli_fetch_array($user_result);
                 <form class="me-3" id="search-form" onsubmit="return false">
                     <input type="search" id="search" class="form-control float-end w-75 fs-4" placeholder="검색">
                 </form>
-                <button type="submit" class="w-25 btn btn-outline-primary me-2 px-0 fs-4" onclick="search_submit()">검색</button>
+                <button type="submit" class="w-25 btn btn-outline-primary me-2 px-0 fs-4" onclick="call_install_list()">검색</button>
             </div>
         </header>
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-4 mt-4 nav_bottom_line">
-            <?php include "./calendar.php"; ?>
+            <div class="row text-center">
+                <div class="col-6">
+                    <div class="form-group" data-bs-auto-close="inside">
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input fs-5" data-target="#datetimepicker1"/>
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text btn_calendar"><i class="fa fa-calendar m-auto"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest" data-bs-auto-close="inside">
+                            <input type="text" class="form-control datetimepicker-input fs-5" data-target="#datetimepicker2"/>
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text btn_calendar"><i class="fa fa-calendar m-auto"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
         <table class="table table-striped table-scroll">
             <thead>
@@ -71,16 +91,6 @@ $user_data = mysqli_fetch_array($user_result);
             </tbody>
         </table>
         <div class="d-flex text-end">
-            <div class="dropdown">
-                <div class="btn dropdown-toggle fs-4 w-10 border-bl install_type dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" name="type">
-                    설치 종류
-                </div>
-                <ul class="dropdown-menu dropdown-scroll">
-                    <li><button class="dropdown-item" value="0">설치</button></li>
-                    <li><button class="dropdown-item" value="1">연동</button></li>
-                    <li><button class="dropdown-item" value="2">제어기</button></li>
-                </ul>
-            </div>
             <button type="button" class="btn fs-4 border-bl w-10" onclick="install_new()">글쓰기</button>
         </div>
     </div>
@@ -108,16 +118,7 @@ $user_data = mysqli_fetch_array($user_result);
     }
 
     function install_new() {
-        var type_value = document.querySelector('.dropdownMenu')[1].value;
-        console.log(type_value);
-        location.href = '/install-info.php?id=new&type=' + type_value;
-    }
-
-    function search_submit() {
-        var search_value = document.querySelector('#search').value;
-        var date_1 = $(".datetimepicker-input:eq(0)").val();
-        var date_2 = $(".datetimepicker-input:eq(1)").val();
-        location.href = `?search=${search_value}&date1=${date_1}&date2=${date_2}`;
+        location.href = '/install-info.php?id=new';
     }
 
     function call_install_list() {
@@ -137,8 +138,6 @@ $user_data = mysqli_fetch_array($user_result);
             processData: false,
             type: 'POST',
             success: function(data) {
-                //console.log(JSON.parse(data));
-                //console.log(data);
                 set_install_table(JSON.parse(data));
             }
         });
@@ -151,29 +150,13 @@ $user_data = mysqli_fetch_array($user_result);
     }
 
     function set_install_table(db_data) {
-        console.log("dd " + called);
-        if (!called == 0) {
+        if (!called == 0) 
             remove_install_table();
-            console.log("eeee");
-        }
+        
         called = 1;
         db_data.forEach(function(value, index) {
             var type_btn;
             //console.log("type : " + value.type);
-            switch (value.type) {
-                case "0":
-                    //console.log("1번");
-                    type_btn = "설치";
-                    break;
-                case "1":
-                    //console.log("2번");
-                    type_btn = "연동";
-                    break;
-                case "2":
-                    //console.log("3번");
-                    type_btn = "제어기";
-                    break;
-            }
 
             var complete_color = "blue";
             if (!value.complete)
@@ -191,6 +174,28 @@ $user_data = mysqli_fetch_array($user_result);
             if (!value.count)
                 count = "0";
 
+            switch (value.type) {
+                case "추가설치":
+                    //console.log("1번");
+                    type_btn = "설치";
+                    break;
+                case "연동설치":
+                    //console.log("2번");
+                    type_btn = "연동";
+                    break;
+                case "제어기설치":
+                    //console.log("3번");
+                    type_btn = "제어기";
+                    break;
+                case "보류":
+                    type_btn = value.type;
+                    complete_color = "black";
+                    break;
+                default :
+                    type_btn = value.type;
+                    break;
+            }
+            
             var ddd = ` 
             <tr onclick=\"location.href='/install-info.php?id=${value.id}' \">
                 <td>${index+1}</td>

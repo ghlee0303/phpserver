@@ -8,7 +8,13 @@ function call_list($mysqli) {
   $user_result = mysqli_query($mysqli, $user_sql);
   $user_data = mysqli_fetch_array($user_result);
 
-  $install_sql = "SELECT complete, type, count, seq, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id, user.name as name FROM install JOIN install_spot ON install.install_spot_id = install_spot.id JOIN user ON install.user_id = user.id WHERE install.user_id = $user_data[id]";
+  $install_sql = 
+  "SELECT complete, type, count, date_format(install_spot.date, '%Y-%m-%d') as date, install_spot.address_2 as address, install.id as id, user.name as name 
+  FROM install 
+  JOIN install_spot ON install.install_spot_id = install_spot.id 
+  JOIN user ON install.user_id = user.id
+  WHERE install.user_id = $user_data[id]
+  ";
   
   if (!empty($_POST['type']) && !($_POST['type'] == "undefined")) {
     $install_sql = $install_sql . " AND install.type = $_POST[type]";
@@ -24,7 +30,7 @@ function call_list($mysqli) {
     $install_sql = $install_sql . " AND MATCH(install_spot.address_2) AGAINST('$_POST[search]*' IN BOOLEAN MODE) OR MATCH(user.name) AGAINST('$_POST[search]*' IN BOOLEAN MODE)";
   }
 
-  $install_sql = $install_sql . " ORDER BY install.seq DESC";
+  $install_sql = $install_sql . " AND install.delete_yn is null ORDER BY (CASE WHEN type = '보류' THEN 1 ELSE 2 END)";
   $install_result = mysqli_query($mysqli, $install_sql);
 
   //echo $install_sql;

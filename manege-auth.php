@@ -2,161 +2,9 @@
 include "./php/db.php";
 include "./php/login-ok.php";
 
-function auth_ok($mysqli)
-{
-  $userid = $_SESSION['userid'];
-  $name = $_SESSION['name'];
-
-  $auth_sql = "SELECT * FROM user WHERE name = '$name' AND user_id = '$userid'";
-  $auth_result = mysqli_query($mysqli, $auth_sql);
-  $auth_data = mysqli_fetch_array($auth_result);
-
-  if (!($auth_data['position'] == 1 || 99)) {
-    echo "<script>location.replace('index.php');</script>";
-  }
-}
-
-auth_ok($mysqli);
-
-function spec_table_temp_set($user_index, $user_name, $user_id, $user_pwd, $user_phone, $user_email, $branch)
-{
-  $temp = "
-      <table class=\"mw-360 spec_auth_table manege_table_border mb-3\" value=\"$user_index\">
-        <tr class=\"table_click\">
-          <td class=\"px-2 manege_table_border name\">$user_name</td>
-          <td class=\"px-2 manege_table_border id\">$user_id</td>
-          <td class=\"px-2 manege_table_border pwd\">$user_pwd</td>
-        </tr>
-        <tr class=\"\">
-          <td class=\"px-2 table_click manege_table_border phone\" colspan=\"2\">$user_phone</td>
-          <td class=\"px-2 text-center manege_table_border h-3r w-13 dropdown\" colspan=\"3\">
-            <div class=\"btn dropdown-toggle text-info dropdownMenu p-0 w-100\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
-              소속
-            </div>
-            <ul class=\"dropdown-menu dropdown-scroll branch_list\" value=\"$branch\">
-            </ul>
-          </td>
-        </tr>
-        <tr class=\"\">
-          <td id=\"email\" class=\"px-2 table_click manege_table_border email\" colspan=\"2\">$user_email</td>
-          <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-            <button class=\"btn text-primary p-0 w-100\">권한<br>초기화</button>
-          </td>
-        </tr>
-      </table>";
-
-  return $temp;
-}
-
-function unspec_table_temp_set($user_index, $user_name, $user_id, $user_pwd, $user_phone, $user_email, $branch)
-{
-  $temp = "<table class=\"mw-360 unspec_auth_table manege_table_border mb-3\" value=\"$user_index\">
-          <tr class=\"table_click\">
-            <td class=\"px-2 manege_table_border name\" value=\"$branch\">$user_name</td>
-            <td class=\"px-2 manege_table_border id\">$user_id</td>
-            <td class=\"px-2 manege_table_border pwd\">$user_pwd</td>
-          </tr>
-          <tr class=\"\">
-            <td class=\"px-2 manege_table_border table_click phone\" colspan=\"2\">$user_phone</td>
-            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-              <button class=\"btn text-primary p-0 w-100\">비번<br>초기화</button>
-            </td>
-          </tr>
-          <tr class=\"\">
-            <td id=\"email\" class=\"px-2 manege_table_border table_click email\" colspan=\"2\">$user_email</td>
-            <td class=\"p-0 text-center manege_table_border w-13\" colspan=\"3\">
-              <button class=\"btn text-primary p-0 w-100\">정보<br>삭제</button>
-            </td>
-          </tr>
-        </table>";
-
-  return $temp;
-}
-
-function spec_table_set($data_list)
-{
-  $spec_table_set = "<div class=\"spec_user_form\">";
-  foreach ($data_list as $index => $value) {
-    $spec_table_set = $spec_table_set . spec_table_temp_set($value["id"], $value["name"], $value["user_id"], "*****", $value["phone"], $value["email"], $value["branch_id"]);
-  }
-  $spec_table_set = $spec_table_set . "</div>";
-
-  return $spec_table_set;
-}
-
-function spec_table_init($mysqli, &$admin_list, &$installer_list, &$maintainer_list)
-{
-  $spec_tables = array();
-
-  $spec_tables[] = spec_table_set($admin_list);
-  $spec_tables[] = spec_table_set($installer_list);
-  $spec_tables[] = spec_table_set($maintainer_list);
-
-  return $spec_tables;
-}
-
-function unspec_table_init($mysqli, &$unspec_list)
-{
-
-  $unspec_table_set = "<div id=\"unspec_user_form\">";
-  foreach ($unspec_list as $index => $value) {
-    $unspec_table_set = $unspec_table_set . unspec_table_temp_set($value["id"], $value["name"], $value["user_id"], "*****", $value["phone"], $value["email"], $value["branch_id"]);
-  }
-  $unspec_table_set = $unspec_table_set . "</div>";
-
-  return $unspec_table_set;
-}
-
-function user_list_data_sql($mysqli, &$admin_list, &$installer_list, &$maintainer_list, &$unspec_list)
-{
-  $user_sql = "SELECT * FROM user WHERE not position in('99') OR position is null";
-  $user_result = mysqli_query($mysqli, $user_sql);
-  $user_data = mysqli_fetch_array($user_result);
-
-  while ($user_data != null) {
-    switch ($user_data['position']) {
-      case 1:
-        $admin_list[] = $user_data;
-        break;
-      case 2:
-        $installer_list[] = $user_data;
-        break;
-      case 3:
-        $maintainer_list[] = $user_data;
-        break;
-        /*
-      case 4 :
-        $guest_list[] = $user_data;
-        break;*/
-      default:
-        $unspec_list[] = $user_data;
-        break;
-    }
-    $user_data = mysqli_fetch_array($user_result);
-  }
-}
-
-$admin_list = array();
-$installer_list = array();
-$maintainer_list = array();
-$unspec_list = array();
-
-user_list_data_sql($mysqli, $admin_list, $installer_list, $maintainer_list, $unspec_list);
-
-$spec_tables = spec_table_init($mysqli, $admin_list, $installer_list, $maintainer_list);
-$unspec_table_set = unspec_table_init($mysqli, $unspec_list);
-
-$qqq = array();
-test($qqq);
-//print_r($qqq);
-function test(&$qqq)
-{
-  $index = 0;
-  while ($index < 10) {
-    $qqq[] = "1";
-    $index = $index + 1;
-  }
-}
+$max_count_sql = "SELECT count(*) as count FROM user WHERE delete_yn is null AND master is null";
+$max_count_result = mysqli_query($mysqli, $max_count_sql);
+$max_count = mysqli_fetch_array($max_count_result)['count'];
 ?>
 
 <!DOCTYPE html>
@@ -175,191 +23,119 @@ function test(&$qqq)
 
 <body>
   <?php include "./header.php" ?>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-2" id="exampleModalLabel">지사 추가</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body fs-4">
+          추가할 지사 명을 입력 해 주세요.
+          <input id="branch_input" class="fs-4 mt-2" type="text">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="branch_insert(1)">추가</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-2" id="exampleModalLabel">지사 삭제</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center fs-4">
+          삭제할 지사를 선택해 주세요.
+          <div class="mx-auto w-75 text-center manege_table_border dropdown">
+            <div id="branch_dropdown" class=" btn dropdown-toggle dropdownMenu fs-5" data-bs-toggle="dropdown" aria-expanded="false">
+              지사
+            </div>
+            <ul class="dropdown-menu dropdown-scroll branch_list">
+
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="branch_insert(0)">삭제</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="change_pwd" tabindex="-1" aria-labelledby="change_pwd_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-2" id="change_pwd_ModalLabel">비밀번호 변경</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center fs-5">
+          <span class="change_pwd_username"></span>씨의 변경할 비밀번호를 입력해주세요
+          <input id="change_pwd_input" class="fs-5 mt-2" type="text">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="change_pwd()">변경</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class=" container container-mobile-1 pb-3">
     <div class="row mb-2">
       <button type="button" onclick="location.href = '/manege-total.php' " class="btn btn-outline-dark rounded-3 col-3 fs-5">현황</button>
       <div class="btn btn-dark rounded-3 col-3 fs-5 dropdown align-center">
         <div class="dropdown-toggle dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-          권한
+          권한관리
         </div>
         <ul class="dropdown-menu dropdown-scroll">
-          <li><button class="dropdown-item" onclick="top_menu(0)">관리권한&nbsp</button></li>
-          <li><button class="dropdown-item" onclick="top_menu(1)">설치권한&nbsp</button></li>
-          <li><button class="dropdown-item" onclick="top_menu(2)">유지보수권한&nbsp</button></li>
+          <li><button class="dropdown-item" onclick="top_menu(0)">권한관리&nbsp</button></li>
+          <li><button class="dropdown-item" onclick="top_menu(1)">설치관리&nbsp</button></li>
+          <li><button class="dropdown-item" onclick="top_menu(2)">유지보수관리&nbsp</button></li>
         </ul>
       </div>
       <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">설치</button>
       <button type="button" onclick="" class="btn btn-outline-dark rounded-3 col-3 fs-5">유지보수</button>
     </div>
+  </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title fs-2" id="exampleModalLabel">지사 추가</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body fs-4">
-            추가할 지사 명을 입력 해 주세요.
-            <input id="branch_input" class="fs-4 mt-2" type="text">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="branch_insert(1)">추가</button>
-          </div>
-        </div>
-      </div>
+  <div class="container container-2">
+    <div class="d-flex bg-grey justify-content-center p-2" style="width: 240px;">
+      <button type="button" class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        지사 추가
+      </button>
+      <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        지사 삭제
+      </button>
     </div>
+    <div id="user_list" class="w-100">
+      <section class="d-flex w-100 justify-content-center bg-grey border-bottom-bl">
+        <input type="checkbox" class="form-check-input mx-2 my-auto" style='zoom:1.4'>
+        <div class="col text-center " style="flex-grow: 0.4;">#</div>
+        <div class="col text-center ">이름</div>
+        <div class="col text-center ">아이디</div>
+        <div class="col text-center " style="flex-grow: 2.4;">이메일</div>
+        <div class="col text-center " style="flex-grow: 2;">전화번호</div>
+        <div class="col text-center " style="flex-grow: 1.5;">소속</div>
+        <div class="col text-center " style="flex-grow: 3.5;">권한</div>
+        <div class="col text-center " style="flex-grow: 1.5;">총설치/일평균</div>
+        <div class="col text-center " style="flex-grow: 1.5;">총유지/일평균</div>
+        <div class="col text-center ">비번변경</div>
+      </section>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title fs-2" id="exampleModalLabel">지사 삭제</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center fs-4">
-            삭제할 지사를 선택해 주세요.
-            <div class="mx-auto w-75 text-center manege_table_border dropdown">
-              <div id="branch_dropdown" class=" btn dropdown-toggle dropdownMenu fs-5" data-bs-toggle="dropdown" aria-expanded="false">
-                지사
-              </div>
-              <ul class="dropdown-menu dropdown-scroll branch_list">
-
-              </ul>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="branch_insert(0)">삭제</button>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <div class="row mt-0 d-flex auth">
-      <div class="row mb-0 mx-0 d-flex">
-        <div class="col-44"></div>
-        <div class="col-9"></div>
-        <div class="text-center col ms-3">
-          <button type="button" class="btn btn-outline-dark m-0 w-49" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            지사 추가
-          </button>
-          <button type="button" class="btn btn-outline-dark m-0 w-49" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-            지사 삭제
-          </button>
-        </div>
-      </div>
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
-        <?php
-        echo $unspec_table_set;
-        ?>
-      </div>
-      <div class="col-9 p-0 mx-2">
-        <div class="vh-24"></div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toright_arrow" type="button">오른쪽</button>
-        </div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toleft_arrow" type="button">왼쪽</button>
-        </div>
-      </div>
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r border-bl mb-3">
-          <div class="dropdown text-center">
-            <div class="btn dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
-              관리권한
-            </div>
-            <ul class="dropdown-menu dropdown-scroll">
-              <li><button class="dropdown-item auth_dropdown" value="a01">관리권한&nbsp</button></li>
-              <li><button class="dropdown-item auth_dropdown" value="a02">설치권한&nbsp</button></li>
-              <li><button class="dropdown-item auth_dropdown" value="a03">유지보수권한&nbsp</button></li>
-              <li><button class="dropdown-item auth_dropdown" value="a04">게스트권한&nbsp</button></li>
-            </ul>
-          </div>
-        </div>
-        <?php
-        foreach ($spec_tables as $key => $value) {
-          echo $value;
-        }
-        ?>
-      </div>
-    </div>
-
-    <div class="row mt-5 d-flex d-none auth">
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
-        <div id="unspec_install">
-
-        </div>
-      </div>
-      <div class="col-9 p-0 mx-2">
-        <div class="vh-24"></div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toright_arrow" type="button">오른쪽</button>
-        </div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toleft_arrow" type="button">왼쪽</button>
-        </div>
-      </div>
-
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r border-bl mb-3">
-          <div class="dropdown text-center">
-            <div id="installer_btn" class="btn btn-white dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
-              설치자
-            </div>
-            <ul class="dropdown-menu dropdown-scroll installer">
-
-            </ul>
-          </div>
-        </div>
-        <div id="spec_install">
-
-        </div>
-      </div>
-    </div>
-
-    <div class="row mt-5 d-flex auth d-none">
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r mb-3 border-bl">미지정</div>
-        <?php
-        echo $unspec_table_set;
-        ?>
-      </div>
-      <div class="col-9 p-0 mx-2">
-        <div class="vh-24"></div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toright_arrow" type="button">오른쪽</button>
-        </div>
-        <div class="border-bl h-4r flex-center">
-          <button class="btn toleft_arrow" type="button">왼쪽</button>
-        </div>
-      </div>
-      <div class="col-44 p-0">
-        <div class="flex-center fs-4 h-3r border-bl mb-3">
-          <div class="dropdown text-center">
-            <div class="btn btn-white dropdown-toggle fs-4 dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" value="a01">
-              유지보수자
-            </div>
-            <ul class="dropdown-menu dropdown-scroll">
-              <li><button class="dropdown-item" value="a01">관리권한&nbsp</button></li>
-              <li><button class="dropdown-item" value="a02">설치권한&nbsp</button></li>
-              <li><button class="dropdown-item" value="a03">유지보수권한&nbsp</button></li>
-              <li><button class="dropdown-item" value="a04">게스트권한&nbsp</button></li>
-            </ul>
-          </div>
-        </div>
-        <?php
-        foreach ($spec_tables as $key => $table) {
-        }
-        ?>
-      </div>
-    </div>
-
+    <button type="button" class="btn btn-outline-dark mt-4" onclick="user_delete();">
+      삭제
+    </button>
   </div>
 </body>
 
@@ -369,24 +145,15 @@ function test(&$qqq)
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
-<script type="text/javascript" src="script/manege-auth.js?<?php echo time(); ?>"></script>
 <script>
-  function top_menu(index) {
-    if (top_menu_val == index)
-      return;
-    switch (index) {
-      case 1:
-        console.log("ㄷㄷ");
-        call_installer_list(0, 0);
-        break;
-
-    }
-    var view = $('.auth');
-
-    view.eq(index).removeClass('d-none');
-    view.eq(top_menu_val).addClass('d-none');
-
-    top_menu_val = index;
+  var branch_list;
+  var max = <?php echo $max_count; ?>;
+  window.onload = function() {
+    dropdown_init();
+    call_branch_list();
+    call_user_list();
+    auth_check_init();
+    user_branch_dropdown_init();
   }
 
   function dropdown_value(dropdown_item, data) {
@@ -410,57 +177,353 @@ function test(&$qqq)
     if (!!range) return [].indexOf.call(e, range);
     return [].indexOf.call(e.parentNode.children, e);
   }
+  
+  /*
+  ################
+  기초 설정 함수
+  ################
+  */
 
-  function sortable_add(target) {
-    target.each(function(index, value) {
-      $(this).sortable({
-        start: function(event, ui) {
-          install_seq = ui.item.index();
-        },
-        stop: function(event, ui) {
-          install_set_seq(ui.item.index());
-        },
+  function list_prepend(ul_tag, data) {
+    return ul_tag.prepend(data);
+  }
+
+  function list_append(ul_tag, data) {
+    return ul_tag.append(data);
+  }
+
+  function list_clean(ul_tag) {
+    ul_tag.remove();
+  }
+
+  /*
+  ################
+  modal 설정 함수
+  ################
+  */
+
+  $('#change_pwd').on('hidden.bs.modal', function (e) {
+    $("#change_pwd_input").val("");
+  });
+
+  $(document).on("click", ".change_pwd_btn", function(e){
+    $(".change_pwd_username").text($(this).siblings(".user_name").text().trim());
+		e.preventDefault();
+		$('#change_pwd').modal("show");
+	});
+
+  /*
+  ################
+  branch 함수
+  ################
+  */
+  /*
+    function branch_dropdown_init() {
+      $(document).on('click', '.branch', function() {
+        console.log("ㅇㅇㅇㅇ");
+        var fd = new FormData();
+
+        fd.append('key', 5);
+        fd.append('branch_id', $(this).attr("value"));
+        fd.append('user_id', $(this).closest("table").attr("value"));
+
+        console.log(`branch id : ${$(this).attr("value")} / user id : ${$(this).closest("table").attr("value")}`);
+
+        $.ajax({
+          url: './php/user-auth.php',
+          data: fd,
+          contentType: false,
+          processData: false,
+          type: 'POST',
+          success: function(data) {}
+        });
+      });
+    }
+
+    function branch_value_set(table) {
+      var branch_list = table.find(`.branch[value='${table.find(`.branch_list`).attr("value")}']`);
+      var branch_dropdown = table.find(`.dropdownMenu`);
+
+      if (branch_list.attr("value")) {
+
+        branch_dropdown.text(branch_list.text());
+        branch_dropdown.attr("value", branch_list.attr("value"));
+        console.log(table.find(`.dropdownMenu`).html());
+        console.log(branch_list.text());
+        console.log(branch_list.attr("value"));
+      }
+    }
+*/
+  function branch_insert(jud) {
+    var fd = new FormData();
+
+    if (jud) {
+      fd.append('branch_name', $('#branch_input').val());
+    } else {
+      fd.append('branch_name', $('#branch_dropdown').text());
+    }
+
+    fd.append('jud', jud);
+    fd.append('key_branch', 1);
+
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        call_branch_list();
+      }
+    });
+  }
+
+  function call_branch_list() {
+    var fd = new FormData();
+    fd.append('key_branch', 2);
+
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        var json = JSON.parse(data);
+        console.log(json);
+        append_branch_list(json);
+      }
+    });
+  }
+
+  function append_branch_list(branch_json) {
+    branch_json.forEach(function(value, index) {
+      if (!index) {
+        branch_list = branch_list_temp(value); // 처음 함수 호출 시 branch_list 내용 초기화
+      }
+      console.log(index);
+      branch_list += branch_list_temp(value);
+    });
+    console.log(branch_list);
+  }
+
+  function user_branch_dropdown_init() {
+    $(document).on("click", ".user_branch_list .branch", function() {
+      console.log($(this).html());
+      var fd = new FormData();
+
+      fd.append('key_branch', 3);
+      fd.append('branch_id', $(this).attr("value"));
+      fd.append('user_id', $(this).closest(".list_section").attr("value"));
+
+      console.log(`branch id : ${$(this).attr("value")} / user id : ${$(this).closest(".list_section").attr("value")}`);
+
+      $.ajax({
+        url: './php/manege-server.php',
+        data: fd,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data) {
+          console.log(data);
+        }
       });
     });
   }
 
-  window.onload = function() {
-    document.querySelectorAll('.spec_user_form').forEach(function(table, index) {
-      if (index >= 1) {
-        table.style.display = "none";
+  /*
+  ################
+  user 함수
+  ################
+  */
+
+  function call_user_list() {
+    var fd = new FormData();
+    fd.append('key_user', 2);
+
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        var json = JSON.parse(data);
+        append_user_list(json);
+      }
+    });
+  }
+
+  function append_user_list(user_json) {
+    user_json.forEach(function(value, index) {
+      list_append($("#user_list"), user_list_temp(value, max - index));
+      var user_list = $(".list_section:last");
+
+      if (value.admin)
+        user_list.find('.auth_check:eq(0)').prop("checked", true);
+
+      if (value.install)
+        user_list.find('.auth_check:eq(1)').prop("checked", true);
+
+      if (value.maintenance)
+        user_list.find('.auth_check:eq(2)').prop("checked", true);
+
+      if (value.guest)
+        user_list.find('.auth_check:eq(3)').prop("checked", true);
+    });
+  }
+
+  function user_delete() {
+    if (!confirm("해당 회원들을 삭제 하시겠습니까?"))
+      return;
+    var user_delete_array = [];
+    var fd = new FormData();
+
+    $(".user_select_check").each(function(index, value) {
+      if ($(this).is(":checked")) {
+        user_delete_array.push($(this).closest(".list_section").attr("value"));
       }
     });
 
-    document.querySelectorAll('.spec_install_form').forEach(function(table, index) {
-      if (index >= 1) {
-        table.style.display = "none";
+    fd.append('key_user', 3);
+    fd.append('user_delete_array', JSON.stringify(user_delete_array));
+
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
       }
     });
+  }
 
-    arrow_click_event_init();
-    dropdown_init();
-    call_installer_list(0, 1);
-    table_click_event_init();
-    auth_dropdown_init();
-    install_dropdown_init();
-    branch_dropdown_init();
-    call_branch_list();
+  /*
+  ################
+  auth 함수
+  ################
+  */
 
-    $(".test1").on("click", function() {
-      $(`.spec_install_form`).sortable('refresh');
+  function auth_check_init() {
+    $(document).on("change", ".auth_check", function() {
+      var position = "";
+      switch ($(this).parent().text().trim()) {
+        case "관리":
+          position = "admin";
+          break;
+        case "설치":
+          position = "install";
+          break;
+        case "유지":
+          position = "maintenance";
+          break;
+        case "게스트":
+          position = "guest";
+          break;
+      }
+      var index = $(this).closest(".list_section").attr("value");
+      set_user_auth($(this).is(":checked"), position, index);
     });
+  }
 
-    $(".test2").on("click", function() {
-      console.log("뭔데");
-      call_installer_list(0, 0);
-    });
+  function set_user_auth(jud, position, index) {
+    var fd = new FormData();
+    fd.append('key_user', 1);
+    fd.append('jud', jud);
+    fd.append('position', position);
+    fd.append('index', index);
 
-    $(".test3").on("click", function() {
-      $(`.spec_install_form`).each(function(index, value) {
-        $(this).sortable('refresh');
-      });
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+      }
     });
+  }
+
+  /*
+  ################
+  pwd 함수
+  ################
+  */
+
+  function change_pwd() {
+    confirm($(".change_pwd_username").text() + "씨의 비밀번호를 "+ $("#change_pwd_input").val() + " 로 변경 하시겠습니까?");
+    console.log($("#change_pwd_input").val());
+    var fd = new FormData();
+    fd.append('key_user', 1);
+
+    $.ajax({
+      url: './php/manege-server.php',
+      data: fd,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+      }
+    });
+  }
+
+  /*
+  ################
+  temp 함수
+  ################
+  */
+
+  function user_list_temp(user_json, index) {
+    var branch = user_json.branch_name ? user_json.branch_name : "지사";
+    var temp = `
+    <section class=\"list_section d-flex w-100 justify-content-center border-bottom-gr\" value=\"${user_json.u_id}\">
+      <input type=\"checkbox\" class=\"form-check-input user_select_check mx-2 my-auto\" style='zoom:1.4'>
+      <div class=\"col text-center \" style=\"flex-grow: 0.4;\">${index}</div>
+      <div class=\"col text-center user_name\">${user_json.name}</div>
+      <div class=\"col text-center \">${user_json.user_id}</div>
+      <div class=\"col text-center \" style=\"flex-grow: 2.4;\">${user_json.email}</div>
+      <div class=\"col text-center \" style=\"flex-grow: 2;\">${user_json.phone}</div>
+      <div class=\"dropdown col text-center p-0\" style=\"flex-grow: 1.5;\">
+        <div id=\"branch_dropdown\" class=\" btn dropdown-toggle dropdownMenu p-0\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+          ${branch}
+        </div>
+        <ul class=\"dropdown-menu dropdown-scroll user_branch_list\">
+          ${branch_list}
+        </ul>
+      </div>
+      <div class=\"col text-center  d-flex justify-content-center\" style=\"flex-grow: 3.5;\">
+        <div class=\"mx-2\">
+          관리
+          <input type=\"checkbox\" class=\"form-check-input auth_check my-auto\" style='zoom:1.4'>
+        </div>
+        <div class=\"me-2\">
+          설치
+          <input type=\"checkbox\" class=\"form-check-input auth_check my-auto\" style='zoom:1.4'>
+        </div>
+        <div class=\"me-2\">
+          유지
+          <input type=\"checkbox\" class=\"form-check-input auth_check my-auto\" style='zoom:1.4'>
+        </div>
+        <div class=\"me-2\">
+          게스트
+          <input type=\"checkbox\" class=\"form-check-input auth_check my-auto\" style='zoom:1.4'>
+        </div>
+      </div>
+      <div class=\"col text-center \" style=\"flex-grow: 1.5;\">총설치/일평균</div>
+      <div class=\"col text-center \" style=\"flex-grow: 1.5;\">총유지/일평균</div>
+      <button class=\"btn p-0 col text-center btn-outline-dark change_pwd_btn\">변경</button>
+    </section>`
+
+    return temp;
+  }
+
+  function branch_list_temp(branch_json) {
+    var temp = `<li><button class="dropdown-item branch" value="${branch_json.id}">${branch_json.branch_name}</button></li>`;
+
+    return temp;
   }
 </script>
-
-</html>

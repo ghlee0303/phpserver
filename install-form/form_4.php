@@ -514,7 +514,7 @@
         <div class="text-end mt-3">
             <button type="button" class="btn btn-info btn-mobile col-4" onclick="image_delete()">이미지 삭제</button>
             <button type="button" class="btn btn-info btn-mobile col-3" onclick="sub_form(1)">다음</button>
-            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0)">임시저장</button>
+            <button type="button" class="btn btn-outline-primary btn-mobile col-4" onclick="form_submit(0, 1)">임시저장</button>
         </div>
 
         <script>

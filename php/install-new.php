@@ -95,7 +95,6 @@ function menu_list_db($mysqli, $index) {
   $latitude = is_Empty($_POST["latitude"]);
   $longitude = is_Empty($_POST["longitude"]);
   $scale = array(is_Empty($_POST["scale1"]), is_Empty($_POST["scale2"]), is_Empty($_POST["scale3"]), is_Empty($_POST["scale4"]));
-  $query_index_brodcast = array();
   $sql = '';
 
   if ($index == null) { // 새로 작성하는 경우
@@ -107,20 +106,9 @@ function menu_list_db($mysqli, $index) {
     foreach ($scale as $key => $value) {
       $sql_brod = "INSERT INTO brodcast SET scale1 = $value[0], scale2 = $value[1], distance = $value[2], menu_id = $menu_id";
       $result = mysqli_query($mysqli, $sql_brod);
-      $query_index_brodcast[$key] = mysqli_insert_id($mysqli);
     }
   } else {
-    $sql_menu_index = "SELECT menu_list_id FROM install WHERE id = $index";
-    $sql_menu_index_result = mysqli_query($mysqli, $sql_menu_index);
-/*
-    if (!($sql_menu_index_result)) {
-      echo "brod 인덱스 쿼리실패\n";
-      echo mysqli_error($mysqli);
-      echo "\n";
-    }*/
-    $sql_menu_index_row = mysqli_fetch_array($sql_menu_index_result);
-    
-    $sql_brod_index = "SELECT id FROM brodcast WHERE menu_id = $sql_menu_index_row[menu_list_id]";
+    $sql_brod_index = "SELECT id FROM brodcast WHERE menu_id = $index";
     $sql_brod_result =  mysqli_query($mysqli, $sql_brod_index);
 
     // 경보방송
@@ -128,15 +116,6 @@ function menu_list_db($mysqli, $index) {
       $sql_brod_row = mysqli_fetch_array($sql_brod_result);
       $sql_brod = "UPDATE brodcast SET scale1 = $value[0], scale2 = $value[1], distance = $value[2] WHERE id = $sql_brod_row[id]";
       $result = mysqli_query($mysqli, $sql_brod);
-      /*
-      echo "$sql_brod\n";
-      if ($result) {
-        echo "menu_list_1 쿼리성공\n";
-      } else {
-        echo "menu_list_1 쿼리실패\n";
-        echo mysqli_error($mysqli);
-        echo "\n";
-      }*/
     }
     $sql = "UPDATE menu_list SET network_ip = $network[0], network_subnet = $network[1], network_gateway = $network[2], network_dns = $network[3], server_ip = $server[0], server_port = $server[1], server_id = $server[2], server_pwd = $server[3], latitude = $latitude, longitude = $longitude WHERE id = $index";
   }

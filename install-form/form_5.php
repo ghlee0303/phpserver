@@ -28,50 +28,52 @@
             </td>
         </tr>
     </table>
-    <table class="fs-5 mb-5">
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">1. 지진경보장치 연결 확인 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="1" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">2. 지진경보장치 IP 확인 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="2" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">3. 경보방송 설정 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="3" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">4. 훈련 방송 송출 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="4" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">5. 지진경보장치 WEB 접속 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="5" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">6. 지진 수신 단계 및 멘트 설정 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="6" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-        <tr class="border-bl-90">
-            <td class="w-100 px-4" colspan="2">7. 훈련방송 멘트 설정 및 방송송출 방법 안내</td>
-            <td class="">
-                <input class="form-check-input check_list me-4" type="checkbox" value="7" style='zoom:1.4' name="confirm_check[]">
-            </td>
-        </tr>
-    </table>
+    <form class="install_form" action="" method="post" onsubmit="return false">
+        <table class="fs-5 mb-5">
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">1. 지진경보장치 연결 확인 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="23" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">2. 지진경보장치 IP 확인 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="24" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">3. 경보방송 설정 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="25" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">4. 훈련 방송 송출 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="26" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">5. 지진경보장치 WEB 접속 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="27" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">6. 지진 수신 단계 및 멘트 설정 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="28" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+            <tr class="border-bl-90">
+                <td class="w-100 px-4" colspan="2">7. 훈련방송 멘트 설정 및 방송송출 방법 안내</td>
+                <td class="">
+                    <input class="form-check-input check_list me-4" type="checkbox" value="29" style='zoom:1.4' name="check[]">
+                </td>
+            </tr>
+        </table>
+    </form>
     <div class="mx-auto fs-4 text-center mt-5">
         상기 제품 설치완료 및 안내를 확인하여 주시길 바랍니다.
     </div>
@@ -199,64 +201,8 @@
             </form>
         </div>
     </div>
-    <!--
-        
-                    <div class="col-2 border-bl ms-3 dropdown">
-                        <div class="btn dropdown-toggle install_type dropdownMenu " value="0" data-bs-toggle="dropdown" aria-expanded="false" name="type">
-                            설치
-                        </div>
-                        <ul class="dropdown-menu dropdown-scroll">
-                            <li><button class="dropdown-item" value="0">설치</button></li>
-                            <li><button class="dropdown-item" value="1">연동</button></li>
-                            <li><button class="dropdown-item" value="2">제어기</button></li>
-                        </ul>
-                    </div>
-                    <div class="col-3 border-bl p-2 ms-3"><?php echo $user_name; ?></div>
-                    <div class="input-group date col me-auto" id="datetimepicker_comment" data-target-input="nearest" data-bs-auto-close="inside">
-                        <input type="text" id="calendar_text_comment" class="form-control datetimepicker-input border-bl bg-white" data-target="#datetimepicker_comment" name="comment_date" readOnly />
-                        <div class="input-group-append" data-target="#datetimepicker_comment" data-toggle="datetimepicker">
-                            <div class="input-group-text btn_calendar_2" id="comment_calendar" onclick="calendar_btn(1)"><i class="fa fa-calendar m-auto"></i></div>
-                        </div>
-                    </div>
-        <div class="dropdown">
-                        <div class="btn dropdown-toggle install_type border-bl dropdownMenu" value="0" data-bs-toggle="dropdown" aria-expanded="false" name="type">
-                            설치
-                        </div>
-                        <ul class="dropdown-menu dropdown-scroll">
-                            <li><button class="dropdown-item" value="0">설치</button></li>
-                            <li><button class="dropdown-item" value="1">연동</button></li>
-                            <li><button class="dropdown-item" value="2">제어기</button></li>
-                        </ul>
-                    </div>
-
-    <div class=" card-body">
-        <form class="comment_form" class="mb-4 row" action="" method="post" onsubmit="return false">
-            <div class="align-center mb-3 row mt-2 align-center">
-                <div class="col-2 border-bl p-2 ms-3" id="comment_purpose">
-                    
-                </div>
-                <div class="col-3 fs-sm-2 border-bl p-2 ms-3"><?php echo $user_name; ?></div>
-                <div class="input-group date col me-auto" id="datetimepicker_comment" data-target-input="nearest" data-bs-auto-close="inside">
-                    <input type="text" id="calendar_text_comment" class="form-control datetimepicker-input border-bl bg-white fs-sm-2" data-target="#datetimepicker_comment" name="comment_date" readOnly />
-                    <div class="input-group-append" data-target="#datetimepicker_comment" data-toggle="datetimepicker">
-                        <div class="input-group-text btn_calendar_2" id="comment_calendar" onclick="calendar_btn(1)"><i class="fa fa-calendar m-auto"></i></div>
-                    </div>
-                </div>
-            </div>
-            <textarea class="form-control col" rows="3" placeholder="Join the discussion and leave a comment!" id="comment_text" name="comment_text"></textarea>
-            <div class="my-3 row align-center">
-                <button type="submit" class="btn btn-outline-primary fs-sm-2 col-3 mx-3" onclick="comment_submit()">작성</button>
-                <input type="text" id="comment_file_label" class="col me-3 border-bl fs-sm-2" readonly="readonly">
-                <label class="btn btn-outline-info fs-sm-2 col-2" for="comment_file_input">
-                    파일
-                </label>
-                <input type="file" id="comment_file_input" style="display:none" onchange="javascript:document.getElementById('comment_file_label').value = this.value.split('\\')[this.value.split('\\').length-1]" />
-            </div>
-        </form>
-    </div>
--->
     <div class="mt-3 d-flex">
-        <button type="button" class="btn btn-danger btn-mobile d-block w-75" onclick="form_submit(1)"><?= $type_btn ?> 완료</button>
-        <button type="button" class="btn btn-outline-primary btn-mobile d-block ms-auto w-23" onclick="form_submit(0)">임시저장</button>
+        <button type="button" class="btn btn-danger btn-mobile d-block w-75" onclick="form_submit(1, 1)"><?= $type_btn ?> 완료</button>
+        <button type="button" class="btn btn-outline-primary btn-mobile d-block ms-auto w-23" onclick="form_submit(0, 1)">임시저장</button>
     </div>
 </div>

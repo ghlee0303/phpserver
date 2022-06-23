@@ -1,27 +1,6 @@
 <?php
 include "./db.php";
-
-/*
-class comment_data {
-  private $purpose;
-  private $date;
-  private $time;
-  private $period;
-  private $name;
-  private $image;
-  private $contents;
-
-  public function __construct($purpose, $date, $time, $period, $name, $image, $contents)
-  {
-    $this->purpose = $purpose;
-    $this->date = $date;
-    $this->time = $time;
-    $this->period = $period;
-    $this->name = $name;
-    $this->image = $image;
-    $this->contents = $contents;
-  }
-}*/
+date_default_timezone_set('Asia/Seoul');
 
 function is_Empty($val) {
   if (is_array($val) == 1) {
@@ -80,7 +59,7 @@ function comment_call($mysqli) {
     $comment_contents = $comment_query['contents'];
     $comment_period = $comment_query['period'];
     $comment_name = $comment_query['name'];
-    $comment_image = empty($comment_query['image_file_name']) ? $comment_query['image_file_name'] : "./image/" . $comment_query['image_file_name'];
+    $comment_image = $comment_query['image_file_name'];
     $comments_array[] = array("purpose"=>$comment_purpose, "date"=>$comment_date, "time"=>$comment_time, "period"=>$comment_period, "name"=>$comment_name, "image"=>$comment_image, "contents"=>$comment_contents);
 
     $comment_query = mysqli_fetch_array($comment_result);
