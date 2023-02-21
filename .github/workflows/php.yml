@@ -1,4 +1,4 @@
-name: Deploy to Amazon EC2
+name: Action Test
 
 on:
   push:
@@ -16,4 +16,4 @@ jobs:
 
       # (3) Mysql Datasource 설정 세팅
       - name: Set up Mysql Datasource
-        run: echo "test"
+        run: echo "echo test" > test_echo1.txt
