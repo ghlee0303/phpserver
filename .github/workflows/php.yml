@@ -1,0 +1,19 @@
+name: Deploy to Amazon EC2
+
+on:
+  push:
+      
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      # (1) 기본 체크아웃
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # (3) Mysql Datasource 설정 세팅
+      - name: Set up Mysql Datasource
+        run: echo "test"
