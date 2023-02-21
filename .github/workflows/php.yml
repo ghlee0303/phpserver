@@ -15,5 +15,8 @@ jobs:
         uses: actions/checkout@v3
 
       # (3) Mysql Datasource 설정 세팅
-      - name: Set up Mysql Datasource
-        run: echo "echo test" > test_echo1.txt
+      - name: Set up Mysql Datasource- 
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: "dir/fileName.txt"
+          FILE_DATA: "file content"
